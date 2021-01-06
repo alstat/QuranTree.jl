@@ -111,8 +111,8 @@ using Test
     @test dediac(encode(basmala)) === "\"%A zppK zp`&Ar] zp`&kA"
     @test normalize(encode(basmala)) === "\"S%gAS mppj[KS mp`j[&gA[m]S mp`j[&SkAS"
 
-    @transliterator :default
-    # @transliterator BW_ENCODING "Buckwalter"
+    # @transliterator :default
+    @transliterator BW_ENCODING "Buckwalter"
     @test encode(basmala) === "bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi"
     @test arabic(encode(basmala)) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
     @test dediac(encode(basmala)) === "bsm {llh {lrHm`n {lrHym"
