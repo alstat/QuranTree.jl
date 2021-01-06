@@ -34,19 +34,18 @@ crps, tnzl = load(data);
 The `load` function returns a tuple both for the Quranic Corpus and the Tanzil Data. The loaded data is encoded in a immutable (read-only) array, so users cannot change it. This is specified in the type of the object as shown below:
 ```julia
 crps
-(CorpusRaw) 128276-element ReadOnlyArray{String,1,Array{String,1}}:
- "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK"
- "#===================================================================="
- "#"
- "#  Quranic Arabic Corpus (morphology, version 0.4)"
- "#  Copyright (C) 2011 Kais Dukes"
- "#  License: GNU General Public License"
- ⋮
-
- "(114:6:1:1)\tmina\tP\tSTEM|POS:P|LEM:min"
- "(114:6:2:1)\t{lo\tDET\tPREFIX|Al+"
- "(114:6:2:2)\tjin~api\tN\tSTEM|POS:N|LEM:jin~ap|ROOT:jnn|F|GEN"
- "(114:6:3:1)\twa\tCONJ\tPREFIX|w:CONJ+"
- "(114:6:3:2)\t{l\tDET\tPREFIX|Al+"
- "(114:6:3:3)\tn~aAsi\tN\tSTEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN"
+#> (CorpusRaw) 128276-element ReadOnlyArray{String,1,Array{String,1}}:
+#>  "# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK"
+#>  "#===================================================================="
+#>  "#"
+#>  "#  Quranic Arabic Corpus (morphology, version 0.4)"
+#>  "#  Copyright (C) 2011 Kais Dukes"
+#>  "#  License: GNU General Public License"
+#>  ⋮
+#>  "(114:6:1:1)\tmina\tP\tSTEM|POS:P|LEM:min"
+#>  "(114:6:2:1)\t{lo\tDET\tPREFIX|Al+"
+#>  "(114:6:2:2)\tjin~api\tN\tSTEM|POS:N|LEM:jin~ap|ROOT:jnn|F|GEN"
+#>  "(114:6:3:1)\twa\tCONJ\tPREFIX|w:CONJ+"
+#>  "(114:6:3:2)\t{l\tDET\tPREFIX|Al+"
+#>  "(114:6:3:3)\tn~aAsi\tN\tSTEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN"
 ```
