@@ -76,7 +76,7 @@ crpsdata[<chapter>][<verse>][<word>][<part>]
 ```
 and for `TanzilData`,
 ```julia
-tnzldata[<chapter>][<verse>][<word>][<part>]
+tnzldata[<chapter>][<verse>]
 ```
 For example, to access Chapter 1, Verse 7 is accessed as follows:
 ```julia
