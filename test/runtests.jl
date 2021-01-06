@@ -99,21 +99,24 @@ using Test
     @test normalize(arabic(verses(crpsdata[1][1])[1]), [:alif_khanjareeya, :hamzat_wasl]) === "بِسْمِ اللَّهِ الرَّحْمَانِ الرَّحِيمِ"
 
     # setting new transliterator
-    using Random: seed!
-    using StatsBase
-    seed!(123)
-    
-    new_keys = sample(collect(keys(BW_ENCODING)), length(keys(BW_ENCODING)), replace=false)
-    new_vals = sample(collect(values(BW_ENCODING)), length(values(BW_ENCODING)), replace=false)
-    my_encoder = Dict(new_keys .=> new_vals) 
+    old_keys = collect(keys(BW_ENCODING))
+    new_vals = reverse(collect(values(BW_ENCODING)))
+    my_encoder = Dict(old_keys .=> new_vals);
 
     basmala = arabic(verses(crpsdata[1][1])[1])
 
     @transliterator my_encoder "MyEncoder"
-    @test encode(basmala) === ".j,Hsj kttAg:j ktrAgiHsgmxj ktrAgij;sj"
+    @test encode(basmala) === "\"S%gAS zppj[KS zp`j[&gA[r]S zp`j[&SkAS"
     @test arabic(encode(basmala)) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
-    @test dediac(encode(basmala)) === ".,s ktt: ktrismx ktri;s"
-    @test normalize(encode(basmala)) === ".j,Hsj !ttAg:j !trAgiHsg!xj !trAgij;sj"
+    @test dediac(encode(basmala)) === "\"%A zppK zp`&Ar] zp`&kA"
+    @test normalize(encode(basmala)) === "\"S%gAS mppj[KS mp`j[&gA[m]S mp`j[&SkAS"
+
+    @transliterator :default
+    # @transliterator BW_ENCODING "Buckwalter"
+    @test encode(basmala) === "bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi"
+    @test arabic(encode(basmala)) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+    @test dediac(encode(basmala)) === "bsm {llh {lrHm`n {lrHym"
+    @test normalize(encode(basmala)) === "bisomi All~ahi Alr~aHomaAni Alr~aHiymi"
 
     # features
     @test isfeature(select(crpsdata[1].data, :features)[2], Stem) === true
