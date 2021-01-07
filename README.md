@@ -1,9 +1,6 @@
 # QuranTree.jl
 [![Build status](https://github.com/alstat/QuranTree.jl/workflows/CI/badge.svg)](https://github.com/alstat/QuranTree.jl/actions)
 [![Coverage](https://codecov.io/gh/alstat/QuranTree.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/alstat/QuranTree.jl)
-<!-- [![Build Status](https://ci.appveyor.com/api/projects/status/github/alstat/QuranTree.jl?svg=true)](https://ci.appveyor.com/project/alstat/QuranTree-jl) -->
-<!-- [![Build Status](https://travis-ci.com/alstat/QuranTree.jl.svg?branch=master)](https://travis-ci.com/alstat/QuranTree.jl) -->
-<!-- [![Coverage Status](https://coveralls.io/repos/github/alstat/QuranTree.jl/badge.svg?branch=master)](https://coveralls.io/github/alstat/QuranTree.jl?branch=master) -->
 
 A Julia package for working with the Quran. The library is based on the Quranic corpus dataset 
 from [The Quranic Arabic Corpus](https://corpus.quran.com/), and is inspired by the provided [JQuranTree](https://corpus.quran.com/java/overview.jsp) java package. The following are the features available:
@@ -24,7 +21,7 @@ from [The Quranic Arabic Corpus](https://corpus.quran.com/), and is inspired by 
 
 Lastly, since this is built on Julia, it is therefore fast and robust (with strong type) as well.
 ## Installation
-The library is not yet registered to Julia Packages since we are still working on the documentations, but it can be installed as follows:
+The library is not yet registered to Julia Packages since we are still working on the documentations and completing the unit tests, but it can be installed as follows:
 ```julia
 using Pkg
 Pkg.add("https://github.com/alstat/QuranTree.jl")

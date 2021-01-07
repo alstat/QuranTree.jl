@@ -65,10 +65,11 @@ using Suppressor: @capture_out
 
     # verses
     @test verses(crpsdata[1])[7] === "Sira`Ta {l~a*iyna >anoEamota Ealayohimo gayori {lomagoDuwbi Ealayohimo walaA {lD~aA^l~iyna"
+    @test verses(crpsdata[1][1:7])[7] === "Sira`Ta {l~a*iyna >anoEamota Ealayohimo gayori {lomagoDuwbi Ealayohimo walaA {lD~aA^l~iyna"
     @test verses(crpsdata[1][7])[1] === "Sira`Ta {l~a*iyna >anoEamota Ealayohimo gayori {lomagoDuwbi Ealayohimo walaA {lD~aA^l~iyna"
     @test verses(tnzldata[1][1])[1] === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
     @test verses(tnzldata[1][1:2])[2] === "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ"
-
+    @test verses(tnzldata)[1] === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
     # arabic
     @test arabic(verses(crpsdata[114])[1]) === "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
     @test arabic(verses(crpsdata[1][7])[1]) === "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
@@ -81,6 +82,8 @@ using Suppressor: @capture_out
     @test chapter_name(crpsdata[13][2][1], lang=:english) === "Thunder"
     @test chapter_name(tnzldata[13][2]) === "ٱلرَّعْد"
     @test chapter_name(tnzldata[13][2], lang=:english) === "Thunder"
+    @test chapter_name(tnzldata[1], true) === "{lofaAtiHap"
+    @test chapter_name(tnzldata[1], true, lang=:english) === "The Opening"
 
     # dediac
     @test dediac(verses(crpsdata[1][1])[1]) === "bsm {llh {lrHm`n {lrHym"
