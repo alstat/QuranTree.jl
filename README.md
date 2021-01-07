@@ -22,6 +22,16 @@ from [The Quranic Arabic Corpus](https://corpus.quran.com/), and is inspired by 
  * Immutable Array for raw datasets (Corpus and Tanzil)
 
 Lastly, since this is built on Julia, it is therefore fast and robust (with strong type) as well.
+## Installation
+The library is not yet registered to Julia Packages since we are still working on the documentations, but it can be installed as follows:
+```julia
+using Pkg
+Pkg.add("https://github.com/alstat/QuranTree.jl")
+```
+### Requirements
+ * Julia >= 1.4
+ * JuliaDB >= 0.13.0
+ * PrettyTables >= 0.10.1
 
 ## Documentation
 The dataset is included in the library already, both the Quranic Corpus and the Tanzil Data. To load the data, run the following
