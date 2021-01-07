@@ -1,9 +1,9 @@
 using QuranTree
 using Test
+using JuliaDB: select
+using Suppressor: @capture_out
 
 @testset "QuranTree.jl" begin
-    using JuliaDB: select
-
     data = QuranData()
     crps, tnzl = load(data)
     
@@ -111,7 +111,7 @@ using Test
     @test dediac(encode(basmala)) === "\"%A zppK zp`&Ar] zp`&kA"
     @test normalize(encode(basmala)) === "\"S%gAS mppj[KS mp`j[&gA[m]S mp`j[&SkAS"
 
-    @transliterator BW_ENCODING "Buckwalter"
+    @transliterator :default
     @test encode(basmala) === "bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi"
     @test arabic(encode(basmala)) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
     @test dediac(encode(basmala)) === "bsm {llh {lrHm`n {lrHym"
@@ -204,7 +204,65 @@ using Test
     @test isfeature(select(crpsdata.data, :features)[126], Indicative) === false
     @test isfeature(select(crpsdata.data, :features)[86], Active) === false
     @test isfeature(select(crpsdata.data, :features)[36], Active) === true
-    # remaining todo:
+
+    out = @capture_out begin
+        description(feature(select(crpsdata[1].data, :features)[1]))
+    end;
+    @test out === """Prefix
+    ──────
+    Preposition:
+     ├ data: P
+     ├ desc: Preposition prefix ('by', 'with', 'in')
+     └ ar_label: حرف جر\n"""
+
+    out = @capture_out begin
+        @desc feature(select(crpsdata[1].data, :features)[end])
+    end;
+    @test out === """Stem
+    ────
+    Noun:
+     ├ data: N
+     ├ desc: Noun
+     └ ar_label: اسم
+    QuranTree.Lemma:
+     └ data: DaA^l~
+    QuranTree.Root:
+     └ data: Dll
+    ActiveParticle:
+     ├ data: ACT PCPL
+     ├ desc: Active particle
+     └ ar_label: اسم فاعل
+    Active:
+     ├ data: ACT
+     ├ desc: Active voice (default)
+     └ ar_label: مبني للمعلوم
+    Masculine:
+     ├ data: M
+     ├ desc: Masculine
+     └ ar_label: الجنس
+    Plural:
+     ├ data: P
+     ├ desc: Plural
+     └ ar_label: العدد
+    Genetive:
+     ├ data: GEN
+     ├ desc: Genetive case
+     └ ar_label: مجرور\n"""
+    
+    out = @capture_out crpsdata[1][1][1][1]
+    out === """Chapter 1 ٱلْفَاتِحَة (The Opening)
+    Verse 1
+    
+    Table with 1 rows, 5 columns:
+    word  part  form  tag  features
+    ─────────────────────────────────────────────
+    1     1     "bi"  "P"  Features("PREFIX|bi+")\n"""
+
+    out = @desc 1
+    println(out)
+    @test out === missing
+     # remaining todo:
     #   check pretty_table
     #   test display/show
+    #   use suppressor
 end

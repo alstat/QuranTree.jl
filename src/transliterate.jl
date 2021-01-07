@@ -47,11 +47,13 @@ end
 Fallback to the default `Buckwalter` transliterator.
 """
 macro transliterator(symbl)
-    if string(eval(symbl)) === "default"
-        eval(:(@transliterator(BW_ENCODING, "Buckwalter")))
-    else
-        throw(DomainError("Expects :default, got " * string(symbl)))
-    end
+    esc(quote
+        if string($symbl) === "default"
+            eval(:(@transliterator(BW_ENCODING, "Buckwalter")))
+        else
+            throw(DomainError("Expects :default, got " * string(symbl)))
+        end
+    end)
 end
 
 @transliterator BW_ENCODING "Buckwalter"

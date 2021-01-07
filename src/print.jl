@@ -129,11 +129,13 @@ function description(feat::Union{Prefix,Stem,Suffix})
 end
 
 macro desc(expr)
-    try
-        return description(eval(expr))
-    catch
-        return missing
-    end
+    esc(quote
+        try
+            return description(eval($expr))
+        catch
+            return missing
+        end
+    end)
 end
 
 macro data(expr)

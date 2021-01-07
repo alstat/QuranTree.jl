@@ -395,6 +395,11 @@ git-tree-sha1 = "8099ed9fb90b6e754d6ba8c6ed8670f010eadca0"
 uuid = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
 version = "0.4.4"
 
+[[Suppressor]]
+git-tree-sha1 = "a819d77f31f83e5792a76081eee1ea6342ab8787"
+uuid = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
+version = "0.2.0"
+
 [[SweepOperator]]
 deps = ["LinearAlgebra"]
 git-tree-sha1 = "20da2784e79fc0bfdd70592d1b47d7a6034e82d1"
