@@ -4,6 +4,7 @@ authors = ["Al Asaad"]
 version = "0.1.0"
 
 [deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 JuliaDB = "a93385a2-3734-596a-9a66-3cfbb77141e6"
 PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
