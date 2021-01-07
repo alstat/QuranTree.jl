@@ -60,6 +60,7 @@ jobs:
             Pkg.instantiate()'
       - run: |
           julia --project=docs -e '
+            import Pkg; Pkg.add("Documenter")
             using Documenter: doctest
             using QuranTree
             doctest(QuranTree)'
