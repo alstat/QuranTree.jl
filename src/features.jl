@@ -254,6 +254,11 @@ function root(feat::Features)
     end
 end
 
+function root(feat::AbstractFeature)
+    idx = findfirst(x -> x isa Root, feat.feats)
+    return idx isa Nothing ? missing : feat.feats[idx].data 
+end
+
 function lemma(feat::Features)
     try
         strs = split(feat.data, "LEM:")[2]
@@ -262,6 +267,11 @@ function lemma(feat::Features)
     catch
         return missing
     end
+end
+
+function lemma(feat::AbstractFeature)
+    idx = findfirst(x -> x isa Lemma, feat.feats)
+    return idx isa Nothing ? missing : feat.feats[idx].data 
 end
 
 function special(feat::Features)
@@ -274,17 +284,7 @@ function special(feat::Features)
     end
 end
 
-function isroot(feat::Features)
-    out = root(s)
-    return out isa Missing ? false : true
-end
-
-function islemma(feat::Features)
-    out = lemma(s)
-    return out isa Missing ? false : true
-end
-
-function isspecial(feat::Features)
-    out = special(s)
-    return out isa Missing ? false : true
+function special(feat::AbstractFeature)
+    idx = findfirst(x -> x isa Special, feat.feats)
+    return idx isa Nothing ? missing : feat.feats[idx].data 
 end

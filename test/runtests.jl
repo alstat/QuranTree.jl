@@ -16,7 +16,8 @@ using Suppressor: @capture_out
     # indexing
     crpsdata = table(crps)
     tnzldata = table(tnzl)
-
+    
+    @test select(crpsdata[begin].data, :form)[1] === "bi"
     @test select(crpsdata[114][2][1][1].data, :features)[1].data === "STEM|POS:N|LEM:malik|ROOT:mlk|MS|GEN"
     @test select(crpsdata[114][2][1:2][1].data, :features)[2].data === "PREFIX|Al+"
     @test select(crpsdata[114][4][[1,2,3]][1].data, :features)[2].data === "STEM|POS:N|LEM:\$ar~|ROOT:\$rr|MS|GEN"
@@ -65,6 +66,8 @@ using Suppressor: @capture_out
     # verses
     @test verses(crpsdata[1])[7] === "Sira`Ta {l~a*iyna >anoEamota Ealayohimo gayori {lomagoDuwbi Ealayohimo walaA {lD~aA^l~iyna"
     @test verses(crpsdata[1][7])[1] === "Sira`Ta {l~a*iyna >anoEamota Ealayohimo gayori {lomagoDuwbi Ealayohimo walaA {lD~aA^l~iyna"
+    @test verses(tnzldata[1][1])[1] === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+    @test verses(tnzldata[1][1:2])[2] === "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ"
 
     # arabic
     @test arabic(verses(crpsdata[114])[1]) === "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
@@ -118,6 +121,12 @@ using Suppressor: @capture_out
     @test normalize(encode(basmala)) === "bisomi All~ahi Alr~aHomaAni Alr~aHiymi"
 
     # features
+    @test root(select(crpsdata[112].data, :features)[1]) === "qwl"
+    @test lemma(select(crpsdata[112].data, :features)[1]) === "qaAla"
+    @test special(select(crpsdata.data, :features)[53]) === "<in~"
+    @test root(feature(select(crpsdata[112].data, :features)[1])) === "qwl"
+    @test lemma(feature(select(crpsdata[112].data, :features)[1])) === "qaAla"
+    @test special(feature(select(crpsdata.data, :features)[53])) === "<in~"
     @test isfeature(select(crpsdata[1].data, :features)[2], Stem) === true
     @test isfeature(select(crpsdata[1].data, :features)[end-4], Suffix) === true
     @test isfeature(select(crpsdata[1].data, :features)[end-3], Prefix) === true
@@ -205,6 +214,9 @@ using Suppressor: @capture_out
     @test isfeature(select(crpsdata.data, :features)[86], Active) === false
     @test isfeature(select(crpsdata.data, :features)[36], Active) === true
 
+    @test encode(SimpleEncoder, basmala) === "Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
+
+    # printing
     out = @capture_out begin
         description(feature(select(crpsdata[1].data, :features)[1]))
     end;

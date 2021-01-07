@@ -31,8 +31,12 @@ end
 Extract the verses of a `AbstractQuran` object.
 """
 function verses(quran::AbstractQuran)
-    endidx = length(rows(quran.data))
-    return verses(quran.data, 1, endidx)
+    try
+        endidx = length(rows(quran.data))
+        return verses(quran.data, 1, endidx)
+    catch
+        return select(quran.data, :form)
+    end
 end
 
 """
