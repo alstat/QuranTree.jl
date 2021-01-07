@@ -1,6 +1,6 @@
 # QuranTree.jl
-
-[![Build Status](https://travis-ci.com/alstat/QuranTree.jl.svg?branch=master)](https://travis-ci.com/alstat/QuranTree.jl)
+[![Build status](https://github.com/alstat/QuranTree.jl/workflows/CI/badge.svg)](https://github.com/alstat/QuranTree.jl/actions)
+<!-- [![Build Status](https://travis-ci.com/alstat/QuranTree.jl.svg?branch=master)](https://travis-ci.com/alstat/QuranTree.jl) -->
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/alstat/QuranTree.jl?svg=true)](https://ci.appveyor.com/project/alstat/QuranTree-jl)
 <!-- [![Coverage Status](https://coveralls.io/repos/github/alstat/QuranTree.jl/badge.svg?branch=master)](https://coveralls.io/github/alstat/QuranTree.jl?branch=master) -->
 <!-- [![Coverage](https://codecov.io/gh/alstat/QuranTree.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/alstat/QuranTree.jl) -->
