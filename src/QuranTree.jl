@@ -15,7 +15,7 @@ include("load.jl")
 include("print.jl")
 
 export BW_ENCODING, AR_DIACS_REGEX, SP_REGEX_CHARS
-export load, table, arabic, verses, chapter_name,
+export load, table, arabic, verses, chapter_name, description,
        dediac, normalize, encode, verses, feature, isfeature
 export @desc, @transliterator, Transliterator, genproperties
 export CorpusRaw, TanzilRaw, QuranData, Suffix, Prefix, Stem, Features
