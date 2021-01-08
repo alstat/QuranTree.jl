@@ -108,6 +108,12 @@ git-tree-sha1 = "b7715ae18be02110a8cf9cc8ed2ccdb1e3e3aba2"
 uuid = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 version = "0.26.1"
 
+[[DocumenterTools]]
+deps = ["Base64", "DocStringExtensions", "Documenter", "FileWatching", "LibGit2", "Sass"]
+git-tree-sha1 = "9b40fd93f54ba5ef9d364981124a8ed389fd634e"
+uuid = "35a29f4d-8980-5a13-9543-d66fff28ecb8"
+version = "0.1.9"
+
 [[DoubleFloats]]
 deps = ["GenericSVD", "GenericSchur", "LinearAlgebra", "Polynomials", "Printf", "Quadmath", "Random", "Requires", "SpecialFunctions"]
 git-tree-sha1 = "3351fb3839b6967604f9abca62fd3c1f85875906"
@@ -124,6 +130,9 @@ deps = ["Printf", "XML2_jll"]
 git-tree-sha1 = "0fa3b52a04a4e210aeb1626def9c90df3ae65268"
 uuid = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
 version = "1.1.0"
+
+[[FileWatching]]
+uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
 [[Formatting]]
 deps = ["Printf"]
@@ -352,6 +361,12 @@ version = "1.1.2"
 
 [[SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+
+[[Sass]]
+deps = ["BinaryProvider", "Libdl", "Test"]
+git-tree-sha1 = "de11179555c6363c5a61c4c94376db3498983734"
+uuid = "322a6be2-4ae8-5d68-aaf1-3e960788d1d9"
+version = "0.1.0"
 
 [[Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
