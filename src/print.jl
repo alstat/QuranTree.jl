@@ -14,7 +14,7 @@ const _TF_COMPACT_ = TextFormat(up_right_corner = '─',
                    hlines              = [:begin,:header,:end],
                    vlines              = :all);
 
-function pretty_table(quran::AbstractQuran; backend=:text, tf=tf_html_simple, kwargs...)
+function pretty_table(quran::AbstractQuran; kwargs...)
     if quran isa Chapter
         if quran.numbers isa Int64
             tbl = select(quran.data, Not(:chapter))
@@ -86,11 +86,7 @@ function pretty_table(quran::AbstractQuran; backend=:text, tf=tf_html_simple, kw
     else 
         tbl = quran.data
     end
-    if backend === :html
-        display("text/html", pretty_table(String, tbl; backend=backend, tf=tf, kwargs...))
-    else
-        pretty_table(tbl; backend=backend, tf=_TF_COMPACT_, vcrop_mode=:middle, kwargs...)
-    end
+    pretty_table(tbl; backend=:text, tf=_TF_COMPACT_, vcrop_mode=:middle, kwargs...)
 end
 
 function description(feat::Union{Lemma,Root,Special})
@@ -326,7 +322,7 @@ function Base.show(io::IO, quran::Union{Verse,Word,Part})
         end
         println(io, "\nVerse ", verse, "\n")
         println(io, quran.data)
-    elseif quran.chapters isa Array{Int64} && verse isa Array{Int64}
+    else
         if length(quran.chapters) > 1
             println(io, "Chapters: ")
         else
@@ -360,68 +356,6 @@ function Base.show(io::IO, quran::Union{Verse,Word,Part})
                 print(io, i, ", ")
             else
                 println(io, i)
-            end
-            j += 1
-        end
-        println(io, "\n", quran.data)
-    elseif quran.chapters isa Array{Int64} && verse isa Tuple
-        if length(quran.chapters) > 1
-            println(io, "Chapters: ")
-        else
-            println(io, "Chapter: ")
-        end
-        
-        j = 1
-        for i in quran.chapters
-            if j < length(verse)
-                if j < length(quran.chapters)
-                    if length(quran.chapters) > 1
-                        print(io, " ├")
-                        println(io, lpad(i, 3), " (", chapterlab.arabic[i], "-", chapterlab.english[i], "), Verse ", verse[j])
-                    else
-                        print(io, " └")
-                        print(io, i, " (", chapterlab.arabic[i], "-", chapterlab.english[i], "), Verse ", verse[j])
-                    end
-                else
-                    print(io, " └")
-                    print(io, lpad(i, 3), " (", chapterlab.arabic[i], "-", chapterlab.english[i], "), Verse ", verse[j])
-                end
-            elseif j == length(verse)
-                print(io, " └")
-                println(io, lpad(i, 3), " (", chapterlab.arabic[i], "-", chapterlab.english[i], "), Verse ", verse[j])
-            else
-                break
-            end
-            j += 1
-        end
-        println(io, "\n", quran.data)
-    else
-        if length(quran.chapters) > 1
-            println(io, "Chapters: ")
-        else
-            println(io, "Chapter: ")
-        end
-        
-        j = 1
-        for i in quran.chapters
-            if j < length(verse)
-                if j < length(quran.chapters)
-                    if length(quran.chapters) > 1
-                        print(io, " ├")
-                        println(io, lpad(i, 3), " (", chapterlab.arabic[i], "-", chapterlab.english[i], "), Verse ", verse[j])
-                    else
-                        print(io, " └")
-                        print(io, i, " (", chapterlab.arabic[i], "-", chapterlab.english[i], "), Verse ", verse[j])
-                    end
-                else
-                    print(io, " └")
-                    print(io, lpad(i, 3), " (", chapterlab.arabic[i], "-", chapterlab.english[i], "), Verse ", verse[j])
-                end
-            elseif j == length(verse)
-                print(io, " └")
-                println(io, lpad(i, 3), " (", chapterlab.arabic[i], "-", chapterlab.english[i], "), Verse ", verse[j])
-            else
-                break
             end
             j += 1
         end
