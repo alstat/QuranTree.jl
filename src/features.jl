@@ -1,5 +1,6 @@
 include("partofspeech.jl")
 
+import Base: parse
 """
     Features(data::String)
 
@@ -210,11 +211,12 @@ function suffix(feat::Features)
 end
 
 """
-    feature(feat::Features)
+    parse(feat::Features)
+    parse(::Type{Features}, f::AbstractString)
 
 Extract the features of a morphological `Feature` object.
 """
-function feature(feat::Features)
+function parse(feat::Features)
     try
         return prefix(feat)
     catch
@@ -226,13 +228,17 @@ function feature(feat::Features)
     end
 end
 
+function parse(::Type{Features}, f::AbstractString)
+    return parse(Features(f))
+end
+
 """
     isfeature(feat::Features, pos::Type{<:AbstractFeature})
 
 Check if the morphological `Feature` object is a type of `pos`.
 """
 function isfeature(feat::Features, pos::Type{<:AbstractFeature})
-    feat = feature(feat)
+    feat = parse(feat)
     try        
         feats = vcat(feat, feat.pos, feat.feats)
         out = findfirst(x -> x isa pos, feats)

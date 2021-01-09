@@ -86,7 +86,7 @@ function pretty_table(quran::AbstractQuran; kwargs...)
     else 
         tbl = quran.data
     end
-    pretty_table(tbl; backend=:text, tf=_TF_COMPACT_, vcrop_mode=:middle, kwargs...)
+    pretty_table(tbl; kwargs...)
 end
 
 function description(feat::Union{Lemma,Root,Special})

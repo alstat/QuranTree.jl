@@ -1,4 +1,5 @@
 module QuranTree
+using Base: parse
 using JuliaDB: select, rows
 
 include("partofspeech.jl")
@@ -14,7 +15,7 @@ include("normalize.jl")
 include("load.jl")
 include("print.jl")
 
-export BW_ENCODING, AR_DIACS_REGEX, SP_REGEX_CHARS
+export BW_ENCODING, AR_DIACS_REGEX, SP_REGEX_CHARS, _TF_COMPACT_
 export load, table, arabic, verses, chapter_name, description,
        dediac, normalize, encode, verses, feature, isfeature,
        root, lemma, special
