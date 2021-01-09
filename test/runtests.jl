@@ -348,10 +348,10 @@ end
     Table with 1 rows, 5 columns:
     word  part  form  tag  features
     ─────────────────────────────────────────────
-    1     1     "bi"  "P"  Features("PREFIX|bi+")\n"""
+    1     1     "bi"  "P"  Features("PREFIX|bi+")\n""";
 
     out = @desc(1)
-    @test out === missing
+    @test out === missing;
     
     
     # out = @capture_out(pretty_table(crpsdata));

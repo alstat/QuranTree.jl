@@ -1,4 +1,3 @@
-include("qurantypes.jl")
 import JuliaDB: select, groupby, filter
 function Base.getindex(crps::Union{CorpusRaw,TanzilRaw}, i::Union{Int64,Array{Int64,1},UnitRange{Int64}})
     if i isa Int64

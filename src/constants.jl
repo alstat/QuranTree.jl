@@ -1,4 +1,3 @@
-include("partofspeech.jl")
 const DERIVED_NOUNS = Dict(
     Symbol("ACT PCPL") => ActiveParticle(),
     Symbol("PASS PCPL") => PassiveParticle(),

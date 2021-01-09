@@ -1,5 +1,3 @@
-include("partofspeech.jl")
-
 import Base: parse
 """
     Features(data::String)
