@@ -20,7 +20,7 @@ export load, table, arabic, verses, chapter_name, description,
        dediac, normalize, encode, verses, feature, isfeature,
        root, lemma, special
 export @desc, @transliterator, Transliterator, genproperties
-export CorpusRaw, TanzilRaw, QuranData, Suffix, Prefix, Stem, Features, SimpleEncoder
+export CorpusRaw, TanzilRaw, QuranData, Suffix, Prefix, Stem, Features, SimpleEncoder, MetaData
 export AbstractEncoder, AbstreactFeature, AbstractPartOfSpeech,
        AbstractNominal, AbstractState, AbstractCase,
        AbstractPreposition, AbstractParticle, AbstractDisLetters,

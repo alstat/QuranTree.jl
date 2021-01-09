@@ -1,7 +1,7 @@
 name = "QuranTree"
 uuid = "f647ab69-6f05-4d64-883f-59d0fbe08d2b"
 authors = ["Al Asaad"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"

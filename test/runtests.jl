@@ -281,11 +281,18 @@ end
     out = capture_io(crpsdata[[112,113]][[1,2]])
     @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1, 2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
 
-    out = capture_io(QuranTree.MetaData(CorpusRaw))
+    meta = MetaData(
+        "Quranic Arabic Corpus (morphology)",
+        "Kais Dukes",
+        "The Quranic Arabic Corpus includes syntactic and morphological\nannotation of the Quran, and builds on the verified Arabic text\ndistributed by the Tanzil project.",
+        "http://corpus.quran.com/",
+        "English",
+        "2011",
+        "GNU General Public License",
+        "0.4"
+    )
+    out = capture_io(meta)
     @test out === "Quranic Arabic Corpus (morphology) v0.4\nCopyright (C) 2011 Kais Dukes\nGNU General Public License\nhttp://corpus.quran.com/\n\nThe Quranic Arabic Corpus includes syntactic and morphological\nannotation of the Quran, and builds on the verified Arabic text\ndistributed by the Tanzil project.\n\n"
-
-    out = capture_io(QuranTree.MetaData(TanzilRaw))
-    @test out === "Tanzil Quran Text (Uthmani) v1.0.2\nCopyright (C) 2008-2010 Tanzil.net\nCreative Commons Attribution 3.0\nhttp://tanzil.net\n\nThis copy of quran text is carefully produced, highly\nverified and continuously monitored by a group of specialists\nat Tanzil project.\n\n"
 
     out = capture_io(crpsdata[[112,113]][1:2])
     @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1-2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
