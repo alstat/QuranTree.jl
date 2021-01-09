@@ -297,17 +297,8 @@ end
     out = capture_io(crpsdata[[112,113]][1:2])
     @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1-2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
 
-    # out = @capture_out(pretty_table(crpsdata));
-    # @test out[1000:2000] === "────────────────────────────────────────────────────────\n        1       1       1       1                 bi        P                                                             Features(\"PREFIX|bi+\")\n        1       1       1       2               somi        N                                     Features(\"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\")\n        1       1       2       1            {ll~ahi       PN                                    Features(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n        1       1       3       1                 {l      DET                                                             Features(\"PREFIX|Al+\")\n        1       1       3       2         r~aHoma`ni      ADJ                             Features(\"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\")\n        1       1       4       1                 {l      DET                                              "
-    
-    # out = @capture_out(pretty_table(crpsdata[1]));
-    # @test out[1000:2000] === "                                                Features(\"PREFIX|bi+\")\n      1       1       2          somi        N                         Features(\"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\")\n      1       2       1       {ll~ahi       PN                        Features(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n      1       3       1            {l      DET                                                 Features(\"PREFIX|Al+\")\n      1       3       2    r~aHoma`ni      ADJ                 Features(\"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\")\n      1       4       1            {l      DET                                                 Features(\"PREFIX|Al+\")\n      1       4       2      r~aHiymi      ADJ                   Features(\"STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\")\n      2       1       1           {lo      DET                                                 Features(\"PREFIX|Al+\")\n      2       1       2        Hamodu        N                        Features(\"STEM|POS:N|LEM:Hamod|ROO"
-    
-    # out = @capture_out(pretty_table(crpsdata[1][1]))
-    # @test out === "────────────────────────────────────────────────────────────────────────────────────────────────\n   word    part         form      tag                                                 features\n  Int64   Int64       String   String                                                 Features\n────────────────────────────────────────────────────────────────────────────────────────────────\n      1       1           bi        P                                   Features(\"PREFIX|bi+\")\n      1       2         somi        N           Features(\"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\")\n      2       1      {ll~ahi       PN          Features(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n      3       1           {l      DET                                   Features(\"PREFIX|Al+\")\n      3       2   r~aHoma`ni      ADJ   Features(\"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\")\n      4       1           {l      DET                                   Features(\"PREFIX|Al+\")\n      4       2     r~aHiymi      ADJ     Features(\"STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\")\n────────────────────────────────────────────────────────────────────────────────────────────────\n"
-    
-    # out = @capture_out(pretty_table(crpsdata[1][1:2]))
-    # @test out[end-1000:end] === "{lo      DET                                   Features(\"PREFIX|Al+\")\n      2       1       2       Hamodu        N          Features(\"STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM\")\n      2       2       1           li        P                                  Features(\"PREFIX|l:P+\")\n      2       2       2        l~ahi       PN          Features(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n      2       3       1        rab~i        N           Features(\"STEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN\")\n      2       4       1          {lo      DET                                   Features(\"PREFIX|Al+\")\n      2       4       2   Ea`lamiyna        N     Features(\"STEM|POS:N|LEM:Ea`lamiyn|ROOT:Elm|MP|GEN\")\n────────────────────────────────────────────────────────────────────────────────────────────────────────\n"
+    out = @desc 1
+    @test out === missing
     
     out = @capture_out begin
         description(parse(select(crpsdata[1].data, :features)[1]))
@@ -362,9 +353,6 @@ end
     ─────────────────────────────────────────────
     1     1     "bi"  "P"  Features("PREFIX|bi+")\n"""
 
-    # out = @desc 1
-    # println(out)
-    # @test out === missing
      # remaining todo:
     #   check pretty_table
     #   test display/show
