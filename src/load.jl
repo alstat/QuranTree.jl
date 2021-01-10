@@ -32,7 +32,7 @@ function table(crps::CorpusRaw)
                 part = loc[4],
                 form = string(row[2]),
                 tag = string(row[3]),
-                features = Features(string(row[4])),
+                features = string(row[4]),
             ),
         )
     end

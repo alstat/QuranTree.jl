@@ -209,25 +209,20 @@ function suffix(feat::Features)
 end
 
 """
-    parse(feat::Features)
     parse(::Type{Features}, f::AbstractString)
 
 Extract the features of a morphological `Feature` object.
 """
-function parse(feat::Features)
+function parse(::Type{Features}, f::AbstractString)
     try
-        return prefix(feat)
+        return prefix(Features(f))
     catch
         try
-            return stem(feat)
+            return stem(Features(f))
         catch
-            return suffix(feat)
+            return suffix(Features(f))
         end
     end
-end
-
-function parse(::Type{Features}, f::AbstractString)
-    return parse(Features(f))
 end
 
 """
@@ -235,8 +230,8 @@ end
 
 Check if the morphological `Feature` object is a type of `pos`.
 """
-function isfeature(feat::Features, pos::Type{<:AbstractFeature})
-    feat = parse(feat)
+function isfeature(f::AbstractString, pos::Type{<:AbstractFeature})
+    feat = parse(Features, f)
     try        
         feats = vcat(feat, feat.pos, feat.feats)
         out = findfirst(x -> x isa pos, feats)

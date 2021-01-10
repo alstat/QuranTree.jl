@@ -25,45 +25,45 @@ end
     tnzldata = table(tnzl)
     
     @test select(crpsdata[begin].data, :form)[1] === "bi"
-    @test select(crpsdata[114][2][1][1].data, :features)[1].data === "STEM|POS:N|LEM:malik|ROOT:mlk|MS|GEN"
-    @test select(crpsdata[114][2][1:2][1].data, :features)[2].data === "PREFIX|Al+"
-    @test select(crpsdata[114][4][[1,2,3]][1].data, :features)[2].data === "STEM|POS:N|LEM:\$ar~|ROOT:\$rr|MS|GEN"
+    @test select(crpsdata[114][2][1][1].data, :features)[1] === "STEM|POS:N|LEM:malik|ROOT:mlk|MS|GEN"
+    @test select(crpsdata[114][2][1:2][1].data, :features)[2] === "PREFIX|Al+"
+    @test select(crpsdata[114][4][[1,2,3]][1].data, :features)[2] === "STEM|POS:N|LEM:\$ar~|ROOT:\$rr|MS|GEN"
     
-    @test select(crpsdata[114][1:3][1][1].data, :features)[3].data === "STEM|POS:N|LEM:<ila`h|ROOT:Alh|MS|GEN"
-    @test select(crpsdata[112][1:3][1:3][2].data, :features)[1].data === "STEM|POS:N|LEM:S~amad|ROOT:Smd|MS|NOM"
-    @test select(crpsdata[112][1:3][[2,4]][1].data, :features)[3].data === "PREFIX|Al+"
+    @test select(crpsdata[114][1:3][1][1].data, :features)[3] === "STEM|POS:N|LEM:<ila`h|ROOT:Alh|MS|GEN"
+    @test select(crpsdata[112][1:3][1:3][2].data, :features)[1] === "STEM|POS:N|LEM:S~amad|ROOT:Smd|MS|NOM"
+    @test select(crpsdata[112][1:3][[2,4]][1].data, :features)[3] === "PREFIX|Al+"
     
-    @test select(crpsdata[111][[2,3]][1][1].data, :features)[1].data === "STEM|POS:NEG|LEM:maA"
-    @test select(crpsdata[111][[2,3]][1:3][2].data, :features)[2].data === "STEM|POS:V|IMPF|LEM:yaSolaY|ROOT:Sly|3MS"
-    @test select(crpsdata[111][[2,3]][[1,3]][1].data, :features)[4].data === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[111][[2,3]][1][1].data, :features)[1] === "STEM|POS:NEG|LEM:maA"
+    @test select(crpsdata[111][[2,3]][1:3][2].data, :features)[2] === "STEM|POS:V|IMPF|LEM:yaSolaY|ROOT:Sly|3MS"
+    @test select(crpsdata[111][[2,3]][[1,3]][1].data, :features)[4] === "STEM|POS:N|LEM:*uw|FS|ACC"
 
-    @test select(crpsdata[111:112][1][1][1].data, :features)[2].data === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
-    @test select(crpsdata[111:112][1][1:3][1].data, :features)[4].data === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
-    @test select(crpsdata[111:112][1][[1,2,3]][1].data, :features)[4].data === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
+    @test select(crpsdata[111:112][1][1][1].data, :features)[2] === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
+    @test select(crpsdata[111:112][1][1:3][1].data, :features)[4] === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
+    @test select(crpsdata[111:112][1][[1,2,3]][1].data, :features)[4] === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
 
-    @test select(crpsdata[111:112][1:3][1][1].data, :features)[5].data === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
-    @test select(crpsdata[111:112][1:3][1:3][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
-    @test select(crpsdata[111:112][1:3][[1,2,3]][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[111:112][1:3][1][1].data, :features)[5] === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
+    @test select(crpsdata[111:112][1:3][1:3][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[111:112][1:3][[1,2,3]][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
 
-    @test select(crpsdata[111:112][[1,2,3]][1][1].data, :features)[5].data === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
-    @test select(crpsdata[111:112][[1,2,3]][1:3][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
-    @test select(crpsdata[111:112][[1,2,3]][[1,2,3]][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[111:112][[1,2,3]][1][1].data, :features)[5] === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
+    @test select(crpsdata[111:112][[1,2,3]][1:3][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[111:112][[1,2,3]][[1,2,3]][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
 
-    @test select(crpsdata[[111,112]][1][1][1].data, :features)[2].data === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
-    @test select(crpsdata[[111,112]][1][1:3][1].data, :features)[4].data === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
-    @test select(crpsdata[[111,112]][1][[1,2,3]][1].data, :features)[4].data === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
+    @test select(crpsdata[[111,112]][1][1][1].data, :features)[2] === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
+    @test select(crpsdata[[111,112]][1][1:3][1].data, :features)[4] === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
+    @test select(crpsdata[[111,112]][1][[1,2,3]][1].data, :features)[4] === "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
 
-    @test select(crpsdata[[111,112]][1:3][1][1].data, :features)[5].data === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
-    @test select(crpsdata[[111,112]][1:3][1:3][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
-    @test select(crpsdata[[111,112]][1:3][[1,2,3]][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[[111,112]][1:3][1][1].data, :features)[5] === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
+    @test select(crpsdata[[111,112]][1:3][1:3][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[[111,112]][1:3][[1,2,3]][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
 
-    @test select(crpsdata[[111,112]][[1,2,3]][1][1].data, :features)[5].data === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
-    @test select(crpsdata[[111,112]][[1,2,3]][1:3][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
-    @test select(crpsdata[[111,112]][[1,2,3]][[1,2,3]][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[[111,112]][[1,2,3]][1][1].data, :features)[5] === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
+    @test select(crpsdata[[111,112]][[1,2,3]][1:3][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[[111,112]][[1,2,3]][[1,2,3]][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
 
-    @test select(crpsdata[end-3:end-2][[1,2,3]][1][1].data, :features)[5].data === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
-    @test select(crpsdata[end-3:end-2][[1,2,3]][1:3][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
-    @test select(crpsdata[end-3:end-2][[1,2,3]][[1,2,3]][1].data, :features)[9].data === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[end-3:end-2][[1,2,3]][1][1].data, :features)[5] === "STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|NOM"
+    @test select(crpsdata[end-3:end-2][[1,2,3]][1:3][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
+    @test select(crpsdata[end-3:end-2][[1,2,3]][[1,2,3]][1].data, :features)[9] === "STEM|POS:N|LEM:*uw|FS|ACC"
 
     @test select(tnzldata[1].data, :form)[7] === "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
     @test select(tnzldata[111:113].data, :form)[10] === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ"
@@ -133,13 +133,13 @@ end
     # features
     inp = "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
     @test root(parse(Features, inp)) === "qwl"
-    @test root(parse(Features(inp))) === "qwl"
-    @test root(select(crpsdata[112].data, :features)[1]) === "qwl"
-    @test lemma(select(crpsdata[112].data, :features)[1]) === "qaAla"
-    @test special(select(crpsdata.data, :features)[53]) === "<in~"
-    @test root(parse(select(crpsdata[112].data, :features)[1])) === "qwl"
-    @test lemma(parse(select(crpsdata[112].data, :features)[1])) === "qaAla"
-    @test special(parse(select(crpsdata.data, :features)[53])) === "<in~"
+    # @test root(parse(Features(inp))) === "qwl"
+    @test root(parse(Features, select(crpsdata[112].data, :features)[1])) === "qwl"
+    @test lemma(parse(Features, select(crpsdata[112].data, :features)[1])) === "qaAla"
+    @test special(parse(Features, select(crpsdata.data, :features)[53])) === "<in~"
+    @test root(parse(Features, select(crpsdata[112].data, :features)[1])) === "qwl"
+    @test lemma(parse(Features, select(crpsdata[112].data, :features)[1])) === "qaAla"
+    @test special(parse(Features, select(crpsdata.data, :features)[53])) === "<in~"
     @test isfeature(select(crpsdata[1].data, :features)[2], Stem) === true
     @test isfeature(select(crpsdata[1].data, :features)[end-4], Suffix) === true
     @test isfeature(select(crpsdata[1].data, :features)[end-3], Prefix) === true
@@ -231,7 +231,7 @@ end
 
     # printing
     out = capture_io(crpsdata)
-    @test out === "Quranic Arabic Corpus (morphology)\n(C) 2011 Kais Dukes\n\nTable with 128219 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Quranic Arabic Corpus (morphology)\n(C) 2011 Kais Dukes\n\nTable with 128219 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     out = capture_io(tnzldata)
     @test out === "Tanzil Quran Text (Uthmani)\n(C) 2008-2010 Tanzil.net\n\nTable with 6236 rows, 3 columns:\nchapter  verse  form\n─────────────────────────────────────────────────────────────────────\n1        1      \"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\"\n1        2      \"ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ\"\n1        3      \"ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\"\n1        4      \"مَٰلِكِ يَوْمِ ٱلدِّينِ\"\n1        5      \"إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\"\n1        6      \"ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ\"\n1        7      \"صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ\"\n2        1      \"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ\"\n2        2      \"ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًى لِّلْمُتَّقِينَ\"\n⋮\n113      4      \"وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ\"\n113      5      \"وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\"\n114      1      \"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ\"\n114      2      \"مَلِكِ ٱلنَّاسِ\"\n114      3      \"إِلَٰهِ ٱلنَّاسِ\"\n114      4      \"مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ\"\n114      5      \"ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ\"\n114      6      \"مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ\"\n\n"
@@ -249,37 +249,37 @@ end
     @test out[5000:5110] === "ن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ\", \"2|22|ٱلَّذِى جَعَلَ لَكُ"
 
     out = capture_io(crpsdata[1])
-    @test out === "Chapter 1: ٱلْفَاتِحَة (The Opening)\n\nTable with 48 rows, 6 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  verse     Int64\n2  word      Int64\n3  part      Int64\n4  form      String\n5  tag       String\n6  features  Features\n\n"
+    @test out === "Chapter 1: ٱلْفَاتِحَة (The Opening)\n\nTable with 48 rows, 6 columns:\nColumns:\n#  colname   type\n───────────────────\n1  verse     Int64\n2  word      Int64\n3  part      Int64\n4  form      String\n5  tag       String\n6  features  String\n\n"
 
     out = capture_io(crpsdata[[112,113]])
-    @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\n\nTable with 49 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\n\nTable with 49 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     out = capture_io(crpsdata[end-1:end])
-    @test out === "Chapter 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\n\nTable with 60 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Chapter 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\n\nTable with 60 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     out = capture_io(crpsdata[1][1])
-    @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerse 1\n\nTable with 7 rows, 5 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  word      Int64\n2  part      Int64\n3  form      String\n4  tag       String\n5  features  Features\n\n"
+    @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerse 1\n\nTable with 7 rows, 5 columns:\nword  part  form          tag    features\n─────────────────────────────────────────────────────────────────────────────\n1     1     \"bi\"          \"P\"    \"PREFIX|bi+\"\n1     2     \"somi\"        \"N\"    \"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\"\n2     1     \"{ll~ahi\"     \"PN\"   \"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\"\n3     1     \"{l\"          \"DET\"  \"PREFIX|Al+\"\n3     2     \"r~aHoma`ni\"  \"ADJ\"  \"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\"\n4     1     \"{l\"          \"DET\"  \"PREFIX|Al+\"\n4     2     \"r~aHiymi\"    \"ADJ\"  \"STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\"\n\n"
 
     out = capture_io(crpsdata[1][1:2])
-    @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerses 1-2\n\nTable with 14 rows, 6 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  verse     Int64\n2  word      Int64\n3  part      Int64\n4  form      String\n5  tag       String\n6  features  Features\n\n"
+    @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerses 1-2\n\nTable with 14 rows, 6 columns:\nColumns:\n#  colname   type\n───────────────────\n1  verse     Int64\n2  word      Int64\n3  part      Int64\n4  form      String\n5  tag       String\n6  features  String\n\n"
 
     out = capture_io(crpsdata[1][[1,2]])
-    @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerses 1, 2\n\nTable with 14 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerses 1, 2\n\nTable with 14 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
     
     out = capture_io(crpsdata[end-1:end][1])
-    @test out === "Chapters 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\nVerse 1\n\nTable with 12 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Chapters 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\nVerse 1\n\nTable with 12 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     out = capture_io(crpsdata[end-1:end][[1,2]])
-    @test out === "Chapters 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\nVerses 1, 2\n\nTable with 19 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Chapters 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\nVerses 1, 2\n\nTable with 19 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     out = capture_io(crpsdata[end-1:end][1:2])
-    @test out === "Chapters 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\nVerses 1-2\n\nTable with 19 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Chapters 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\nVerses 1-2\n\nTable with 19 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     out = capture_io(crpsdata[[112,113]][1])
-    @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerse 1\n\nTable with 10 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerse 1\n\nTable with 10 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     out = capture_io(crpsdata[[112,113]][[1,2]])
-    @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1, 2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1, 2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     meta = MetaData(
         "Quranic Arabic Corpus (morphology)",
@@ -295,10 +295,10 @@ end
     @test out === "Quranic Arabic Corpus (morphology) v0.4\nCopyright (C) 2011 Kais Dukes\nGNU General Public License\nhttp://corpus.quran.com/\n\nThe Quranic Arabic Corpus includes syntactic and morphological\nannotation of the Quran, and builds on the verified Arabic text\ndistributed by the Tanzil project.\n\n"
 
     out = capture_io(crpsdata[[112,113]][1:2])
-    @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1-2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n─────────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  Features\n\n"
+    @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1-2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     out = @capture_out begin
-        description(parse(select(crpsdata[1].data, :features)[1]))
+        description(parse(Features, select(crpsdata[1].data, :features)[1]))
     end;
     @test out === """Prefix
     ──────
@@ -308,7 +308,7 @@ end
      └ ar_label: حرف جر\n"""
 
     out = @capture_out begin
-        @desc parse(select(crpsdata[1].data, :features)[end])
+        @desc parse(Features, select(crpsdata[1].data, :features)[end])
     end;
     @test out === """Stem
     ────

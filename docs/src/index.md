@@ -1,4 +1,4 @@
-# QuranTree.jl
+# QuranTree.jl Documentation
 
 ```@meta
 CurrentModule = QuranTree
