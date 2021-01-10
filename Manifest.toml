@@ -310,11 +310,9 @@ version = "0.5.3"
 
 [[PrettyTables]]
 deps = ["Crayons", "Formatting", "Markdown", "Reexport", "Tables"]
-git-tree-sha1 = "8d701e71921866dfdec0dba1c2ee65fe4f29ae8c"
-repo-rev = "master"
-repo-url = "https://github.com/ronisbr/PrettyTables.jl.git"
+git-tree-sha1 = "237170206bf38a66fee4d845f4ae57f63788eeb0"
 uuid = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
-version = "0.10.0"
+version = "0.10.1"
 
 [[Printf]]
 deps = ["Unicode"]

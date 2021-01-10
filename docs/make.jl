@@ -8,7 +8,11 @@ makedocs(
     authors = "Al-Ahmadgaid B. Asaad",
     pages = [
         "Home" => "index.md",
-        "Usage" => "man/usage.md",
+        "Getting Started" => "man/getting_started.md",
+        "Indexing" => "man/indexing.md",
+        "Transliteration" => "man/transliteration.md",
+        "Morphological Features" => "man/morphological_features.md",
+        "Natural Language Processing" => "man/nlp.md",
         "API" => "man/api.md"
     ]
 )

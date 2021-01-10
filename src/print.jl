@@ -124,6 +124,11 @@ function description(feat::Union{Prefix,Stem,Suffix})
     end
 end
 
+"""
+    @desc(expr)
+
+Extract the detailed description of a `AbstractFeature`.
+"""
 macro desc(expr)
     esc(quote
         try
@@ -134,8 +139,13 @@ macro desc(expr)
     end)
 end
 
+"""
+    @data(expr)
+
+Extract the data property object.
+"""
 macro data(expr)
-    return Meta.parse(string(expr) * ".data")
+    return esc(Meta.parse(string(expr) * ".data"))
 end
 
 function Base.show(io::IO, t::AbstractPartOfSpeech)

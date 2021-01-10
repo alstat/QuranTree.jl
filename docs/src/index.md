@@ -7,26 +7,33 @@ DocTestSetup = quote
 end
 ```
 
-A Julia package for working with the Quran. The library is based on the Quranic corpus dataset 
-from [The Quranic Arabic Corpus](https://corpus.quran.com/), and is inspired by the provided [JQuranTree](https://corpus.quran.com/java/overview.jsp) java package. The following are the features available:
- 
- * Special Indexing for the Chapters, Verses, Words and Parts
+A Julia package for working with the Quran. QuranTree.jl is based on [The Quranic Arabic Corpus](https://corpus.quran.com/) by Kais Dukes, and is aimed at offerring a high-level API alternative to the Java package, [JQuranTree](https://corpus.quran.com/java/overview.jsp). 
+## Features
+The following are the features of the package:
+
+ * Indexing
+    * Intuitive indexing for Chapters, Verses, Words and Parts
  * Transliteration
-
     * Buckwalter as default
-    * Function for creating custom transliterator
-    * Automatically updates the transliteration in 1 line of code
+    * Create custom transliterator
+    * Update transliteration in 1 line of code
  * Complete type for all Morphological Features and Part of Speech
- * Seemless transitioning between Arabic and Buckwalter
- * Arabic and Buckwalter character Normalizer
- * Arabic and Buckwalter character Dediacritization
- * Function for detailed description of the morphological feature.
- * Supports Tanzil Data
- * Immutable Array for raw datasets (Corpus and Tanzil)
+ * Seemless transition between Arabic and Buckwalter (or custom transliteration)
+ * Simple Encoding (refer [here](https://corpus.quran.com/java/simpleencoding.jsp))
+ * Character Normalization
+    * For both Arabic and Buckwalter (or custom transliteration)
+ * Character Dediacritization
+    * For both Arabic and Buckwalter (or custom transliteration)
+ * Utilities
+    * Function for detailed description of the Morphological Features.
+ * Others
+    * Supports Tanzil data
+    * Read-only array for raw datasets (Corpus and Tanzil)
 
-Lastly, since this is built on Julia, it is therefore fast and robust (with strong type) as well.
+Since the library is purely written in Julia, it is therefore fast, type-safe and modular.
+
 ## Installation
-The library is not yet registered to Julia Packages since we are still working on the documentations and completing the unit tests, but it can be installed as follows:
+The library will soon be added to the Julia Package Registry, still finishing up the documentation. For now, QuranTree.jl can be installed as follows:
 ```julia
 julia> using Pkg
 julia> Pkg.add("https://github.com/alstat/QuranTree.jl")
@@ -35,12 +42,3 @@ julia> Pkg.add("https://github.com/alstat/QuranTree.jl")
  * Julia >= 1.4
  * JuliaDB >= 0.13.0
  * PrettyTables >= 0.10.1
-
-## Manual outline
-
-```@contents
-Pages = [
-    "man/usage.md",
-    "man/api.md
-]
-```
