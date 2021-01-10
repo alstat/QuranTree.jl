@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Indexing · QuranTree.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="QuranTree.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="QuranTree.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit">QuranTree.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../getting_started/">Getting Started</a></li><li class="is-active"><a class="tocitem" href>Indexing</a><ul class="internal"><li><a class="tocitem" href="#Combinations-of-Indices"><span>Combinations of Indices</span></a></li></ul></li><li><a class="tocitem" href="../transliteration/">Transliteration</a></li><li><a class="tocitem" href="../morphological_features/">Morphological Features</a></li><li><a class="tocitem" href="../nlp/">Natural Language Processing</a></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Indexing</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Indexing</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/alstat/QuranTree.jl/blob/master/docs/src/man/indexing.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Indexing-the-Corpus"><a class="docs-heading-anchor" href="#Indexing-the-Corpus">Indexing the Corpus</a><a id="Indexing-the-Corpus-1"></a><a class="docs-heading-anchor-permalink" href="#Indexing-the-Corpus" title="Permalink"></a></h1><p>QuranTree.jl offers a intuitive indexing for both <a href="https://corpus.quran.com/">Quranic Arabic Corpus</a> and the <a href="http://tanzil.net/download">Tanzil Data</a>, specifically it follows the following usage:</p><pre><code class="language-julia"># for Quranic Arabic Corpus
+crpsdata[&lt;chapters&gt;][&lt;verses&gt;][&lt;words&gt;][&lt;parts&gt;]
+
+# for Tanzil Data
+tnzldata[&lt;chapters&gt;][&lt;verses&gt;]</code></pre><p>The following are the options supported for each index:</p><ul><li>Chapters:<ul><li>Int64 - <code>crpsdata[1]</code> (extracts chapter 1)</li><li>UnitRange - <code>crpsdata[15:24]</code> (extracts chapters 15 to 24)</li><li>Array{Int64,1} - <code>crpsdata[[3,9,10]]</code> (extracts chapters 3, 9 and 10)</li><li>end (special) - <code>crpsdata[end-3:end]</code> (extracts chapters 111 to 114).</li></ul></li><li>Verses:<ul><li>Int64 - <code>crpsdata[1][1]</code> (extracts verse 1 of chapter 1)</li><li>UnitRange - <code>crpsdata[2][15:24]</code> (extracts verses 15 to 24 of chapter 2)</li><li>Array{Int64,1} - <code>crpsdata[10][[3,9,10]]</code> (extracts verses 3, 9 and 10 of chapter 10)</li></ul></li><li>Words: (not applicable for <code>TanzilData</code>, only <code>CorpusData</code>)<ul><li>Int64 - <code>crpsdata[1][1][1]</code> (extracts word 1 of verse 1 of chapter 1)</li><li>UnitRange - <code>crpsdata[2][8][1:3]</code> (extracts words 1 to 3 of verse 8 of chapter 2)</li><li>Array{Int64,1} - <code>crpsdata[2][8][[1,3]]</code> (extracts words 1 and 3 of verse 8 of chapter 2)</li></ul></li><li>Parts: (not applicable for <code>TanzilData</code>, only <code>CorpusData</code>)<ul><li>Int64 - <code>crpsdata[1][1][1][1]</code> (extracts part 1 of word 1 of verse 1 of chapter 1)</li><li>UnitRange - <code>crpsdata[2][9][1][1:2]</code> (extracts part 1 to part 2 of word 1 of verse 9 of chapter 2)</li><li>Array{Int64,1} - <code>crpsdata[2][9][1][[1,2]]</code> (extracts part 1 and part 2 of word 1 of verse 9 of chapter 2)</li></ul></li></ul><p>Hence, to extract chapters verses 9 of chapter 2 of both <code>TanzilData</code> and <code>CorpusData</code> are given below:</p><pre><code class="language-julia-repl">julia&gt; using QuranTree
+
+julia&gt; data = QuranData();
+
+julia&gt; crps, tnzl = load(data);
+
+julia&gt; crpsdata = table(crps);
+
+julia&gt; tnzldata = table(tnzl);
+
+julia&gt; crpsdata[2][9]
+Chapter 2 ٱلْبَقَرَة (The Cow)
+Verse 9
+
+Table with 18 rows, 5 columns:
+Columns:
+#  colname   type
+───────────────────
+1  word      Int64
+2  part      Int64
+3  form      String
+4  tag       String
+5  features  String
+
+julia&gt; tnzldata[2][9]
+Chapter 2 ٱلْبَقَرَة (The Cow)
+Verse 9
+
+Table with 1 rows, 1 columns:
+form
+────────────────────────────────────────────────────────────
+&quot;يُخَٰدِعُونَ ٱللَّهَ وَٱلَّذِينَ ءَامَنُوا۟ وَمَا يَخْدَعُونَ إِلَّآ أَنفُسَهُمْ وَمَا يَشْعُرُونَ&quot;</code></pre><p>As shown above, the output of the indexing returns the label for the chapter name, both in Arabic and in English. Again the output of the <code>crpsdata[2][9]</code> is not shown, since the width of the output is wider than the width of the output pane. So, PrettyTables.jl can be used to view the table, as follows:</p><pre><code class="language-julia-repl">julia&gt; @pt crpsdata[2][9]
+ERROR: LoadError: UndefVarError: @pt not defined
+in expression starting at none:1</code></pre><h2 id="Combinations-of-Indices"><a class="docs-heading-anchor" href="#Combinations-of-Indices">Combinations of Indices</a><a id="Combinations-of-Indices-1"></a><a class="docs-heading-anchor-permalink" href="#Combinations-of-Indices" title="Permalink"></a></h2><p>Combinations of these indices are also supported. For example, to extract chapters 111 to 114, verses 1 and 3, is done as follows:</p><pre><code class="language-julia-repl">julia&gt; @pt crpsdata[111:114][[1,3]] # or crpsdata[end-3:end][[1,3]]
+ERROR: LoadError: UndefVarError: @pt not defined
+in expression starting at none:1
+
+julia&gt; @pt tnzldata[111:114][[1,3]] # or tnzldata[end-3:end][[1,3]]
+ERROR: LoadError: UndefVarError: @pt not defined
+in expression starting at none:1</code></pre><p>Further, to extract part 1 of words 1 to 3 of the above <code>CorpusData</code> output, is done as follows:</p><pre><code class="language-julia-repl">julia&gt; @pt crpsdata[111:114][[1,3]][1:3][1]
+ERROR: LoadError: UndefVarError: @pt not defined
+in expression starting at none:1</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../getting_started/">« Getting Started</a><a class="docs-footer-nextpage" href="../transliteration/">Transliteration »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Sunday 10 January 2021 15:06">Sunday 10 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
