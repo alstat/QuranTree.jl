@@ -17,6 +17,7 @@ Suppressor = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
 JuliaDB = "0.13"
 PrettyTables = "0.10"
 ReadOnlyArrays = "0.1"
+Suppressor = "0.2"
 julia = "1.5.3"
 
 [extras]
