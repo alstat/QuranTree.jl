@@ -230,8 +230,7 @@ end
 
 Check if the morphological `Feature` object is a type of `pos`.
 """
-function isfeature(f::AbstractString, pos::Type{<:AbstractFeature})
-    feat = parse(Features, f)
+function isfeature(feat::AbstractFeature, pos::Type{<:AbstractFeature})
     try        
         feats = vcat(feat, feat.pos, feat.feats)
         out = findfirst(x -> x isa pos, feats)
@@ -243,44 +242,14 @@ function isfeature(f::AbstractString, pos::Type{<:AbstractFeature})
     end
 end
 
-function root(feat::Features)
-    try
-        strs = split(feat.data, "ROOT:")[2]
-        strs = split(strs, "|")[1]
-        return string(strs)
-    catch
-        return missing
-    end
-end
-
 function root(feat::AbstractFeature)
     idx = findfirst(x -> x isa Root, feat.feats)
     return idx isa Nothing ? missing : feat.feats[idx].data 
 end
 
-function lemma(feat::Features)
-    try
-        strs = split(feat.data, "LEM:")[2]
-        strs = split(strs, "|")[1]
-        return string(strs)
-    catch
-        return missing
-    end
-end
-
 function lemma(feat::AbstractFeature)
     idx = findfirst(x -> x isa Lemma, feat.feats)
     return idx isa Nothing ? missing : feat.feats[idx].data 
-end
-
-function special(feat::Features)
-    try
-        strs = split(feat.data, "SP:")[2]
-        strs = split(strs, "|")[1]
-        return string(strs)
-    catch
-        return missing
-    end
 end
 
 function special(feat::AbstractFeature)

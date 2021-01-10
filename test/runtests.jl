@@ -131,101 +131,95 @@ end
     @test normalize(encode(basmala)) === "bisomi All~ahi Alr~aHomaAni Alr~aHiymi"
 
     # features
-    inp = "STEM|POS:V|IMPV|LEM:qaAla|ROOT:qwl|2MS"
-    @test root(parse(Features, inp)) === "qwl"
-    # @test root(parse(Features(inp))) === "qwl"
     @test root(parse(Features, select(crpsdata[112].data, :features)[1])) === "qwl"
     @test lemma(parse(Features, select(crpsdata[112].data, :features)[1])) === "qaAla"
     @test special(parse(Features, select(crpsdata.data, :features)[53])) === "<in~"
-    @test root(parse(Features, select(crpsdata[112].data, :features)[1])) === "qwl"
-    @test lemma(parse(Features, select(crpsdata[112].data, :features)[1])) === "qaAla"
-    @test special(parse(Features, select(crpsdata.data, :features)[53])) === "<in~"
-    @test isfeature(select(crpsdata[1].data, :features)[2], Stem) === true
-    @test isfeature(select(crpsdata[1].data, :features)[end-4], Suffix) === true
-    @test isfeature(select(crpsdata[1].data, :features)[end-3], Prefix) === true
-    @test isfeature(select(crpsdata[1].data, :features)[2], Noun) === true
-    @test isfeature(select(crpsdata[1].data, :features)[3], ProperNoun) === true
-    @test isfeature(select(crpsdata[1].data, :features)[5], Adjective) === true
-    @test isfeature(select(crpsdata.data, :features)[68054], ImperativeVerbalNoun) === true
-    @test isfeature(select(crpsdata[1].data, :features)[23], Personal) === true
-    @test isfeature(select(crpsdata.data, :features)[50], Demonstrative) === true
-    @test isfeature(select(crpsdata.data, :features)[35], Relative) === true
-    @test isfeature(select(crpsdata.data, :features)[210], Time) === true
-    @test isfeature(select(crpsdata.data, :features)[291], Location) === true
-    @test isfeature(select(crpsdata.data, :features)[14], Plural) === true
-    @test isfeature(select(crpsdata.data, :features)[38], Preposition) === true
-    @test isfeature(select(crpsdata.data, :features)[419], EmphaticLam) === true
-    @test isfeature(select(crpsdata.data, :features)[5717], ImperativeLam) === true
-    @test isfeature(select(crpsdata.data, :features)[2131], PurposeLam) === true
-    @test isfeature(select(crpsdata.data, :features)[997], EmphaticNun) === true
-    @test isfeature(select(crpsdata.data, :features)[25], Coordinating) === true
-    @test isfeature(select(crpsdata.data, :features)[245], Subordinating) === true
-    @test isfeature(select(crpsdata.data, :features)[31], Accusative) === true
-    @test isfeature(select(crpsdata.data, :features)[233], Amendment) === true
-    @test isfeature(select(crpsdata.data, :features)[2252], Answer) === true
-    @test isfeature(select(crpsdata.data, :features)[66305], Aversion) === true
-    @test isfeature(select(crpsdata.data, :features)[926], Cause) === true
-    @test isfeature(select(crpsdata.data, :features)[1544], Certainty) === true
-    @test isfeature(select(crpsdata.data, :features)[166], Circumstantial) === true
-    @test isfeature(select(crpsdata.data, :features)[14139], Comitative) === true
-    @test isfeature(select(crpsdata.data, :features)[416], Conditional) === true
-    @test isfeature(select(crpsdata.data, :features)[120], Equalization) === true
-    @test isfeature(select(crpsdata.data, :features)[3532], Exhortation) === true
-    @test isfeature(select(crpsdata.data, :features)[618], Explanation) === true
-    @test isfeature(select(crpsdata.data, :features)[821], Exceptive) === true
-    @test isfeature(select(crpsdata.data, :features)[17319], Future) === true
-    @test isfeature(select(crpsdata.data, :features)[226], Inceptive) === true
-    @test isfeature(select(crpsdata.data, :features)[3758], Interpretation) === true
-    @test isfeature(select(crpsdata.data, :features)[640], Interogative) === true
-    @test isfeature(select(crpsdata.data, :features)[46], Negative) === true
-    @test isfeature(select(crpsdata.data, :features)[223], Preventive) === true
-    @test isfeature(select(crpsdata.data, :features)[214], Prohibition) === true
-    @test isfeature(select(crpsdata.data, :features)[72], Resumption) === true
-    @test isfeature(select(crpsdata.data, :features)[182], Restriction) === true
-    @test isfeature(select(crpsdata.data, :features)[2542], Retraction) === true
-    @test isfeature(select(crpsdata.data, :features)[504], Result) === true
-    @test isfeature(select(crpsdata.data, :features)[232], Supplemental) === true
-    @test isfeature(select(crpsdata.data, :features)[18810], Surprise) === true
-    @test isfeature(select(crpsdata.data, :features)[10975], Vocative) === true
-    @test isfeature(select(crpsdata.data, :features)[49], DisconnectedLetters) === true
-    @test isfeature(select(crpsdata.data, :features)[24], FirstPerson) === true
-    @test isfeature(select(crpsdata.data, :features)[23], SecondPerson) === true
-    @test isfeature(select(crpsdata.data, :features)[39], ThirdPerson) === true
-    @test isfeature(select(crpsdata.data, :features)[2], Masculine) === true
-    @test isfeature(select(crpsdata.data, :features)[71], Feminine) === true
-    @test isfeature(select(crpsdata.data, :features)[5], Singular) === true
-    @test isfeature(select(crpsdata.data, :features)[2303], Dual) === true
-    @test isfeature(select(crpsdata.data, :features)[14], Plural) === true
-    @test isfeature(select(crpsdata.data, :features)[24], Verb) === true
-    @test isfeature(select(crpsdata.data, :features)[36], Perfect) === true
-    @test isfeature(select(crpsdata.data, :features)[24], Imperfect) === true
-    @test isfeature(select(crpsdata.data, :features)[28], Imperative) === true
-    @test isfeature(select(crpsdata.data, :features)[531], Subjunctive) === true
-    @test isfeature(select(crpsdata.data, :features)[126], Jussive) === true
-    @test isfeature(select(crpsdata.data, :features)[86], Passive) === true
-    @test isfeature(select(crpsdata.data, :features)[499], VerbFormII) === true
-    @test isfeature(select(crpsdata.data, :features)[171], VerbFormIII) === true
-    @test isfeature(select(crpsdata.data, :features)[36], VerbFormIV) === true
-    @test isfeature(select(crpsdata.data, :features)[970], VerbFormV) === true
-    @test isfeature(select(crpsdata.data, :features)[591], VerbFormVI) === true
-    @test isfeature(select(crpsdata.data, :features)[1538], VerbFormVII) === true
-    @test isfeature(select(crpsdata.data, :features)[60], VerbFormVIII) === true
-    @test isfeature(select(crpsdata.data, :features)[13216], VerbFormIX) === true
-    @test isfeature(select(crpsdata.data, :features)[27], VerbFormX) === true
-    @test isfeature(select(crpsdata.data, :features)[114155], VerbFormXI) === true
-    @test isfeature(select(crpsdata.data, :features)[9063], VerbFormXII) === true
-    @test isfeature(select(crpsdata.data, :features)[19], ActiveParticle) === true
-    @test isfeature(select(crpsdata.data, :features)[42], PassiveParticle) === true
-    @test isfeature(select(crpsdata.data, :features)[305], VerbalNoun) === true
-    @test isfeature(select(crpsdata.data, :features)[57], Indefinite) === true # no verse with DEF feature
-    @test isfeature(select(crpsdata.data, :features)[9], Nominative) === true
-    @test isfeature(select(crpsdata.data, :features)[2], Genetive) === true
-    @test isfeature(select(crpsdata.data, :features)[24], VerbFormI) === true
-    @test isfeature(select(crpsdata.data, :features)[27], VerbFormI) === false
-    @test isfeature(select(crpsdata.data, :features)[27], Indicative) === true
-    @test isfeature(select(crpsdata.data, :features)[126], Indicative) === false
-    @test isfeature(select(crpsdata.data, :features)[86], Active) === false
-    @test isfeature(select(crpsdata.data, :features)[36], Active) === true
+    @test isfeature(parse(Features, select(crpsdata[1].data, :features)[2]), Stem) === true
+    @test isfeature(parse(Features, select(crpsdata[1].data, :features)[end-4]), Suffix) === true
+    @test isfeature(parse(Features, select(crpsdata[1].data, :features)[end-3]), Prefix) === true
+    @test isfeature(parse(Features, select(crpsdata[1].data, :features)[2]), Noun) === true
+    @test isfeature(parse(Features, select(crpsdata[1].data, :features)[3]), ProperNoun) === true
+    @test isfeature(parse(Features, select(crpsdata[1].data, :features)[5]), Adjective) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[68054]), ImperativeVerbalNoun) === true
+    @test isfeature(parse(Features, select(crpsdata[1].data, :features)[23]), Personal) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[50]), Demonstrative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[35]), Relative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[210]), Time) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[291]), Location) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[14]), Plural) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[38]), Preposition) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[419]), EmphaticLam) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[5717]), ImperativeLam) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[2131]), PurposeLam) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[997]), EmphaticNun) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[25]), Coordinating) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[245]), Subordinating) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[31]), Accusative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[233]), Amendment) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[2252]), Answer) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[66305]), Aversion) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[926]), Cause) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[1544]), Certainty) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[166]), Circumstantial) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[14139]), Comitative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[416]), Conditional) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[120]), Equalization) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[3532]), Exhortation) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[618]), Explanation) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[821]), Exceptive) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[17319]), Future) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[226]), Inceptive) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[3758]), Interpretation) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[640]), Interogative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[46]), Negative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[223]), Preventive) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[214]), Prohibition) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[72]), Resumption) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[182]), Restriction) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[2542]), Retraction) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[504]), Result) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[232]), Supplemental) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[18810]), Surprise) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[10975]), Vocative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[49]), DisconnectedLetters) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[24]), FirstPerson) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[23]), SecondPerson) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[39]), ThirdPerson) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[2]), Masculine) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[71]), Feminine) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[5]), Singular) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[2303]), Dual) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[14]), Plural) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[24]), Verb) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[36]), Perfect) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[24]), Imperfect) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[28]), Imperative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[531]), Subjunctive) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[126]), Jussive) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[86]), Passive) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[499]), VerbFormII) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[171]), VerbFormIII) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[36]), VerbFormIV) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[970]), VerbFormV) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[591]), VerbFormVI) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[1538]), VerbFormVII) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[60]), VerbFormVIII) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[13216]), VerbFormIX) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[27]), VerbFormX) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[114155]), VerbFormXI) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[9063]), VerbFormXII) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[19]), ActiveParticle) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[42]), PassiveParticle) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[305]), VerbalNoun) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[57]), Indefinite) === true # no verse with DEF feature
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[9]), Nominative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[2]), Genetive) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[24]), VerbFormI) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[27]), VerbFormI) === false
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[27]), Indicative) === true
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[126]), Indicative) === false
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[86]), Active) === false
+    @test isfeature(parse(Features, select(crpsdata.data, :features)[36]), Active) === true
 
     @test encode(SimpleEncoder, basmala) === "Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
 
