@@ -27,9 +27,12 @@ The library is not yet registered to Julia Packages since we are still working o
 using Pkg
 Pkg.add("https://github.com/alstat/QuranTree.jl")
 ```
-### Requirements
+## Requirements
  * Julia >= 1.4
  * JuliaDB >= 0.13.0
  * PrettyTables >= 0.10.1
+
+## Usage
+See the [documentation](https://alstat.github.io/QuranTree.jl/dev/).
 
 [docs-dev-url]: https://alstat.github.io/QuranTree.jl/dev/
