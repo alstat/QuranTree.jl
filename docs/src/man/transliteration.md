@@ -33,3 +33,15 @@ Or using the `CorpusData`,
 vrs = verses(crpsdata[114])
 arabic.(vrs)
 ```
+
+## Simple Encoding
+Another feature supported in QuranTree.jl is the [Simple Encoding](https://corpus.quran.com/java/simpleencoding.jsp). For example, the following will (Simple) encode first verse of chapter 1:
+```@repl abc
+vrs = verses(tnzldata[1][1])
+encode(SimpleEncoder, vrs[1])
+```
+Or, for verses 1 to 4 of chapter 114:
+```@repl abc
+vrs = verses(tnzldata[114][1:4])
+encode.(SimpleEncoder, vrs)
+```
