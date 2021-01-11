@@ -33,7 +33,7 @@ dump(mfeat)
 mfeat.feats
 ```
 ## Checking Part of Speech
-`isfeature(feature, pos)` checks whether the token (`feature`) is a particular part of speech (`pos`). For example, the following checks whether `mfeat` above is indeed `Masculine` and `Singular`, among others.
+`isfeature(token, pos)` checks whether the `token`'s parsed feature is a particular part of speech (`pos`). For example, the following checks whether `mfeat` above is indeed `Masculine` and `Singular`, among others.
 ```@repl abc
 isfeature(mfeat, Masculine)
 isfeature(mfeat, Feminine)
@@ -44,7 +44,7 @@ To further check if it has Root and Lemma,
 ```@repl abc
 isfeature(mfeat, Root) && isfeature(mfeat, Lemma)
 ```
-`isfeature(...)` is useful when working with the JuliaDB.jl's filter function. For example,
+`isfeature(...)` is useful when working with the JuliaDB.jl's filter function, instead of using regular expressions. For example,
 ```@repl abc
 using PrettyTables
 @ptconf vcrop_mode=:middle tf=tf_compact
@@ -54,7 +54,7 @@ tbl = filter(t -> isfeature(parse(Features, t.features), ActiveParticle), crpsda
 @pt select(tbl, Not(:word, :part, :tag))
 ```
 ## Lemma, Root and Special
-`root` and `lemma` is extract the Root and Lemma, respectively, of the morphological feature. 
+`root`, `lemma` and `special` functions extract the Root, Lemma and Special morphological features, respectively. 
 ```@repl abc
 root(mfeat)
 lemma(mfeat)
