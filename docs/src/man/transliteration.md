@@ -1,15 +1,7 @@
 Transliteration
 =====
 QuranTree.jl uses Buckwalter as the default transliteration, which is based on the Quranic Arabic Corpus [encoding](https://corpus.quran.com/java/buckwalter.jsp). The transliteration is invoke using the `encode` function. However, to extract the form/verses of the `CorpusData`/`TanzilData`, the function `verses` can be used. For example, the following will transliterate the first verse of chapter 1:
-```@setup abc
-using QuranTree
-
-crps, tnzl = load(QuranData());
-crpsdata = table(crps);
-tnzldata = table(tnzl);
-```
-
-```@repl
+```@repl abc
 using QuranTree
 
 crps, tnzl = load(QuranData());

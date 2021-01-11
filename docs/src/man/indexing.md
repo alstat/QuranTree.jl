@@ -31,18 +31,8 @@ Hence, to extract chapters verses 9 of chapter 2 of both `TanzilData` and `Corpu
 ```@setup abc
 using Pkg
 Pkg.add("PrettyTables")
-using QuranTree
-using PrettyTables
-@ptconf vcrop_mode=:middle tf=tf_compact
-
-data = QuranData()
-crps, tnzl = load(data)
-crpsdata = table(crps);
-tnzldata = table(tnzl);
-crpstbl = @data crpsdata; # or crpsdata.data
-tnzltbl = @data tnzldata; # or tnzldata.data
 ```
-```@repl
+```@repl abc
 using QuranTree
 
 data = QuranData();
@@ -54,6 +44,8 @@ tnzldata[2][9]
 ```
 As shown above, the output of the indexing returns the label for the chapter name, both in Arabic and in English. Again the output of the `crpsdata[2][9]` is not shown, since the width of the output is wider than the width of the output pane. So, PrettyTables.jl can be used to view the table, as follows:
 ```@repl abc
+using PrettyTables
+@ptconf vcrop_mode=:middle tf=tf_compact
 @pt crpsdata[2][9]
 ```
 ## Combinations of Indices

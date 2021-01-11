@@ -9,28 +9,18 @@ end
 ```
 
 The dataset is included in the library already, both the Quranic Corpus and the Tanzil Data. To load the data, simply run the following
-```@repl
+```@setup abc
+using Pkg
+Pkg.add("PrettyTables")
+Pkg.add("JuliaDB")
+```
+```@repl abc
 using QuranTree
 
 data = QuranData()
 crps, tnzl = load(data);
 ```
 The `QuranData()` is a `struct` containing the default filepath of the data. The `load` function returns a `tuple` for both the Quranic Corpus and the Tanzil Data. The loaded data is encoded in a immutable (read-only) array, so users cannot change it. This is specified in the type of the object as shown below:
-```@setup abc
-using Pkg
-Pkg.add("PrettyTables")
-Pkg.add("JuliaDB")
-using JuliaDB
-using PrettyTables
-using QuranTree
-
-data = QuranData()
-crps, tnzl = load(data)
-crpsdata = table(crps);
-tnzldata = table(tnzl);
-crpstbl = @data crpsdata; # or crpsdata.data
-tnzltbl = @data tnzldata; # or tnzldata.data
-```
 
 ```@repl abc
 crps
