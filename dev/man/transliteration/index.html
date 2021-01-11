@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Transliteration · QuranTree.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="QuranTree.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="QuranTree.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit">QuranTree.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../getting_started/">Getting Started</a></li><li><a class="tocitem" href="../indexing/">Indexing</a></li><li class="is-active"><a class="tocitem" href>Transliteration</a><ul class="internal"><li><a class="tocitem" href="#Decoding"><span>Decoding</span></a></li><li><a class="tocitem" href="#Simple-Encoding"><span>Simple Encoding</span></a></li></ul></li><li><a class="tocitem" href="../morphological_features/">Morphological Features</a></li><li><a class="tocitem" href="../nlp/">Natural Language Processing</a></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Transliteration</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Transliteration</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/alstat/QuranTree.jl/blob/master/docs/src/man/transliteration.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Transliteration"><a class="docs-heading-anchor" href="#Transliteration">Transliteration</a><a id="Transliteration-1"></a><a class="docs-heading-anchor-permalink" href="#Transliteration" title="Permalink"></a></h1><p>QuranTree.jl uses Buckwalter as the default transliteration, which is based on the Quranic Arabic Corpus <a href="https://corpus.quran.com/java/buckwalter.jsp">encoding</a>. The transliteration is invoke using the <code>encode</code> function. However, to extract the form/verses of the <code>CorpusData</code>/<code>TanzilData</code>, the function <code>verses</code> can be used. For example, the following will transliterate the first verse of chapter 1:</p><pre><code class="language-julia-repl">julia&gt; using QuranTree
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Transliteration · QuranTree.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="QuranTree.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="QuranTree.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit">QuranTree.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../getting_started/">Getting Started</a></li><li><a class="tocitem" href="../indexing/">Indexing</a></li><li class="is-active"><a class="tocitem" href>Transliteration</a><ul class="internal"><li><a class="tocitem" href="#Decoding"><span>Decoding</span></a></li><li><a class="tocitem" href="#Custom-Transliteration"><span>Custom Transliteration</span></a></li><li><a class="tocitem" href="#Simple-Encoding"><span>Simple Encoding</span></a></li></ul></li><li><a class="tocitem" href="../morphological_features/">Morphological Features</a></li><li><a class="tocitem" href="../nlp/">Natural Language Processing</a></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Transliteration</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Transliteration</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/alstat/QuranTree.jl/blob/master/docs/src/man/transliteration.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Transliteration"><a class="docs-heading-anchor" href="#Transliteration">Transliteration</a><a id="Transliteration-1"></a><a class="docs-heading-anchor-permalink" href="#Transliteration" title="Permalink"></a></h1><p>QuranTree.jl uses Buckwalter as the default transliteration, which is based on the Quranic Arabic Corpus <a href="https://corpus.quran.com/java/buckwalter.jsp">encoding</a>. The transliteration is invoke using the <code>encode</code> function. However, to extract the form/verses of the <code>CorpusData</code>/<code>TanzilData</code>, the function <code>verses</code> can be used. For example, the following will transliterate the first verse of chapter 1:</p><pre><code class="language-julia-repl">julia&gt; using QuranTree
 
 julia&gt; crps, tnzl = load(QuranData());
 
@@ -44,20 +44,99 @@ julia&gt; encode.(vrs)
  &quot;{l~a*iY yuwasowisu fiY Suduwri {ln~aAsi&quot;
  &quot;mina {lojin~api wa{ln~aAsi&quot;
 
-julia&gt; arabic.(vrs)
+julia&gt; avrs = arabic.(vrs)
 6-element Array{String,1}:
  &quot;قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
  &quot;مَلِكِ ٱلنَّاسِ&quot;
  &quot;إِلَٰهِ ٱلنَّاسِ&quot;
  &quot;مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ&quot;
  &quot;ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ&quot;
- &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><p>Note that <code>.</code> (dot) broadcasting is only used for arrays. So for pure string input (not arrays of string), <code>arabic(...)</code> (without dot) is used. Example,</p><pre><code class="language-julia-repl">julia&gt; vrs = verses(crpsdata[114]);
-
-julia&gt; vrs[1]
+ &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><p>Note that <code>.</code> (dot) broadcasting is only used for arrays. So for pure string input (not arrays of string), <code>arabic(...)</code> (without dot) is used. Example,</p><pre><code class="language-julia-repl">julia&gt; vrs[1]
 &quot;qulo &gt;aEuw*u birab~i {ln~aAsi&quot;
 
-julia&gt; arabic(vrs[1])
-&quot;قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;</code></pre><h2 id="Simple-Encoding"><a class="docs-heading-anchor" href="#Simple-Encoding">Simple Encoding</a><a id="Simple-Encoding-1"></a><a class="docs-heading-anchor-permalink" href="#Simple-Encoding" title="Permalink"></a></h2><p>Another feature supported in QuranTree.jl is the <a href="https://corpus.quran.com/java/simpleencoding.jsp">Simple Encoding</a>. For example, the following will (Simple) encode first verse of chapter 1:</p><pre><code class="language-julia-repl">julia&gt; vrs = verses(tnzldata[1][1])
+julia&gt; arabic(vrs[1]);</code></pre><h2 id="Custom-Transliteration"><a class="docs-heading-anchor" href="#Custom-Transliteration">Custom Transliteration</a><a id="Custom-Transliteration-1"></a><a class="docs-heading-anchor-permalink" href="#Custom-Transliteration" title="Permalink"></a></h2><p>Creating a custom transliteration requires only an input encoding in the form of dictionary. For example, QuranTree.jl&#39;s Buckwalter&#39;s encoding is provided by the constant <code>BW_ENCODING</code> as shown below:</p><pre><code class="language-julia-repl">julia&gt; BW_ENCODING
+Dict{Symbol,Symbol} with 61 entries:
+  :ذ          =&gt; :*
+  :ء          =&gt; Symbol(&quot;&#39;&quot;)
+  Symbol(&quot;ۜ&quot;) =&gt; :(:)
+  Symbol(&quot;َ&quot;) =&gt; :a
+  Symbol(&quot;ٰ&quot;) =&gt; Symbol(&quot;`&quot;)
+  :ي          =&gt; :y
+  :ن          =&gt; :n
+  :ب          =&gt; :b
+  :ص          =&gt; :S
+  :ا          =&gt; :A
+  :ى          =&gt; :Y
+  Symbol(&quot;۫&quot;) =&gt; :+
+  :ؤ          =&gt; :&amp;
+  Symbol(&quot;۟&quot;) =&gt; Symbol(&quot;@&quot;)
+  Symbol(&quot;ْ&quot;) =&gt; :o
+  :س          =&gt; :s
+  :ۦ          =&gt; :.
+  :و          =&gt; :w
+  Symbol(&quot;ً&quot;) =&gt; :F
+  ⋮           =&gt; ⋮</code></pre><p>Suppose, we want to create a new transliteration by simply reversing the values of the dictionary. This is done as follows:</p><pre><code class="language-julia-repl">julia&gt; old_keys = collect(keys(BW_ENCODING));
+
+julia&gt; new_keys = reverse(collect(values(BW_ENCODING)));
+
+julia&gt; my_encoder = Dict(old_keys .=&gt; new_keys)
+Dict{Symbol,Symbol} with 61 entries:
+  :ذ          =&gt; :q
+  :ء          =&gt; Symbol(&quot;(&quot;)
+  Symbol(&quot;ۜ&quot;) =&gt; :f
+  Symbol(&quot;َ&quot;) =&gt; Symbol(&quot;[&quot;)
+  Symbol(&quot;ٰ&quot;) =&gt; :r
+  :ي          =&gt; :k
+  :ن          =&gt; Symbol(&quot;]&quot;)
+  :ى          =&gt; :_
+  :ب          =&gt; Symbol(&quot;\&quot;&quot;)
+  :ص          =&gt; :i
+  :ا          =&gt; :m
+  Symbol(&quot;۫&quot;) =&gt; :&gt;
+  :ؤ          =&gt; :H
+  Symbol(&quot;۟&quot;) =&gt; :T
+  Symbol(&quot;ْ&quot;) =&gt; :g
+  :س          =&gt; :%
+  :ۦ          =&gt; :$
+  :و          =&gt; :-
+  Symbol(&quot;ً&quot;) =&gt; :N
+  ⋮           =&gt; ⋮
+
+julia&gt; @transliterator my_encoder &quot;MyEncoder&quot;</code></pre><p>The macro <code>@transliterator</code> is used for updating the transliteration, and it takes two inputs: the dictionary (<code>my_encoder</code>) and the name of the encoding (<code>&quot;MyEncoder&quot;</code>). Using this new encoding, the <code>avrs</code> above will have a new transliteration:</p><pre><code class="language-julia-repl">julia&gt; new_vrs = encode.(avrs);
+
+julia&gt; new_vrs
+6-element Array{String,1}:
+ &quot;*,pg +[!,-q, \&quot;S`[\&quot;jS zp]j[m%S&quot;
+ &quot;A[pSyS zp]j[m%S&quot;
+ &quot;ZSp[rKS zp]j[m%S&quot;
+ &quot;AS] .[`jS zpg-[%g-[m%S zpg}[]j[m%S&quot;
+ &quot;zpj[qS_ k,-[%g-S%, :S_ i,^,-`S zp]j[m%S&quot;
+ &quot;AS][ zpg~S]j[lS -[zp]j[m%S&quot;</code></pre><p>To confirm this new transliteration, decoding it back to arabic should generate the proper results:</p><pre><code class="language-julia-repl">julia&gt; arabic.(new_vrs)
+6-element Array{String,1}:
+ &quot;قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
+ &quot;مَلِكِ ٱلنَّاسِ&quot;
+ &quot;إِلَٰهِ ٱلنَّاسِ&quot;
+ &quot;مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ&quot;
+ &quot;ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ&quot;
+ &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><p>To reset the transliteration, simply run the following:</p><pre><code class="language-julia-repl">julia&gt; @transliterator :default</code></pre><p>This will fallback to the Buckwalter transliteration, as shown below:</p><pre><code class="language-julia-repl">julia&gt; bw_vrs = encode.(avrs);
+
+julia&gt; bw_vrs
+6-element Array{String,1}:
+ &quot;qulo &gt;aEuw*u birab~i {ln~aAsi&quot;
+ &quot;maliki {ln~aAsi&quot;
+ &quot;&lt;ila`hi {ln~aAsi&quot;
+ &quot;min \$ar~i {lowasowaAsi {loxan~aAsi&quot;
+ &quot;{l~a*iY yuwasowisu fiY Suduwri {ln~aAsi&quot;
+ &quot;mina {lojin~api wa{ln~aAsi&quot;
+
+julia&gt; arabic.(bw_vrs)
+6-element Array{String,1}:
+ &quot;قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
+ &quot;مَلِكِ ٱلنَّاسِ&quot;
+ &quot;إِلَٰهِ ٱلنَّاسِ&quot;
+ &quot;مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ&quot;
+ &quot;ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ&quot;
+ &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><h2 id="Simple-Encoding"><a class="docs-heading-anchor" href="#Simple-Encoding">Simple Encoding</a><a id="Simple-Encoding-1"></a><a class="docs-heading-anchor-permalink" href="#Simple-Encoding" title="Permalink"></a></h2><p>Another feature supported in QuranTree.jl is the <a href="https://corpus.quran.com/java/simpleencoding.jsp">Simple Encoding</a>. For example, the following will (Simple) encode first verse of chapter 1:</p><pre><code class="language-julia-repl">julia&gt; vrs = verses(tnzldata[1][1])
 1-element Array{String,1}:
  &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
 
@@ -74,4 +153,4 @@ julia&gt; encode.(SimpleEncoder, vrs)
  &quot;Ba+Kasra | Seen+Sukun | Meem+Kasra | &lt;space&gt; | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | &lt;space&gt; | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | &lt;space&gt; | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra | &lt;space&gt; | Qaf+Damma | Lam+Sukun | &lt;space&gt; | HamzaAbove+Fatha | Ain+Damma | Waw | Thal+Damma | &lt;space&gt; | Ba+Kasra | Ra+Fatha | Ba+Shadda+Kasra | &lt;space&gt; | HamzatWasl | Lam | Noon+Shadda+Fatha | Alif | Seen+Kasra&quot;
  &quot;Meem+Fatha | Lam+Kasra | Kaf+Kasra | &lt;space&gt; | HamzatWasl | Lam | Noon+Shadda+Fatha | Alif | Seen+Kasra&quot;
  &quot;HamzaBelow+Kasra | Lam+Fatha | AlifKhanjareeya | Ha+Kasra | &lt;space&gt; | HamzatWasl | Lam | Noon+Shadda+Fatha | Alif | Seen+Kasra&quot;
- &quot;Meem+Kasra | Noon | &lt;space&gt; | Sheen+Fatha | Ra+Shadda+Kasra | &lt;space&gt; | HamzatWasl | Lam+Sukun | Waw+Fatha | Seen+Sukun | Waw+Fatha | Alif | Seen+Kasra | &lt;space&gt; | HamzatWasl | Lam+Sukun | Kha+Fatha | Noon+Shadda+Fatha | Alif | Seen+Kasra&quot;</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../indexing/">« Indexing</a><a class="docs-footer-nextpage" href="../morphological_features/">Morphological Features »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 11 January 2021 02:01">Monday 11 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ &quot;Meem+Kasra | Noon | &lt;space&gt; | Sheen+Fatha | Ra+Shadda+Kasra | &lt;space&gt; | HamzatWasl | Lam+Sukun | Waw+Fatha | Seen+Sukun | Waw+Fatha | Alif | Seen+Kasra | &lt;space&gt; | HamzatWasl | Lam+Sukun | Kha+Fatha | Noon+Shadda+Fatha | Alif | Seen+Kasra&quot;</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../indexing/">« Indexing</a><a class="docs-footer-nextpage" href="../morphological_features/">Morphological Features »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 11 January 2021 02:27">Monday 11 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
