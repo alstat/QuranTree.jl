@@ -2,6 +2,7 @@
 [![Build status](https://github.com/alstat/QuranTree.jl/workflows/CI/badge.svg)](https://github.com/alstat/QuranTree.jl/actions)
 [![Coverage](https://codecov.io/gh/alstat/QuranTree.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/alstat/QuranTree.jl)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)][docs-dev-url]
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/alstat/QuranTree.jl/blob/master/LICENSE)
 
 A Julia package for working with the Quran. QuranTree.jl is based on [The Quranic Arabic Corpus](https://corpus.quran.com/) by Kais Dukes, and is aimed at offerring a high-level API alternative to the Java package, [JQuranTree](https://corpus.quran.com/java/overview.jsp). 
 ## Features
