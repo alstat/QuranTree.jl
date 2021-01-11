@@ -20,8 +20,8 @@ The `QuranData()` is a `struct` containing the default filepath of the data. The
 using Pkg
 Pkg.add("PrettyTables")
 Pkg.add("JuliaDB")
-using PrettyTables
 using JuliaDB
+using PrettyTables
 using QuranTree
 
 data = QuranData()

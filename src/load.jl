@@ -1,4 +1,4 @@
-import JuliaDB: table
+import JuliaDB: table, load
 
 """
     load(data::QuranData)
