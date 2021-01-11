@@ -36,7 +36,7 @@ avrs = arabic.(vrs)
 Note that `.` (dot) broadcasting is only used for arrays. So for pure string input (not arrays of string), `arabic(...)` (without dot) is used. Example,
 ```@repl abc
 vrs[1]
-arabic(vrs[1]);
+arabic(vrs[1])
 ```
 ## Custom Transliteration
 Creating a custom transliteration requires only an input encoding in the form of dictionary. For example, QuranTree.jl's Buckwalter's encoding is provided by the constant `BW_ENCODING` as shown below:
@@ -47,8 +47,8 @@ BW_ENCODING
 Suppose, we want to create a new transliteration by simply reversing the values of the dictionary. This is done as follows:
 ```@repl abc
 old_keys = collect(keys(BW_ENCODING));
-new_keys = reverse(collect(values(BW_ENCODING)));
-my_encoder = Dict(old_keys .=> new_keys)
+new_vals = reverse(collect(values(BW_ENCODING)));
+my_encoder = Dict(old_keys .=> new_vals)
 @transliterator my_encoder "MyEncoder"
 ```
 The macro `@transliterator` is used for updating the transliteration, and it takes two inputs: the dictionary (`my_encoder`) and the name of the encoding (`"MyEncoder"`). Using this new encoding, the `avrs` above will have a new transliteration:
