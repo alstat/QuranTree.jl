@@ -33,7 +33,12 @@ Or using the `CorpusData`,
 vrs = verses(crpsdata[114])
 arabic.(vrs)
 ```
-
+Note that, `.` (dot) broadcasting is only used for arrays. So for pure string input (not arrays of string), `arabic(...)` (without dot) is used. Example,
+```@repl abc
+vrs = verses(crpsdata[114]);
+vrs[1]
+arabic(vrs[1])
+```
 ## Simple Encoding
 Another feature supported in QuranTree.jl is the [Simple Encoding](https://corpus.quran.com/java/simpleencoding.jsp). For example, the following will (Simple) encode first verse of chapter 1:
 ```@repl abc
