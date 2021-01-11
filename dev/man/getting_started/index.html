@@ -5,48 +5,251 @@ julia&gt; data = QuranData()
 QuranData(QuranTree.FilePaths(&quot;/home/runner/work/QuranTree.jl/QuranTree.jl/src/../data/quranic-corpus-morphology-0.4.txt&quot;, &quot;/home/runner/work/QuranTree.jl/QuranTree.jl/src/../data/quran-uthmani-final.txt&quot;))
 
 julia&gt; crps, tnzl = load(data);</code></pre><p>The <code>QuranData()</code> is a <code>struct</code> containing the default filepath of the data. The <code>load</code> function returns a <code>tuple</code> for both the Quranic Corpus and the Tanzil Data. The loaded data is encoded in a immutable (read-only) array, so users cannot change it. This is specified in the type of the object as shown below:</p><pre><code class="language-julia-repl">julia&gt; crps
-ERROR: UndefVarError: crps not defined
+(CorpusRaw) 128276-element ReadOnlyArrays.ReadOnlyArray{String,1,Array{String,1}}:
+ &quot;# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK&quot;
+ &quot;#====================================================================&quot;
+ &quot;#&quot;
+ &quot;#  Quranic Arabic Corpus (morphology, version 0.4)&quot;
+ &quot;#  Copyright (C) 2011 Kais Dukes&quot;
+ &quot;#  License: GNU General Public License&quot;
+ &quot;#&quot;
+ &quot;#  The Quranic Arabic Corpus includes syntactic and morphological&quot;
+ &quot;#  annotation of the Quran, and builds on the verified Arabic text&quot;
+ &quot;#  distributed by the Tanzil project.&quot;
+ ⋮
+ &quot;(114:5:4:1)\tSuduwri\tN\tSTEM|POS:N|LEM:Sador|ROOT:Sdr|MP|GEN&quot;
+ &quot;(114:5:5:1)\t{l\tDET\tPREFIX|Al+&quot;
+ &quot;(114:5:5:2)\tn~aAsi\tN\tSTEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
+ &quot;(114:6:1:1)\tmina\tP\tSTEM|POS:P|LEM:min&quot;
+ &quot;(114:6:2:1)\t{lo\tDET\tPREFIX|Al+&quot;
+ &quot;(114:6:2:2)\tjin~api\tN\tSTEM|POS:N|LEM:jin~ap|ROOT:jnn|F|GEN&quot;
+ &quot;(114:6:3:1)\twa\tCONJ\tPREFIX|w:CONJ+&quot;
+ &quot;(114:6:3:2)\t{l\tDET\tPREFIX|Al+&quot;
+ &quot;(114:6:3:3)\tn~aAsi\tN\tSTEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
 
 julia&gt; tnzl
-ERROR: UndefVarError: tnzl not defined</code></pre><p>In order to parse these raw data, the <code>table</code> function is used:</p><pre><code class="language-julia-repl">julia&gt; crpsdata = table(crps);
-ERROR: UndefVarError: crps not defined
+(TanzilRaw) 6266-element ReadOnlyArrays.ReadOnlyArray{String,1,Array{String,1}}:
+ &quot;1|1|بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
+ &quot;1|2|ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ&quot;
+ &quot;1|3|ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
+ &quot;1|4|مَٰلِكِ يَوْمِ ٱلدِّينِ&quot;
+ &quot;1|5|إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ&quot;
+ &quot;1|6|ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ&quot;
+ &quot;1|7|صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ&quot;
+ &quot;2|1|بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ&quot;
+ &quot;2|2|ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًى لِّلْمُتَّقِينَ&quot;
+ &quot;2|3|ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ&quot;
+ ⋮
+ &quot;#    track of changes.&quot;
+ &quot;#&quot;
+ &quot;#  - This copyright notice shall be included in all verbatim copies &quot;
+ &quot;#    of the text, and shall be reproduced appropriately in all files &quot;
+ &quot;#    derived from or containing substantial portion of this text.&quot;
+ &quot;#&quot;
+ &quot;#  Please check updates at: http://tanzil.net/updates/&quot;
+ &quot;# &quot;
+ &quot;#====================================================================&quot;</code></pre><p>In order to parse these raw data, the <code>table</code> function is used:</p><pre><code class="language-julia-repl">julia&gt; crpsdata = table(crps);
 
 julia&gt; tnzldata = table(tnzl);
-ERROR: UndefVarError: tnzl not defined
 
 julia&gt; crpsdata
-ERROR: UndefVarError: crpsdata not defined
+Quranic Arabic Corpus (morphology)
+(C) 2011 Kais Dukes
+
+Table with 128219 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String
 
 julia&gt; tnzldata
-ERROR: UndefVarError: tnzldata not defined</code></pre><p>The resulting tables, which are of type <code>CorpusData</code> and <code>TanzilData</code>, respectively, are based on <a href="https://github.com/JuliaData/JuliaDB.jl">JuliaDB.jl</a>, which can be accessed by simply calling the macro <code>@data</code> (for example, <code>@data crpsdata</code> or <code>crpsdata.data</code>). One thing to note, however, is that JuliaDB.jl will only display the meta data of the columns if the width of the table is wider than the width of the output pane, for example in case of the <code>crpsdata</code> above which has more columns (and thus wider) compared to <code>tnzldata</code>. To display the data of any wide table, <a href="https://github.com/ronisbr/PrettyTables.jl">PrettyTables.jl</a> can be used:</p><pre><code class="language-julia-repl">julia&gt; using PrettyTables
+Tanzil Quran Text (Uthmani)
+(C) 2008-2010 Tanzil.net
+
+Table with 6236 rows, 3 columns:
+chapter  verse  form
+─────────────────────────────────────────────────────────────────────
+1        1      &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
+1        2      &quot;ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ&quot;
+1        3      &quot;ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
+1        4      &quot;مَٰلِكِ يَوْمِ ٱلدِّينِ&quot;
+1        5      &quot;إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ&quot;
+1        6      &quot;ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ&quot;
+1        7      &quot;صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ&quot;
+2        1      &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ&quot;
+2        2      &quot;ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًى لِّلْمُتَّقِينَ&quot;
+⋮
+113      4      &quot;وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ&quot;
+113      5      &quot;وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ&quot;
+114      1      &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
+114      2      &quot;مَلِكِ ٱلنَّاسِ&quot;
+114      3      &quot;إِلَٰهِ ٱلنَّاسِ&quot;
+114      4      &quot;مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ&quot;
+114      5      &quot;ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ&quot;
+114      6      &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><p>The resulting tables, which are of type <code>CorpusData</code> and <code>TanzilData</code>, respectively, are based on <a href="https://github.com/JuliaData/JuliaDB.jl">JuliaDB.jl</a>, which can be accessed by simply calling the macro <code>@data</code> (for example, <code>@data crpsdata</code> or <code>crpsdata.data</code>). One thing to note, however, is that JuliaDB.jl will only display the meta data of the columns if the width of the table is wider than the width of the output pane, for example in case of the <code>crpsdata</code> above which has more columns (and thus wider) compared to <code>tnzldata</code>. To display the data of any wide table, <a href="https://github.com/ronisbr/PrettyTables.jl">PrettyTables.jl</a> can be used:</p><pre><code class="language-julia-repl">julia&gt; using PrettyTables
 
 julia&gt; @ptconf vcrop_mode=:middle tf=tf_compact
 
 julia&gt; @pt crpsdata
-ERROR: UndefVarError: crpsdata not defined</code></pre><h2 id="Manipulating-the-Table"><a class="docs-heading-anchor" href="#Manipulating-the-Table">Manipulating the Table</a><a id="Manipulating-the-Table-1"></a><a class="docs-heading-anchor-permalink" href="#Manipulating-the-Table" title="Permalink"></a></h2><p>As mentioned above, the table is based on JuliaDB.jl, which has a type <code>IndexedTable</code>. Therefore, any data manipulation is done through the <a href="https://juliadb.juliadata.org/latest/api/">JuliaDB.jl&#39;s APIs</a>. To access the data simply call the property with <code>.data</code> or the macro <code>@data</code>:</p><pre><code class="language-julia-repl">julia&gt; crpstbl = @data crpsdata; # or crpsdata.data
-ERROR: UndefVarError: crpsdata not defined
+ --------- ------- ------- ------- ------------ -------- -----------------------
+  chapter   verse    word    part         form      tag                        ⋯
+    Int64   Int64   Int64   Int64       String   String                        ⋯
+ --------- ------- ------- ------- ------------ -------- -----------------------
+        1       1       1       1           bi        P                        ⋯
+        1       1       1       2         somi        N           STEM|POS:N|L ⋯
+        1       1       2       1      {ll~ahi       PN          STEM|POS:PN|L ⋯
+        1       1       3       1           {l      DET                        ⋯
+        1       1       3       2   r~aHoma`ni      ADJ   STEM|POS:ADJ|LEM:r~a ⋯
+        1       1       4       1           {l      DET                        ⋯
+        1       1       4       2     r~aHiymi      ADJ     STEM|POS:ADJ|LEM:r ⋯
+        1       2       1       1          {lo      DET                        ⋯
+     ⋮        ⋮       ⋮       ⋮         ⋮          ⋮                           ⋱
+      114       5       5       2       n~aAsi        N         STEM|POS:N|LEM ⋯
+      114       6       1       1         mina        P                        ⋯
+      114       6       2       1          {lo      DET                        ⋯
+      114       6       2       2      jin~api        N         STEM|POS:N|LEM ⋯
+      114       6       3       1           wa     CONJ                        ⋯
+      114       6       3       2           {l      DET                        ⋯
+      114       6       3       3       n~aAsi        N         STEM|POS:N|LEM ⋯
+ --------- ------- ------- ------- ------------ -------- -----------------------
+                                                1 column and 128204 rows omitted</code></pre><h2 id="Manipulating-the-Table"><a class="docs-heading-anchor" href="#Manipulating-the-Table">Manipulating the Table</a><a id="Manipulating-the-Table-1"></a><a class="docs-heading-anchor-permalink" href="#Manipulating-the-Table" title="Permalink"></a></h2><p>As mentioned above, the table is based on JuliaDB.jl, which has a type <code>IndexedTable</code>. Therefore, any data manipulation is done through the <a href="https://juliadb.juliadata.org/latest/api/">JuliaDB.jl&#39;s APIs</a>. To access the data simply call the property with <code>.data</code> or the macro <code>@data</code>:</p><pre><code class="language-julia-repl">julia&gt; crpstbl = @data crpsdata; # or crpsdata.data
 
 julia&gt; tnzltbl = @data tnzldata; # or tnzldata.data
-ERROR: UndefVarError: tnzldata not defined
 
 julia&gt; crpstbl
-ERROR: UndefVarError: crpstbl not defined
+Table with 128219 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String
 
 julia&gt; tnzltbl
-ERROR: UndefVarError: tnzltbl not defined</code></pre><p>Note that, <code>crpsdata</code> and <code>crpstbl</code> have different type (as in the case of <code>tnzldata</code> and <code>tnzltbl</code>) as shown below:</p><pre><code class="language-julia-repl">julia&gt; typeof(crpsdata)
-ERROR: UndefVarError: crpsdata not defined
+Table with 6236 rows, 3 columns:
+chapter  verse  form
+─────────────────────────────────────────────────────────────────────
+1        1      &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
+1        2      &quot;ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ&quot;
+1        3      &quot;ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
+1        4      &quot;مَٰلِكِ يَوْمِ ٱلدِّينِ&quot;
+1        5      &quot;إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ&quot;
+1        6      &quot;ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ&quot;
+1        7      &quot;صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ&quot;
+2        1      &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ&quot;
+2        2      &quot;ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًى لِّلْمُتَّقِينَ&quot;
+⋮
+113      4      &quot;وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ&quot;
+113      5      &quot;وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ&quot;
+114      1      &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
+114      2      &quot;مَلِكِ ٱلنَّاسِ&quot;
+114      3      &quot;إِلَٰهِ ٱلنَّاسِ&quot;
+114      4      &quot;مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ&quot;
+114      5      &quot;ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ&quot;
+114      6      &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><p>Note that, <code>crpsdata</code> and <code>crpstbl</code> have different type (as in the case of <code>tnzldata</code> and <code>tnzltbl</code>) as shown below:</p><pre><code class="language-julia-repl">julia&gt; typeof(crpsdata)
+QuranTree.CorpusData
 
 julia&gt; typeof(crpstbl)
-ERROR: UndefVarError: crpstbl not defined</code></pre><p>From here, any data manipulation is done using JuliaDB.jl&#39;s APIs. For example, to select the feature column of the <code>crpstbl</code> is done as follows:</p><pre><code class="language-julia-repl">julia&gt; using JuliaDB
+IndexedTables.IndexedTable{StructArrays.StructArray{NamedTuple{(:chapter, :verse, :word, :part, :form, :tag, :features),Tuple{Int64,Int64,Int64,Int64,String,String,String}},1,NamedTuple{(:chapter, :verse, :word, :part, :form, :tag, :features),Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1},Array{Int64,1},WeakRefStrings.StringArray{String,1},WeakRefStrings.StringArray{String,1},WeakRefStrings.StringArray{String,1}}},Int64}}</code></pre><p>From here, any data manipulation is done using JuliaDB.jl&#39;s APIs. For example, to select the feature column of the <code>crpstbl</code> is done as follows:</p><pre><code class="language-julia-repl">julia&gt; using JuliaDB
 
 julia&gt; select(crpstbl, :features)
-ERROR: UndefVarError: crpstbl not defined
+128219-element WeakRefStrings.StringArray{String,1}:
+ &quot;PREFIX|bi+&quot;
+ &quot;STEM|POS:N|LEM:{som|ROOT:smw|M|GEN&quot;
+ &quot;STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM&quot;
+ &quot;PREFIX|l:P+&quot;
+ ⋮
+ &quot;STEM|POS:N|LEM:Sador|ROOT:Sdr|MP|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
+ &quot;STEM|POS:P|LEM:min&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:jin~ap|ROOT:jnn|F|GEN&quot;
+ &quot;PREFIX|w:CONJ+&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
 
 julia&gt; # or equivalent to
        select(crpsdata.data, :features)
-ERROR: UndefVarError: crpsdata not defined</code></pre><p>Or filtering tokens that are Prefix features, is done as follows:</p><pre><code class="language-julia-repl">julia&gt; filter(t -&gt; occursin(r&quot;^PREFIX&quot;, t.features), crpstbl)
-ERROR: UndefVarError: crpstbl not defined
+128219-element WeakRefStrings.StringArray{String,1}:
+ &quot;PREFIX|bi+&quot;
+ &quot;STEM|POS:N|LEM:{som|ROOT:smw|M|GEN&quot;
+ &quot;STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM&quot;
+ &quot;PREFIX|l:P+&quot;
+ ⋮
+ &quot;STEM|POS:N|LEM:Sador|ROOT:Sdr|MP|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
+ &quot;STEM|POS:P|LEM:min&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:jin~ap|ROOT:jnn|F|GEN&quot;
+ &quot;PREFIX|w:CONJ+&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;</code></pre><p>Or filtering tokens that are Prefix features, is done as follows:</p><pre><code class="language-julia-repl">julia&gt; filter(t -&gt; occursin(r&quot;^PREFIX&quot;, t.features), crpstbl)
+Table with 28670 rows, 7 columns:
+chapter  verse  word  part  form   tag     features
+───────────────────────────────────────────────────────────
+1        1      1     1     &quot;bi&quot;   &quot;P&quot;     &quot;PREFIX|bi+&quot;
+1        1      3     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        1      4     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        2      1     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        2      2     1     &quot;li&quot;   &quot;P&quot;     &quot;PREFIX|l:P+&quot;
+1        2      4     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        3      1     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        3      2     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        4      3     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+⋮
+114      2      2     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      3      2     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      4      3     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      4      4     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      5      5     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      6      2     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      6      3     1     &quot;wa&quot;   &quot;CONJ&quot;  &quot;PREFIX|w:CONJ+&quot;
+114      6      3     2     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
 
 julia&gt; # or equivalent to
        filter(t -&gt; occursin(r&quot;^PREFIX&quot;, t.features), crpsdata.data)
-ERROR: UndefVarError: crpsdata not defined</code></pre><p>Bottomline, any data manipulation on the <code>CorpusTable</code> and <code>TanzilData</code> is done through <a href="https://juliadb.juliadata.org/latest/api/">JuliaDB.jl&#39;s APIs</a>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../indexing/">Indexing »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 11 January 2021 06:23">Monday 11 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Table with 28670 rows, 7 columns:
+chapter  verse  word  part  form   tag     features
+───────────────────────────────────────────────────────────
+1        1      1     1     &quot;bi&quot;   &quot;P&quot;     &quot;PREFIX|bi+&quot;
+1        1      3     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        1      4     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        2      1     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        2      2     1     &quot;li&quot;   &quot;P&quot;     &quot;PREFIX|l:P+&quot;
+1        2      4     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        3      1     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        3      2     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+1        4      3     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+⋮
+114      2      2     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      3      2     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      4      3     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      4      4     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      5      5     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      6      2     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
+114      6      3     1     &quot;wa&quot;   &quot;CONJ&quot;  &quot;PREFIX|w:CONJ+&quot;
+114      6      3     2     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;</code></pre><p>Bottomline, any data manipulation on the <code>CorpusTable</code> and <code>TanzilData</code> is done through <a href="https://juliadb.juliadata.org/latest/api/">JuliaDB.jl&#39;s APIs</a>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../indexing/">Indexing »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 11 January 2021 06:50">Monday 11 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
