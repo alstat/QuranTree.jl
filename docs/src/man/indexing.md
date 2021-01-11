@@ -29,6 +29,8 @@ The following are the options supported for each index:
 
 Hence, to extract chapters verses 9 of chapter 2 of both `TanzilData` and `CorpusData` are given below:
 ```@setup abc
+using Pkg
+Pkg.add("PrettyTables")
 using QuranTree
 using PrettyTables
 @ptconf vcrop_mode=:middle tf=tf_compact
