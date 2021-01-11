@@ -33,7 +33,7 @@ Or using the `CorpusData`,
 vrs = verses(crpsdata[114])
 arabic.(vrs)
 ```
-Note that, `.` (dot) broadcasting is only used for arrays. So for pure string input (not arrays of string), `arabic(...)` (without dot) is used. Example,
+Note that `.` (dot) broadcasting is only used for arrays. So for pure string input (not arrays of string), `arabic(...)` (without dot) is used. Example,
 ```@repl abc
 vrs = verses(crpsdata[114]);
 vrs[1]
