@@ -243,16 +243,28 @@ function isfeature(feat::AbstractFeature, pos::Type{<:AbstractFeature})
 end
 
 function root(feat::AbstractFeature)
-    idx = findfirst(x -> x isa Root, feat.feats)
-    return idx isa Nothing ? missing : feat.feats[idx].data 
+    try
+        idx = findfirst(x -> x isa Root, feat.feats)
+        return idx isa Nothing ? missing : feat.feats[idx].data 
+    catch
+        return missing
+    end
 end
 
 function lemma(feat::AbstractFeature)
-    idx = findfirst(x -> x isa Lemma, feat.feats)
-    return idx isa Nothing ? missing : feat.feats[idx].data 
+    try
+        idx = findfirst(x -> x isa Lemma, feat.feats)
+        return idx isa Nothing ? missing : feat.feats[idx].data 
+    catch
+        return missing
+    end
 end
 
 function special(feat::AbstractFeature)
-    idx = findfirst(x -> x isa Special, feat.feats)
-    return idx isa Nothing ? missing : feat.feats[idx].data 
+    try
+        idx = findfirst(x -> x isa Special, feat.feats)
+        return idx isa Nothing ? missing : feat.feats[idx].data 
+    catch
+        return missing
+    end
 end
