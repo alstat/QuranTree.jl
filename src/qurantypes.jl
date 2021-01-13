@@ -71,11 +71,13 @@ struct CorpusData <: AbstractQuran
     data::IndexedTable
     meta::MetaData
 end
+CorpusData(data) = CorpusData(data, MetaData(CorpusRaw))
 
 struct TanzilData <: AbstractQuran
     data::IndexedTable
     meta::MetaData
 end
+TanzilData(data) = TanzilData(data, MetaData(CorpusRaw))
 
 struct Quran
     corpus::CorpusData
