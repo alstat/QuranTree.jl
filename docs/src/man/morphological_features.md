@@ -3,11 +3,6 @@ Morphological Features
 QuranTree.jl provides complete types for all morphological features and part of speech of [The Quranic Arabic Corpus](https://corpus.quran.com/). 
 ## Parsing
 The features of each token are encoded as `String` in its raw form, and in order to parse this as morphological feature, the function `parse(Features, x)` is used. For example, the following will parse the 2nd part of the 3rd word of 1st verse of chapter 1:
-```@setup abc
-using Pkg
-Pkg.add("JuliaDB")
-Pkg.add("PrettyTables")
-```
 ```@repl abc
 using QuranTree
 using JuliaDB
@@ -84,6 +79,25 @@ Another example where the *Voice* feature of the Verb is implied:
 token4 = select(crpsdata.data, :features)[27]
 mfeat4 = parse(Features, token4)
 @desc mfeat4
+```
+## POS Abstract Types
+As shown in the table below, each part of speech has a corresponding parent type, which is a superset type in the type hierarchy. This is useful for grouping. For example, instead of using `||` (or) in checking for all tokens that are either `FirstPerson`, `SecondPerson`, or `ThirdPerson`, the parent type `AbstractPerson` can be used.
+```@repl abc
+# without using parent type
+function allpersons(t)
+    is1st = isfeature(parse(Features, t.features), FirstPerson)
+    is2nd = isfeature(parse(Features, t.features), SecondPerson)
+    is3rd = isfeature(parse(Features, t.features), ThirdPerson)
+    
+    return is1st || is2nd || is3rd
+end
+tbl1 = filter(allpersons, crpsdata.data);
+select(tbl1, (:form, :features))
+# using parent type
+tbl2 = filter(t -> isfeature(parse(Features, t.features), AbstractPerson), crpsdata.data);
+select(tbl2, (:form, :features))
+
+sum(select(tbl1, :features) .!== select(tbl2, :features))
 ```
 ## Part of Speech Types
 ```@raw html

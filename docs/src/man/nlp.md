@@ -1,57 +1,102 @@
 Natural Language Processing
 =====
-The goal of having a Quranic corpus is to study it computationally. As such, applying NLP requires special utilities for further data processing. Since there is no special Julia package yet for working with Arabic texts, QuranTree.jl at the moment offers functions for processing Arabic texts. These include, *character dediacritization* and *normalization*.
+In this section, we will demonstrate how to perform some Natural Language Processing task using QuranTree.jl with Julia's TextAnalysis.jl library. In particular, we will emphasize on how to come up with a feature matrix that can be used as input for any NLP tasks.
 
-## Character Dediacritization
-`dediac` works for both Arabic, Buckwalter and custom transliterations.
+## Summarizing the Quran
+The first task is to summarize the quran. The algorithm that we will be using is the TextRank which applies PageRank algorithm to text datasets.
 ```@repl abc
+using JuliaDB
+using Languages
 using QuranTree
+using TextAnalysis
 
-crps, tnzl = load(QuranData());
-crpsdata = table(crps);
-tnzldata = table(tnzl);
-avrs = verses(tnzldata[1][1])[1]
-dediac(avrs)
-bvrs = verses(crpsdata[1][1])[1]
-dediac(bvrs)
-dediac(avrs) === arabic(dediac(bvrs))
+crps, tnzl = QuranData() |> load;
+crpsdata = table(crps)
 ```
-Custom transliteration is also dediacritizable as shown below,
-```@repl abc
-old_keys = collect(keys(BW_ENCODING));
-new_vals = reverse(collect(values(BW_ENCODING)));
-my_encoder = Dict(old_keys .=> new_vals);
 
-@transliterator my_encoder "MyEncoder"
-encode(avrs)
-arabic(encode(avrs))
-dediac(encode(avrs))
-arabic(dediac(encode(avrs)))
-```
-To reset the transliteration,
+### Data Preprocessing
+To start with, we first clean the data by removing the Disconnected Letters such as الٓمٓ, الٓمٓصٓ, among others. This is done as follows:
 ```@repl abc
-@transliterator :default
-encode(avrs)
-dediac(encode(avrs))
+crpstbl = filter(t -> !isfeature(parse(Features, t.features), DisconnectedLetters), crpsdata.data)
 ```
-## Character Normalization
-Normalization is done using the `normalize` function. It works for Arabic, Buckwalter and other custom transliterations. For example, the following normalizes the `avrs` above:
+Next, we need to create a copy of the above data so we have the original state, and use the copy to do further data processing.
 ```@repl abc
-normalize(avrs)
-normalize(dediac(avrs))
-dediac(normalize(avrs))
-# using pipe notation
-avrs |> dediac |> normalize |> encode
+crpsnew = deepcopy(crpstbl)
+feats = select(crpsnew, :features)
+feats = parse.(Features, feats)
 ```
-Specific character can be normalize:
+### Lemmatization
+Using the above parsed features, we then convert the `form` of the tokens to its lemma. This is useful for addressing minimal variations due to inflection.
 ```@repl abc
-avrs1 = verses(tnzldata[2][4])[1]
-normalize(avrs1, :alif_maddah)
-normalize(avrs1, :alif_hamza_above)
-normalize(avrs, [:alif_khanjareeya, :hamzat_wasl])
+lemmas = lemma.(feats)
+forms1 = select(crpsnew, :form)
+forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]
 ```
-Or using the `CorpusData` instead of the `TanzilData`,
+We can also use the Root features instead, which is done by simply replacing `lemma.(feats)` with `root.(feats)`. We now put back the new form to the corpus:
 ```@repl abc
-avrs2 = arabic(verses(crpsdata[2][15])[1])
-normalize(avrs2, :ya_hamza_above)
+crpsnew = transform(crpsnew, :form => forms1)
+crpsnew = CorpusData(crpsnew)
+```
+### Tokenization
+We want to summarize the document, in this case the Qur'an, using its verses. In doing so, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:
+```@repl abc
+lem_vrs = verses(crpsnew)
+vrs = QuranTree.normalize.(dediac.(lem_vrs))
+```
+### Creating a TextAnalysis Corpus
+To make use of the TextAnalysis.jl's api, we need to encode the processed Quranic Corpus to TextAnalysis.jl's Corpus. In this case, we will create a String document of the verses.
+```@repl abc
+crps = Corpus(StringDocument.(vrs))
+```
+We then update the lexicon and inverse index for efficient indexing of the corpus.
+```@repl abc
+update_lexicon!(crps)
+update_inverse_index!(crps)
+```
+We then create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.
+```@repl abc
+m = DocumentTermMatrix(crps)
+```
+### TF-IDF
+Finally, we compute the corresponding TF-IDF, which will serve as the feature matrix.
+```@repl abc
+tfidf = tf_idf(m)
+```
+### Text Summarization
+Using the TF-IDF, we compute the product of it with its transpose to come up with a square matrix, where the elements describes the linkage between the verses, or the similarity between the verses.
+```@repl abc
+sim_mat = tfidf * tfidf'
+```
+At this point, we can now write the code for PageRank algorithm:
+```@repl abc
+using LinearAlgebra
+function pagerank( A; Niter=20, damping=.15)
+        Nmax = size(A, 1)
+        r = rand(1,Nmax);              # Generate a random starting rank.
+        r = r ./ norm(r,1);            # Normalize
+        a = (1-damping) ./ Nmax;       # Create damping vector
+
+        for i=1:Niter
+            s = r * A
+            rmul!(s, damping)
+            r = s .+ (a * sum(r, dims=2));   # Compute PageRank.
+        end
+
+        r = r./norm(r,1);
+
+        return r
+end
+```
+Using this function, we apply it to the above similarity matrix (`sim_mat`) and extract the PageRank scores for all verses. This score will serve as the weights, and so the higher the score the higher the change that this verse have a lot of connections to other verses in the corpus, which means it represents per se the corpus.
+```@repl abc
+p = pagerank(sim_mat)
+```
+Now we sort these scores in descending order and use it to rearrange the original verses:
+```@repl abc
+idx = sortperm(vec(p), rev=true)[1:10]
+orig_vrs = verses(CorpusData(crpstbl))
+```
+Therefore, the Quranic Arabic corpus can be summarized by the following 10 verses using TextRank:
+```@repl abc
+arabic.(unique(orig_vrs[idx[1:10]]))
 ```

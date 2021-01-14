@@ -28,10 +28,6 @@ The following are the options supported for each index:
     * Array{Int64,1} - `crpsdata[2][9][1][[1,2]]` (extracts part 1 and part 2 of word 1 of verse 9 of chapter 2)
 
 Hence, to extract chapters verses 9 of chapter 2 of both `TanzilData` and `CorpusData` are given below:
-```@setup abc
-using Pkg
-Pkg.add("PrettyTables")
-```
 ```@repl abc
 using QuranTree
 

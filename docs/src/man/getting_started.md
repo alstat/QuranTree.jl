@@ -9,11 +9,6 @@ end
 ```
 
 The dataset is included in the library already, both the Quranic Corpus and the Tanzil Data. To load the data, simply run the following
-```@setup abc
-using Pkg
-Pkg.add("PrettyTables")
-Pkg.add("JuliaDB")
-```
 ```@repl abc
 using QuranTree
 

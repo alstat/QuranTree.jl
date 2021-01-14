@@ -12,6 +12,7 @@ makedocs(
         "Indexing" => "man/indexing.md",
         "Transliteration" => "man/transliteration.md",
         "Morphological Features" => "man/morphological_features.md",
+        "Data Processing" => "man/data_processing.md",
         "Natural Language Processing" => "man/nlp.md",
         "API" => "man/api.md"
     ]
