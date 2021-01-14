@@ -242,6 +242,11 @@ function isfeature(feat::AbstractFeature, pos::Type{<:AbstractFeature})
     end
 end
 
+"""
+    root(feat::AbstractFeature)
+
+Extract the root of the feature.
+"""
 function root(feat::AbstractFeature)
     try
         idx = findfirst(x -> x isa Root, feat.feats)
@@ -251,15 +256,46 @@ function root(feat::AbstractFeature)
     end
 end
 
+function parse(::Type{Lemma}, l::AbstractString)
+    idx = findfirst(r"\d", l)
+    if idx isa Nothing
+        return Lemma(l)
+    else
+        out = AbstractFeature[]
+        push!(out, Lemma(l[1:idx.start-1]))
+        push!(out, PARTOFSPEECH[Symbol(l[idx])])
+        return out
+    end
+end
+
+"""
+    lemma(feat::AbstractFeature)
+
+Extract the lemma of the feature.
+"""
 function lemma(feat::AbstractFeature)
     try
         idx = findfirst(x -> x isa Lemma, feat.feats)
-        return idx isa Nothing ? missing : feat.feats[idx].data 
+        if idx isa Nothing
+            return missing
+        else
+            lem = parse(Lemma, feat.feats[idx].data)
+            if lem isa Lemma
+                lem = lem.data
+            else
+                lem[1].data
+            end
+        end
     catch
         return missing
     end
 end
 
+"""
+    lemma(feat::AbstractFeature)
+    
+Extract the special feature of the token.
+"""
 function special(feat::AbstractFeature)
     try
         idx = findfirst(x -> x isa Special, feat.feats)
