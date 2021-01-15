@@ -3,8 +3,6 @@
 ```@meta
 CurrentModule = QuranTree
 DocTestSetup = quote
-    using Pkg
-    Pkg.add("PrettyTables")
     using QuranTree
 end
 ```

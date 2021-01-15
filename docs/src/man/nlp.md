@@ -4,7 +4,13 @@ In this section, we will demonstrate how to perform some Natural Language Proces
 
 ## Summarizing the Quran
 The first task is to summarize the quran. The algorithm that we will be using is the TextRank which applies PageRank algorithm to text datasets.
-```@repl abc
+```@setup abc
+using Pkg
+Pkg.add("JuliaDB")
+Pkg.add("Languages")
+Pkg.add("TextAnalysis")
+```
+```@repl
 using JuliaDB
 using Languages
 using QuranTree

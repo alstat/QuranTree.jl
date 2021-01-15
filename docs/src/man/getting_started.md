@@ -30,6 +30,10 @@ tnzldata
 ```
 The resulting tables, which are of type `CorpusData` and `TanzilData`, respectively, are based on [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl), which can be accessed by simply calling the macro `@data` (for example, `@data crpsdata` or `crpsdata.data`). One thing to note, however, is that JuliaDB.jl will only display the meta data of the columns if the width of the table is wider than the width of the output pane, for example in case of the `crpsdata` above which has more columns (and thus wider) compared to `tnzldata`. To display the data of any wide table, [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) can be used:
 
+```@setup abc
+using Pkg
+Pkg.add("PrettyTables")
+```
 ```@repl abc
 using PrettyTables
 @ptconf vcrop_mode=:middle tf=tf_compact
@@ -51,6 +55,10 @@ typeof(crpstbl)
 ```
 From here, any data manipulation is done using JuliaDB.jl's APIs. For example, to select the feature column of the `crpstbl` is done as follows:
 
+```@setup abc
+using Pkg
+Pkg.add("JuliaDB")
+```
 ```@repl abc
 using JuliaDB
 

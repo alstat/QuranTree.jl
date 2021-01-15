@@ -3,6 +3,10 @@ Morphological Features
 QuranTree.jl provides complete types for all morphological features and part of speech of [The Quranic Arabic Corpus](https://corpus.quran.com/). 
 ## Parsing
 The features of each token are encoded as `String` in its raw form, and in order to parse this as morphological feature, the function `parse(Features, x)` is used. For example, the following will parse the 2nd part of the 3rd word of 1st verse of chapter 1:
+```@setup abc
+using Pkg
+Pkg.add("JuliaDB")
+```
 ```@repl abc
 using QuranTree
 using JuliaDB
@@ -40,6 +44,10 @@ To further check if it has Root and Lemma,
 isfeature(mfeat, Root) && isfeature(mfeat, Lemma)
 ```
 `isfeature(...)` is useful when working with the JuliaDB.jl's filter function, instead of using regular expressions. For example,
+```@setup abc
+using Pkg
+Pkg.add("PrettyTables")
+```
 ```@repl abc
 using PrettyTables
 @ptconf vcrop_mode=:middle tf=tf_compact

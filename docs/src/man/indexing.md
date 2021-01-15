@@ -39,6 +39,10 @@ crpsdata[2][9]
 tnzldata[2][9]
 ```
 As shown above, the output of the indexing returns the label for the chapter name, both in Arabic and in English. Again the output of the `crpsdata[2][9]` is not shown, since the width of the output is wider than the width of the output pane. So, PrettyTables.jl can be used to view the table, as follows:
+```@setup abc
+using Pkg
+Pkg.add("PrettyTables")
+```
 ```@repl abc
 using PrettyTables
 @ptconf vcrop_mode=:middle tf=tf_compact
