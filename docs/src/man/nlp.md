@@ -10,7 +10,7 @@ Pkg.add("JuliaDB")
 Pkg.add("Languages")
 Pkg.add("TextAnalysis")
 ```
-```@repl
+```@repl abc
 using JuliaDB
 using Languages
 using QuranTree

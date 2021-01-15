@@ -15,7 +15,8 @@ makedocs(
         "Data Processing" => "man/data_processing.md",
         "Natural Language Processing" => "man/nlp.md",
         "API" => "man/api.md"
-    ]
+    ],
+    Depth = 3
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.
