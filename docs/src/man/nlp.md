@@ -77,20 +77,20 @@ At this point, we can now write the code for PageRank algorithm:
 ```@repl abc
 using LinearAlgebra
 function pagerank( A; Niter=20, damping=.15)
-        Nmax = size(A, 1)
-        r = rand(1,Nmax);              # Generate a random starting rank.
-        r = r ./ norm(r,1);            # Normalize
-        a = (1-damping) ./ Nmax;       # Create damping vector
+    Nmax = size(A, 1)
+    r = rand(1,Nmax);              # Generate a random starting rank.
+    r = r ./ norm(r,1);            # Normalize
+    a = (1-damping) ./ Nmax;       # Create damping vector
 
-        for i=1:Niter
-            s = r * A
-            rmul!(s, damping)
-            r = s .+ (a * sum(r, dims=2));   # Compute PageRank.
-        end
+    for i=1:Niter
+        s = r * A
+        rmul!(s, damping)
+        r = s .+ (a * sum(r, dims=2));   # Compute PageRank.
+    end
 
-        r = r./norm(r,1);
+    r = r./norm(r,1);
 
-        return r
+    return r
 end
 ```
 Using this function, we apply it to the above similarity matrix (`sim_mat`) and extract the PageRank scores for all verses. This score will serve as the weights, and so the higher the score the higher the change that this verse have a lot of connections to other verses in the corpus, which means it represents per se the corpus.
