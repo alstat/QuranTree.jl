@@ -304,8 +304,8 @@ pagerank (generic function with 1 method)</code></pre><p>Using this function, we
 1×6216 Array{Float64,2}:
  0.000200717  0.000186804  …  9.95269e-5  0.000186335  0.00014471</code></pre><p>Now we sort these scores in descending order and use it to rearrange the original verses:</p><pre><code class="language-julia-repl">julia&gt; idx = sortperm(vec(p), rev=true)[1:10]
 10-element Array{Int64,1}:
- 6140
  5306
+ 6140
  5826
  5827
  5616
@@ -338,8 +338,8 @@ julia&gt; orig_vrs = verses(CorpusData(crpstbl))
  &quot;{l~a*iY yuwasowisu fiY Suduwri {ln~aAsi&quot;
  &quot;mina {lojin~api wa{ln~aAsi&quot;</code></pre><p>Therefore, the Quranic Arabic corpus can be summarized by the following 10 verses using TextRank:</p><pre><code class="language-julia-repl">julia&gt; arabic.(unique(orig_vrs[idx[1:10]]))
 10-element Array{String,1}:
- &quot;وَمَآ أَدْرَىٰكَ مَا ٱلْقَارِعَةُ&quot;
  &quot;وَمَآ أَدْرَىٰكَ مَا ٱلْحَآقَّةُ&quot;
+ &quot;وَمَآ أَدْرَىٰكَ مَا ٱلْقَارِعَةُ&quot;
  &quot;وَمَآ أَدْرَىٰكَ مَا يَوْمُ ٱلدِّينِ&quot;
  &quot;ثُمَّ مَآ أَدْرَىٰكَ مَا يَوْمُ ٱلدِّينِ&quot;
  &quot;وَمَآ أَدْرَىٰكَ مَا يَوْمُ ٱلْفَصْلِ&quot;
@@ -347,4 +347,4 @@ julia&gt; orig_vrs = verses(CorpusData(crpstbl))
  &quot;أَفَتُمَٰرُونَهُۥ عَلَىٰ مَا يَرَىٰ&quot;
  &quot;ثُمَّ إِذَا شَآءَ أَنشَرَهُۥ&quot;
  &quot;إِنْ هَٰذَآ إِلَّا خُلُقُ ٱلْأَوَّلِينَ&quot;
- &quot;وَمَا لَا تُبْصِرُونَ&quot;</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../data_processing/">« Data Processing</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 15 January 2021 01:08">Friday 15 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ &quot;وَمَا لَا تُبْصِرُونَ&quot;</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../data_processing/">« Data Processing</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 15 January 2021 03:45">Friday 15 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
