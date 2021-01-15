@@ -93,16 +93,32 @@ chapter  verse  form
 114      4      &quot;مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ&quot;
 114      5      &quot;ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ&quot;
 114      6      &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><p>The resulting tables, which are of type <code>CorpusData</code> and <code>TanzilData</code>, respectively, are based on <a href="https://github.com/JuliaData/JuliaDB.jl">JuliaDB.jl</a>, which can be accessed by simply calling the macro <code>@data</code> (for example, <code>@data crpsdata</code> or <code>crpsdata.data</code>). One thing to note, however, is that JuliaDB.jl will only display the meta data of the columns if the width of the table is wider than the width of the output pane, for example in case of the <code>crpsdata</code> above which has more columns (and thus wider) compared to <code>tnzldata</code>. To display the data of any wide table, <a href="https://github.com/ronisbr/PrettyTables.jl">PrettyTables.jl</a> can be used:</p><pre><code class="language-julia-repl">julia&gt; using PrettyTables
-ERROR: ArgumentError: Package PrettyTables not found in current path:
-- Run `import Pkg; Pkg.add(&quot;PrettyTables&quot;)` to install the PrettyTables package.
 
 julia&gt; @ptconf vcrop_mode=:middle tf=tf_compact
-ERROR: LoadError: UndefVarError: @ptconf not defined
-in expression starting at none:1
 
 julia&gt; @pt crpsdata
-ERROR: LoadError: UndefVarError: @pt not defined
-in expression starting at none:1</code></pre><h2 id="Manipulating-the-Table"><a class="docs-heading-anchor" href="#Manipulating-the-Table">Manipulating the Table</a><a id="Manipulating-the-Table-1"></a><a class="docs-heading-anchor-permalink" href="#Manipulating-the-Table" title="Permalink"></a></h2><p>As mentioned above, the table is based on JuliaDB.jl, which has a type <code>IndexedTable</code>. Therefore, any data manipulation is done through the <a href="https://juliadb.juliadata.org/latest/api/">JuliaDB.jl&#39;s APIs</a>. To access the data simply call the property with <code>.data</code> or the macro <code>@data</code>:</p><pre><code class="language-julia-repl">julia&gt; crpstbl = @data crpsdata; # or crpsdata.data
+ --------- ------- ------- ------- ------------ -------- -----------------------
+  chapter   verse    word    part         form      tag                        ⋯
+    Int64   Int64   Int64   Int64       String   String                        ⋯
+ --------- ------- ------- ------- ------------ -------- -----------------------
+        1       1       1       1           bi        P                        ⋯
+        1       1       1       2         somi        N           STEM|POS:N|L ⋯
+        1       1       2       1      {ll~ahi       PN          STEM|POS:PN|L ⋯
+        1       1       3       1           {l      DET                        ⋯
+        1       1       3       2   r~aHoma`ni      ADJ   STEM|POS:ADJ|LEM:r~a ⋯
+        1       1       4       1           {l      DET                        ⋯
+        1       1       4       2     r~aHiymi      ADJ     STEM|POS:ADJ|LEM:r ⋯
+        1       2       1       1          {lo      DET                        ⋯
+     ⋮        ⋮       ⋮       ⋮         ⋮          ⋮                           ⋱
+      114       5       5       2       n~aAsi        N         STEM|POS:N|LEM ⋯
+      114       6       1       1         mina        P                        ⋯
+      114       6       2       1          {lo      DET                        ⋯
+      114       6       2       2      jin~api        N         STEM|POS:N|LEM ⋯
+      114       6       3       1           wa     CONJ                        ⋯
+      114       6       3       2           {l      DET                        ⋯
+      114       6       3       3       n~aAsi        N         STEM|POS:N|LEM ⋯
+ --------- ------- ------- ------- ------------ -------- -----------------------
+                                                1 column and 128204 rows omitted</code></pre><h2 id="Manipulating-the-Table"><a class="docs-heading-anchor" href="#Manipulating-the-Table">Manipulating the Table</a><a id="Manipulating-the-Table-1"></a><a class="docs-heading-anchor-permalink" href="#Manipulating-the-Table" title="Permalink"></a></h2><p>As mentioned above, the table is based on JuliaDB.jl, which has a type <code>IndexedTable</code>. Therefore, any data manipulation is done through the <a href="https://juliadb.juliadata.org/latest/api/">JuliaDB.jl&#39;s APIs</a>. To access the data simply call the property with <code>.data</code> or the macro <code>@data</code>:</p><pre><code class="language-julia-repl">julia&gt; crpstbl = @data crpsdata; # or crpsdata.data
 
 julia&gt; tnzltbl = @data tnzldata; # or tnzldata.data
 
@@ -145,15 +161,53 @@ CorpusData
 
 julia&gt; typeof(crpstbl)
 IndexedTables.IndexedTable{StructArrays.StructArray{NamedTuple{(:chapter, :verse, :word, :part, :form, :tag, :features),Tuple{Int64,Int64,Int64,Int64,String,String,String}},1,NamedTuple{(:chapter, :verse, :word, :part, :form, :tag, :features),Tuple{Array{Int64,1},Array{Int64,1},Array{Int64,1},Array{Int64,1},WeakRefStrings.StringArray{String,1},WeakRefStrings.StringArray{String,1},WeakRefStrings.StringArray{String,1}}},Int64}}</code></pre><p>From here, any data manipulation is done using JuliaDB.jl&#39;s APIs. For example, to select the feature column of the <code>crpstbl</code> is done as follows:</p><pre><code class="language-julia-repl">julia&gt; using JuliaDB
-ERROR: ArgumentError: Package JuliaDB not found in current path:
-- Run `import Pkg; Pkg.add(&quot;JuliaDB&quot;)` to install the JuliaDB package.
 
 julia&gt; select(crpstbl, :features)
-ERROR: UndefVarError: select not defined
+128219-element WeakRefStrings.StringArray{String,1}:
+ &quot;PREFIX|bi+&quot;
+ &quot;STEM|POS:N|LEM:{som|ROOT:smw|M|GEN&quot;
+ &quot;STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM&quot;
+ &quot;PREFIX|l:P+&quot;
+ ⋮
+ &quot;STEM|POS:N|LEM:Sador|ROOT:Sdr|MP|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
+ &quot;STEM|POS:P|LEM:min&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:jin~ap|ROOT:jnn|F|GEN&quot;
+ &quot;PREFIX|w:CONJ+&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
 
 julia&gt; # or equivalent to
        select(crpsdata.data, :features)
-ERROR: UndefVarError: select not defined</code></pre><p>Or filtering tokens that are Prefix features, is done as follows:</p><pre><code class="language-julia-repl">julia&gt; filter(t -&gt; occursin(r&quot;^PREFIX&quot;, t.features), crpstbl)
+128219-element WeakRefStrings.StringArray{String,1}:
+ &quot;PREFIX|bi+&quot;
+ &quot;STEM|POS:N|LEM:{som|ROOT:smw|M|GEN&quot;
+ &quot;STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM&quot;
+ &quot;PREFIX|l:P+&quot;
+ ⋮
+ &quot;STEM|POS:N|LEM:Sador|ROOT:Sdr|MP|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
+ &quot;STEM|POS:P|LEM:min&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:jin~ap|ROOT:jnn|F|GEN&quot;
+ &quot;PREFIX|w:CONJ+&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;</code></pre><p>Or filtering tokens that are Prefix features, is done as follows:</p><pre><code class="language-julia-repl">julia&gt; filter(t -&gt; occursin(r&quot;^PREFIX&quot;, t.features), crpstbl)
 Table with 28670 rows, 7 columns:
 chapter  verse  word  part  form   tag     features
 ───────────────────────────────────────────────────────────
@@ -198,4 +252,4 @@ chapter  verse  word  part  form   tag     features
 114      5      5     1     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;
 114      6      2     1     &quot;{lo&quot;  &quot;DET&quot;   &quot;PREFIX|Al+&quot;
 114      6      3     1     &quot;wa&quot;   &quot;CONJ&quot;  &quot;PREFIX|w:CONJ+&quot;
-114      6      3     2     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;</code></pre><p>Bottomline, any data manipulation on the <code>CorpusTable</code> and <code>TanzilData</code> is done through <a href="https://juliadb.juliadata.org/latest/api/">JuliaDB.jl&#39;s APIs</a>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../indexing/">Indexing »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Thursday 14 January 2021 16:34">Thursday 14 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+114      6      3     2     &quot;{l&quot;   &quot;DET&quot;   &quot;PREFIX|Al+&quot;</code></pre><p>Bottomline, any data manipulation on the <code>CorpusTable</code> and <code>TanzilData</code> is done through <a href="https://juliadb.juliadata.org/latest/api/">JuliaDB.jl&#39;s APIs</a>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../indexing/">Indexing »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 15 January 2021 00:37">Friday 15 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
