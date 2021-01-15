@@ -24,37 +24,265 @@ Columns:
 5  form      String
 6  tag       String
 7  features  String</code></pre><h3 id="Data-Preprocessing"><a class="docs-heading-anchor" href="#Data-Preprocessing">Data Preprocessing</a><a id="Data-Preprocessing-1"></a><a class="docs-heading-anchor-permalink" href="#Data-Preprocessing" title="Permalink"></a></h3><p>To start with, we first clean the data by removing the Disconnected Letters such as الٓمٓ, الٓمٓصٓ, among others. This is done as follows:</p><pre><code class="language-julia-repl">julia&gt; crpstbl = filter(t -&gt; !isfeature(parse(Features, t.features), DisconnectedLetters), crpsdata.data)
-ERROR: UndefVarError: crpsdata not defined</code></pre><p>Next, we need to create a copy of the above data so we have the original state, and use the copy to do further data processing.</p><pre><code class="language-julia-repl">julia&gt; crpsnew = deepcopy(crpstbl)
-ERROR: UndefVarError: crpstbl not defined
+Table with 128189 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String</code></pre><p>Next, we need to create a copy of the above data so we have the original state, and use the copy to do further data processing.</p><pre><code class="language-julia-repl">julia&gt; crpsnew = deepcopy(crpstbl)
+Table with 128189 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String
 
 julia&gt; feats = select(crpsnew, :features)
-ERROR: UndefVarError: select not defined
+128189-element WeakRefStrings.StringArray{String,1}:
+ &quot;PREFIX|bi+&quot;
+ &quot;STEM|POS:N|LEM:{som|ROOT:smw|M|GEN&quot;
+ &quot;STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM&quot;
+ &quot;PREFIX|l:P+&quot;
+ ⋮
+ &quot;STEM|POS:N|LEM:Sador|ROOT:Sdr|MP|GEN&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
+ &quot;STEM|POS:P|LEM:min&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:jin~ap|ROOT:jnn|F|GEN&quot;
+ &quot;PREFIX|w:CONJ+&quot;
+ &quot;PREFIX|Al+&quot;
+ &quot;STEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN&quot;
 
 julia&gt; feats = parse.(Features, feats)
-ERROR: UndefVarError: Features not defined</code></pre><h3 id="Lemmatization"><a class="docs-heading-anchor" href="#Lemmatization">Lemmatization</a><a id="Lemmatization-1"></a><a class="docs-heading-anchor-permalink" href="#Lemmatization" title="Permalink"></a></h3><p>Using the above parsed features, we then convert the <code>form</code> of the tokens to its lemma. This is useful for addressing minimal variations due to inflection.</p><pre><code class="language-julia-repl">julia&gt; lemmas = lemma.(feats)
-ERROR: UndefVarError: lemma not defined
+128189-element Array{AbstractFeature,1}:
+ Prefix(Symbol(&quot;bi+&quot;), P)
+ Stem(:N, N, AbstractFeature[Lemma(&quot;{som&quot;), Root(&quot;smw&quot;), M, GEN])
+ Stem(:PN, PN, AbstractFeature[Lemma(&quot;{ll~ah&quot;), Root(&quot;Alh&quot;), GEN])
+ Prefix(Symbol(&quot;Al+&quot;), P)
+ Stem(:ADJ, ADJ, AbstractFeature[Lemma(&quot;r~aHoma`n&quot;), Root(&quot;rHm&quot;), M, S, GEN])
+ Prefix(Symbol(&quot;Al+&quot;), P)
+ Stem(:ADJ, ADJ, AbstractFeature[Lemma(&quot;r~aHiym&quot;), Root(&quot;rHm&quot;), M, S, GEN])
+ Prefix(Symbol(&quot;Al+&quot;), P)
+ Stem(:N, N, AbstractFeature[Lemma(&quot;Hamod&quot;), Root(&quot;Hmd&quot;), M, NOM])
+ Prefix(Symbol(&quot;l:P+&quot;), P)
+ ⋮
+ Stem(:N, N, AbstractFeature[Lemma(&quot;Sador&quot;), Root(&quot;Sdr&quot;), M, P, GEN])
+ Prefix(Symbol(&quot;Al+&quot;), P)
+ Stem(:N, N, AbstractFeature[Lemma(&quot;n~aAs&quot;), Root(&quot;nws&quot;), M, P, GEN])
+ Stem(:P, P, AbstractFeature[Lemma(&quot;min&quot;)])
+ Prefix(Symbol(&quot;Al+&quot;), P)
+ Stem(:N, N, AbstractFeature[Lemma(&quot;jin~ap&quot;), Root(&quot;jnn&quot;), F, GEN])
+ Prefix(Symbol(&quot;w:CONJ+&quot;), CONJ)
+ Prefix(Symbol(&quot;Al+&quot;), P)
+ Stem(:N, N, AbstractFeature[Lemma(&quot;n~aAs&quot;), Root(&quot;nws&quot;), M, P, GEN])</code></pre><h3 id="Lemmatization"><a class="docs-heading-anchor" href="#Lemmatization">Lemmatization</a><a id="Lemmatization-1"></a><a class="docs-heading-anchor-permalink" href="#Lemmatization" title="Permalink"></a></h3><p>Using the above parsed features, we then convert the <code>form</code> of the tokens to its lemma. This is useful for addressing minimal variations due to inflection.</p><pre><code class="language-julia-repl">julia&gt; lemmas = lemma.(feats)
+128189-element Array{Union{Missing, String},1}:
+ missing
+ &quot;{som&quot;
+ &quot;{ll~ah&quot;
+ missing
+ &quot;r~aHoma`n&quot;
+ missing
+ &quot;r~aHiym&quot;
+ missing
+ &quot;Hamod&quot;
+ missing
+ ⋮
+ &quot;Sador&quot;
+ missing
+ &quot;n~aAs&quot;
+ &quot;min&quot;
+ missing
+ &quot;jin~ap&quot;
+ missing
+ missing
+ &quot;n~aAs&quot;
 
 julia&gt; forms1 = select(crpsnew, :form)
-ERROR: UndefVarError: select not defined
+128189-element WeakRefStrings.StringArray{String,1}:
+ &quot;bi&quot;
+ &quot;somi&quot;
+ &quot;{ll~ahi&quot;
+ &quot;{l&quot;
+ &quot;r~aHoma`ni&quot;
+ &quot;{l&quot;
+ &quot;r~aHiymi&quot;
+ &quot;{lo&quot;
+ &quot;Hamodu&quot;
+ &quot;li&quot;
+ ⋮
+ &quot;Suduwri&quot;
+ &quot;{l&quot;
+ &quot;n~aAsi&quot;
+ &quot;mina&quot;
+ &quot;{lo&quot;
+ &quot;jin~api&quot;
+ &quot;wa&quot;
+ &quot;{l&quot;
+ &quot;n~aAsi&quot;
 
 julia&gt; forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]
-ERROR: UndefVarError: lemmas not defined</code></pre><p>We can also use the Root features instead, which is done by simply replacing <code>lemma.(feats)</code> with <code>root.(feats)</code>. We now put back the new form to the corpus:</p><pre><code class="language-julia-repl">julia&gt; crpsnew = transform(crpsnew, :form =&gt; forms1)
-ERROR: UndefVarError: forms1 not defined
+74608-element Array{Union{Missing, String},1}:
+ &quot;{som&quot;
+ &quot;{ll~ah&quot;
+ &quot;r~aHoma`n&quot;
+ &quot;r~aHiym&quot;
+ &quot;Hamod&quot;
+ &quot;{ll~ah&quot;
+ &quot;rab~&quot;
+ &quot;Ea`lamiyn&quot;
+ &quot;r~aHoma`n&quot;
+ &quot;r~aHiym&quot;
+ ⋮
+ &quot;xan~aAs&quot;
+ &quot;{l~a*iY&quot;
+ &quot;wasowasa&quot;
+ &quot;fiY&quot;
+ &quot;Sador&quot;
+ &quot;n~aAs&quot;
+ &quot;min&quot;
+ &quot;jin~ap&quot;
+ &quot;n~aAs&quot;</code></pre><p>We can also use the Root features instead, which is done by simply replacing <code>lemma.(feats)</code> with <code>root.(feats)</code>. We now put back the new form to the corpus:</p><pre><code class="language-julia-repl">julia&gt; crpsnew = transform(crpsnew, :form =&gt; forms1)
+Table with 128189 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String
 
 julia&gt; crpsnew = CorpusData(crpsnew)
-ERROR: UndefVarError: CorpusData not defined</code></pre><h3 id="Tokenization"><a class="docs-heading-anchor" href="#Tokenization">Tokenization</a><a id="Tokenization-1"></a><a class="docs-heading-anchor-permalink" href="#Tokenization" title="Permalink"></a></h3><p>We want to summarize the document, in this case the Qur&#39;an, using its verses. In doing so, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:</p><pre><code class="language-julia-repl">julia&gt; lem_vrs = verses(crpsnew)
-ERROR: UndefVarError: verses not defined
+Quranic Arabic Corpus (morphology)
+(C) 2011 Kais Dukes
+
+Table with 128189 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String</code></pre><h3 id="Tokenization"><a class="docs-heading-anchor" href="#Tokenization">Tokenization</a><a id="Tokenization-1"></a><a class="docs-heading-anchor-permalink" href="#Tokenization" title="Permalink"></a></h3><p>We want to summarize the document, in this case the Qur&#39;an, using its verses. In doing so, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:</p><pre><code class="language-julia-repl">julia&gt; lem_vrs = verses(crpsnew)
+6216-element Array{String,1}:
+ &quot;bi{som {ll~ah {lr~aHoma`n {lr~aHiym&quot;
+ &quot;{loHamod li{ll~ah rab~ {loEa`lamiyn&quot;
+ &quot;{lr~aHoma`n {lr~aHiym&quot;
+ &quot;ma`lik yawom {ldiyn&quot;
+ &quot;&lt;iy~aA Eabada wa&lt;iy~aA {sotaEiynu&quot;
+ &quot;hadaYnaA {lSira`T {lom~usotaqiym&quot;
+ &quot;Sira`T {l~a*iY &gt;anoEamata EalaY`himo gayor {lomagoDuwb EalaY`himo walaA {lDaA^l~&quot;
+ &quot;*a`lik {lokita`b laA rayob fiYhi hudFY l~ilomut~aqiyn&quot;
+ &quot;{l~a*iY &#39;aAmanawna bi{logayob wa&gt;aqaAmawna {lSalaw`p waminmaA razaqana`humo &gt;anfaqawna&quot;
+ &quot;wa{l~a*iY &#39;aAmanawna bimaA &gt;anzala &lt;ilaY`ka wamaA &gt;anzala min qabolka wabi{loA^xir humo yuwqinuwna&quot;
+ ⋮
+ &quot;wamin \$ar~ gaAsiq &lt;i*aA waqaba&quot;
+ &quot;wamin \$ar~ {ln~af~a`va`t fiY {loEuqodap&quot;
+ &quot;wamin \$ar~ HaAsid &lt;i*aA Hasada&quot;
+ &quot;qaAla Eu*o birab~ {ln~aAs&quot;
+ &quot;malik {ln~aAs&quot;
+ &quot;&lt;ila`h {ln~aAs&quot;
+ &quot;min \$ar~ {lowasowaAs {loxan~aAs&quot;
+ &quot;{l~a*iY wasowasa fiY Sador {ln~aAs&quot;
+ &quot;min {lojin~ap wa{ln~aAs&quot;
 
 julia&gt; vrs = QuranTree.normalize.(dediac.(lem_vrs))
-ERROR: UndefVarError: QuranTree not defined</code></pre><h3 id="Creating-a-TextAnalysis-Corpus"><a class="docs-heading-anchor" href="#Creating-a-TextAnalysis-Corpus">Creating a TextAnalysis Corpus</a><a id="Creating-a-TextAnalysis-Corpus-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-a-TextAnalysis-Corpus" title="Permalink"></a></h3><p>To make use of the TextAnalysis.jl&#39;s api, we need to encode the processed Quranic Corpus to TextAnalysis.jl&#39;s Corpus. In this case, we will create a String document of the verses.</p><pre><code class="language-julia-repl">julia&gt; crps = Corpus(StringDocument.(vrs))
-ERROR: UndefVarError: StringDocument not defined</code></pre><p>We then update the lexicon and inverse index for efficient indexing of the corpus.</p><pre><code class="language-julia-repl">julia&gt; update_lexicon!(crps)
-ERROR: UndefVarError: update_lexicon! not defined
+6216-element Array{String,1}:
+ &quot;bAsm Allh AlrHmAn AlrHym&quot;
+ &quot;AlHmd lAllh rb AlEAlmyn&quot;
+ &quot;AlrHmAn AlrHym&quot;
+ &quot;mAlk ywm Aldyn&quot;
+ &quot;AyA Ebd wAyA AstEyn&quot;
+ &quot;hdynA AlSrAT Almstqym&quot;
+ &quot;SrAT Al*y AnEmt ElyAhm gyr AlmgDwb ElyAhm wlA AlDAl&quot;
+ &quot;*Alk AlktAb lA ryb fyh hdy llmtqyn&quot;
+ &quot;Al*y &#39;Amnwn bAlgyb wAqAmwn AlSlwAh wmnmA rzqnAhm Anfqwn&quot;
+ &quot;wAl*y &#39;Amnwn bmA Anzl AlyAk wmA Anzl mn qblk wbAlAxr hm ywqnwn&quot;
+ ⋮
+ &quot;wmn \$r gAsq A*A wqb&quot;
+ &quot;wmn \$r AlnfAvAt fy AlEqdh&quot;
+ &quot;wmn \$r HAsd A*A Hsd&quot;
+ &quot;qAl E* brb AlnAs&quot;
+ &quot;mlk AlnAs&quot;
+ &quot;AlAh AlnAs&quot;
+ &quot;mn \$r AlwswAs AlxnAs&quot;
+ &quot;Al*y wsws fy Sdr AlnAs&quot;
+ &quot;mn Aljnh wAlnAs&quot;</code></pre><h3 id="Creating-a-TextAnalysis-Corpus"><a class="docs-heading-anchor" href="#Creating-a-TextAnalysis-Corpus">Creating a TextAnalysis Corpus</a><a id="Creating-a-TextAnalysis-Corpus-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-a-TextAnalysis-Corpus" title="Permalink"></a></h3><p>To make use of the TextAnalysis.jl&#39;s api, we need to encode the processed Quranic Corpus to TextAnalysis.jl&#39;s Corpus. In this case, we will create a String document of the verses.</p><pre><code class="language-julia-repl">julia&gt; crps = Corpus(StringDocument.(vrs))
+A Corpus with 6216 documents:
+ * 6216 StringDocument&#39;s
+ * 0 FileDocument&#39;s
+ * 0 TokenDocument&#39;s
+ * 0 NGramDocument&#39;s
 
-julia&gt; update_inverse_index!(crps)
-ERROR: UndefVarError: update_inverse_index! not defined</code></pre><p>We then create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.</p><pre><code class="language-julia-repl">julia&gt; m = DocumentTermMatrix(crps)
-ERROR: UndefVarError: DocumentTermMatrix not defined</code></pre><h3 id="TF-IDF"><a class="docs-heading-anchor" href="#TF-IDF">TF-IDF</a><a id="TF-IDF-1"></a><a class="docs-heading-anchor-permalink" href="#TF-IDF" title="Permalink"></a></h3><p>Finally, we compute the corresponding TF-IDF, which will serve as the feature matrix.</p><pre><code class="language-julia-repl">julia&gt; tfidf = tf_idf(m)
-ERROR: UndefVarError: tf_idf not defined</code></pre><h3 id="Text-Summarization"><a class="docs-heading-anchor" href="#Text-Summarization">Text Summarization</a><a id="Text-Summarization-1"></a><a class="docs-heading-anchor-permalink" href="#Text-Summarization" title="Permalink"></a></h3><p>Using the TF-IDF, we compute the product of it with its transpose to come up with a square matrix, where the elements describes the linkage between the verses, or the similarity between the verses.</p><pre><code class="language-julia-repl">julia&gt; sim_mat = tfidf * tfidf&#39;
-ERROR: UndefVarError: tfidf not defined</code></pre><p>At this point, we can now write the code for PageRank algorithm:</p><pre><code class="language-julia-repl">julia&gt; using LinearAlgebra
+Corpus&#39;s lexicon contains 0 tokens
+Corpus&#39;s index contains 0 tokens</code></pre><p>We then update the lexicon and inverse index for efficient indexing of the corpus.</p><pre><code class="language-julia-repl">julia&gt; update_lexicon!(crps)
+
+julia&gt; update_inverse_index!(crps)</code></pre><p>We then create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.</p><pre><code class="language-julia-repl">julia&gt; m = DocumentTermMatrix(crps)
+A 6216 X 11636 DocumentTermMatrix</code></pre><h3 id="TF-IDF"><a class="docs-heading-anchor" href="#TF-IDF">TF-IDF</a><a id="TF-IDF-1"></a><a class="docs-heading-anchor-permalink" href="#TF-IDF" title="Permalink"></a></h3><p>Finally, we compute the corresponding TF-IDF, which will serve as the feature matrix.</p><pre><code class="language-julia-repl">julia&gt; tfidf = tf_idf(m)
+6216×11636 SparseArrays.SparseMatrixCSC{Float64,Int64} with 85521 stored entries:
+  [264 ,     1]  =  0.0872454
+  [372 ,     1]  =  0.0983831
+  [695 ,     1]  =  0.272
+  [843 ,     1]  =  0.165143
+  [866 ,     1]  =  0.289001
+  [891 ,     1]  =  0.256889
+  [950 ,     1]  =  0.385334
+  [963 ,     1]  =  0.2312
+  [1019,     1]  =  0.578001
+  ⋮
+  [2430, 11630]  =  0.347156
+  [3324, 11631]  =  0.349395
+  [2817, 11632]  =  0.29778
+  [982 , 11633]  =  0.39704
+  [895 , 11634]  =  0.229643
+  [3157, 11634]  =  0.565276
+  [3782, 11634]  =  1.0498
+  [5226, 11634]  =  0.489906
+  [2821, 11635]  =  0.167978
+  [2821, 11636]  =  0.167978</code></pre><h3 id="Text-Summarization"><a class="docs-heading-anchor" href="#Text-Summarization">Text Summarization</a><a id="Text-Summarization-1"></a><a class="docs-heading-anchor-permalink" href="#Text-Summarization" title="Permalink"></a></h3><p>Using the TF-IDF, we compute the product of it with its transpose to come up with a square matrix, where the elements describes the linkage between the verses, or the similarity between the verses.</p><pre><code class="language-julia-repl">julia&gt; sim_mat = tfidf * tfidf&#39;
+6216×6216 SparseArrays.SparseMatrixCSC{Float64,Int64} with 20950366 stored entries:
+  [1   ,    1]  =  6.10061
+  [3   ,    1]  =  6.42701
+  [13  ,    1]  =  0.0339069
+  [15  ,    1]  =  0.0339069
+  [16  ,    1]  =  0.0279233
+  [21  ,    1]  =  0.0678137
+  [23  ,    1]  =  0.0215771
+  [26  ,    1]  =  0.0279233
+  [29  ,    1]  =  0.0215771
+  ⋮
+  [6116, 6216]  =  0.0219327
+  [6118, 6216]  =  0.0160277
+  [6143, 6216]  =  0.0833441
+  [6145, 6216]  =  0.0833441
+  [6172, 6216]  =  0.10418
+  [6177, 6216]  =  0.0757673
+  [6201, 6216]  =  0.0833441
+  [6207, 6216]  =  0.10418
+  [6214, 6216]  =  0.10418
+  [6216, 6216]  =  8.22615</code></pre><p>At this point, we can now write the code for PageRank algorithm:</p><pre><code class="language-julia-repl">julia&gt; using LinearAlgebra
 
 julia&gt; function pagerank( A; Niter=20, damping=.15)
                Nmax = size(A, 1)
@@ -73,9 +301,50 @@ julia&gt; function pagerank( A; Niter=20, damping=.15)
                return r
        end
 pagerank (generic function with 1 method)</code></pre><p>Using this function, we apply it to the above similarity matrix (<code>sim_mat</code>) and extract the PageRank scores for all verses. This score will serve as the weights, and so the higher the score the higher the change that this verse have a lot of connections to other verses in the corpus, which means it represents per se the corpus.</p><pre><code class="language-julia-repl">julia&gt; p = pagerank(sim_mat)
-ERROR: UndefVarError: sim_mat not defined</code></pre><p>Now we sort these scores in descending order and use it to rearrange the original verses:</p><pre><code class="language-julia-repl">julia&gt; idx = sortperm(vec(p), rev=true)[1:10]
-ERROR: UndefVarError: p not defined
+1×6216 Array{Float64,2}:
+ 0.000200717  0.000186804  …  9.95269e-5  0.000186335  0.00014471</code></pre><p>Now we sort these scores in descending order and use it to rearrange the original verses:</p><pre><code class="language-julia-repl">julia&gt; idx = sortperm(vec(p), rev=true)[1:10]
+10-element Array{Int64,1}:
+ 6140
+ 5306
+ 5826
+ 5827
+ 5616
+ 2949
+ 4776
+ 5760
+ 3063
+ 5342
 
 julia&gt; orig_vrs = verses(CorpusData(crpstbl))
-ERROR: UndefVarError: CorpusData not defined</code></pre><p>Therefore, the Quranic Arabic corpus can be summarized by the following 10 verses using TextRank:</p><pre><code class="language-julia-repl">julia&gt; arabic.(unique(orig_vrs[idx[1:10]]))
-ERROR: UndefVarError: idx not defined</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../data_processing/">« Data Processing</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 15 January 2021 00:37">Friday 15 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+6216-element Array{String,1}:
+ &quot;bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi&quot;
+ &quot;{loHamodu lil~ahi rab~i {loEa`lamiyna&quot;
+ &quot;{lr~aHoma`ni {lr~aHiymi&quot;
+ &quot;ma`liki yawomi {ld~iyni&quot;
+ &quot;&lt;iy~aAka naEobudu wa&lt;iy~aAka nasotaEiynu&quot;
+ &quot;{hodinaA {lS~ira`Ta {lomusotaqiyma&quot;
+ &quot;Sira`Ta {l~a*iyna &gt;anoEamota Ealayohimo gayori {lomagoDuwbi Ealayohimo walaA {lD~aA^l~iyna&quot;
+ &quot;*a`lika {lokita`bu laA rayoba fiyhi hudFY l~ilomut~aqiyna&quot;
+ &quot;{l~a*iyna yu&amp;ominuwna bi{logayobi wayuqiymuwna {lS~alaw`pa wamim~aA razaqona`humo yunfiquwna&quot;
+ &quot;wa{l~a*iyna yu&amp;ominuwna bimaA^ &gt;unzila &lt;ilayoka wamaA^ &gt;unzila min qabolika wabi{lo&#39;aAxirapi humo yuwqinuwna&quot;
+ ⋮
+ &quot;wamin \$ar~i gaAsiqK &lt;i*aA waqaba&quot;
+ &quot;wamin \$ar~i {ln~af~a`va`ti fiY {loEuqadi&quot;
+ &quot;wamin \$ar~i HaAsidK &lt;i*aA Hasada&quot;
+ &quot;qulo &gt;aEuw*u birab~i {ln~aAsi&quot;
+ &quot;maliki {ln~aAsi&quot;
+ &quot;&lt;ila`hi {ln~aAsi&quot;
+ &quot;min \$ar~i {lowasowaAsi {loxan~aAsi&quot;
+ &quot;{l~a*iY yuwasowisu fiY Suduwri {ln~aAsi&quot;
+ &quot;mina {lojin~api wa{ln~aAsi&quot;</code></pre><p>Therefore, the Quranic Arabic corpus can be summarized by the following 10 verses using TextRank:</p><pre><code class="language-julia-repl">julia&gt; arabic.(unique(orig_vrs[idx[1:10]]))
+10-element Array{String,1}:
+ &quot;وَمَآ أَدْرَىٰكَ مَا ٱلْقَارِعَةُ&quot;
+ &quot;وَمَآ أَدْرَىٰكَ مَا ٱلْحَآقَّةُ&quot;
+ &quot;وَمَآ أَدْرَىٰكَ مَا يَوْمُ ٱلدِّينِ&quot;
+ &quot;ثُمَّ مَآ أَدْرَىٰكَ مَا يَوْمُ ٱلدِّينِ&quot;
+ &quot;وَمَآ أَدْرَىٰكَ مَا يَوْمُ ٱلْفَصْلِ&quot;
+ &quot;قَالَ فِرْعَوْنُ وَمَا رَبُّ ٱلْعَٰلَمِينَ&quot;
+ &quot;أَفَتُمَٰرُونَهُۥ عَلَىٰ مَا يَرَىٰ&quot;
+ &quot;ثُمَّ إِذَا شَآءَ أَنشَرَهُۥ&quot;
+ &quot;إِنْ هَٰذَآ إِلَّا خُلُقُ ٱلْأَوَّلِينَ&quot;
+ &quot;وَمَا لَا تُبْصِرُونَ&quot;</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../data_processing/">« Data Processing</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 15 January 2021 00:54">Friday 15 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
