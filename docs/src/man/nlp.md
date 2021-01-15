@@ -2,7 +2,7 @@ Natural Language Processing
 =====
 In this section, we will demonstrate how to perform some Natural Language Processing task using QuranTree.jl with Julia's TextAnalysis.jl library. In particular, we will emphasize on how to come up with a feature matrix that can be used as input for any NLP tasks.
 
-## Summarizing the Quran
+## Text Summarization
 The first task is to summarize the quran. The algorithm that we will be using is the TextRank which applies PageRank algorithm to text datasets.
 ```@setup abc
 using Pkg
@@ -21,7 +21,7 @@ crpsdata = table(crps)
 ```
 
 ### Data Preprocessing
-To start with, we first clean the data by removing the Disconnected Letters such as الٓمٓ, الٓمٓصٓ, among others. This is done as follows:
+To start with, we first clean the data by removing the Disconnected Letters such as الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:
 ```@repl abc
 crpstbl = filter(t -> !isfeature(parse(Features, t.features), DisconnectedLetters), crpsdata.data)
 ```
@@ -68,7 +68,7 @@ Finally, we compute the corresponding TF-IDF, which will serve as the feature ma
 ```@repl abc
 tfidf = tf_idf(m)
 ```
-### Text Summarization
+### Summarizing the Quran
 Using the TF-IDF, we compute the product of it with its transpose to come up with a square matrix, where the elements describes the linkage between the verses, or the similarity between the verses.
 ```@repl abc
 sim_mat = tfidf * tfidf'
