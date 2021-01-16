@@ -13,7 +13,11 @@ makedocs(
         "Transliteration" => "man/transliteration.md",
         "Morphological Features" => "man/morphological_features.md",
         "Data Processing" => "man/data_processing.md",
-        "Natural Language Processing" => "man/nlp.md",
+        "Natural Language Processing" => [
+            "Content" => "man/nlp/nlp.md",
+            "Text Summarization" => "man/nlp/text_summarization.md",
+            "Topic Modeling" => "man/nlp/topic_modeling.md",
+        ],
         "API" => "man/api.md"
     ]
 )
