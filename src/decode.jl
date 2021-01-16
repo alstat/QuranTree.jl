@@ -26,11 +26,11 @@ function arabic(s::String, encoder::AbstractEncoder)
 end
 
 """
-    verses(quran::AbstractQuran)
+    verses(quran::AbstractQuran; number=false, start_end=true)
 
 Extract the verses of a `AbstractQuran` object.
 """
-function verses(quran::AbstractQuran; number=false, start_end=true)
+function verses(quran::AbstractQuran; number::Bool=false, start_end::Bool=true)
     try
         endidx = length(rows(quran.data))
         return verses(quran.data, 1, endidx; number=number, start_end=start_end)
@@ -49,7 +49,7 @@ function verses(quran::TanzilData)
 end
 
 """
-    verses(data::IndexedTable[, a::Int64[, b::Int64]])
+    verses(data::IndexedTable[, a::Int64[, b::Int64]]; number=false, start_end=true)
 
 Extract the verses of a `IndexedTable` object from row `a` to row `b`.
 """
@@ -185,10 +185,20 @@ function verses(data::IndexedTable, a::Int64, b::Int64; number::Bool=false, star
     return verse_out
 end
 
+
+"""
+    words(quran::AbstractQuran)
+
+Extract words of the input quran.
+"""
+function words(quran::AbstractQuran)
+    return string.(vcat(split.(verses(quran), " ")...))
+end
+
 """
     chapter_name(quran::AbstractQuran, transliterate::Bool=false; lang::Symbol=:arabic)
 
-Extracts the chapter label of the input quran, in either `:arabic` (default) or `:english`
+Extract the chapter name of the input quran, in either `:arabic` (default) or `:english`
 """
 function chapter_name(quran::AbstractQuran, transliterate::Bool=false; lang::Symbol=:arabic)
     chapterlabel = ChapterLabel()
