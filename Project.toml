@@ -17,6 +17,7 @@ TextAnalysis = "a2db99b7-8b79-58f8-94bf-bbc811eef33d"
 [compat]
 JuliaDB = "0.13"
 ReadOnlyArrays = "0.1"
+TextAnalysis = "0.7"
 julia = "1.5.3"
 
 [extras]
