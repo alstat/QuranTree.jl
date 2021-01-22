@@ -1,6 +1,6 @@
 Data Processing
 =====
-The goal of having a Quranic corpus is to study it computationally. As such, special utilities for further data preprocessing are necessary. QuranTree.jl offers functions for processing Arabic texts. These include, *character dediacritization* and *normalization*.
+The goal of having a Quranic corpus is to study it computationally. As such, special utilities for further data preprocessing are necessary. QuranTree.jl offers functions for processing Arabic texts. These include, *character dediacritization* and *character normalization*.
 
 ## Character Dediacritization
 `dediac` works for both Arabic, Buckwalter and custom transliterations.
@@ -43,7 +43,7 @@ dediac(normalize(avrs))
 # using pipe notation
 avrs |> dediac |> normalize |> encode
 ```
-Specific character can be normalize:
+Specific character can be normalized:
 ```@repl abc
 avrs1 = verses(tnzldata[2][4])[1]
 normalize(avrs1, :alif_maddah)

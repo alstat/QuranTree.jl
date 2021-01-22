@@ -27,7 +27,7 @@ The following are the options supported for each index:
     * UnitRange - `crpsdata[2][9][1][1:2]` (extracts part 1 to part 2 of word 1 of verse 9 of chapter 2)
     * Array{Int64,1} - `crpsdata[2][9][1][[1,2]]` (extracts part 1 and part 2 of word 1 of verse 9 of chapter 2)
 
-Hence, to extract chapters verses 9 of chapter 2 of both `TanzilData` and `CorpusData` are given below:
+As an example, the following will extract verse 9 of chapter 2 in both `TanzilData` and `CorpusData`:
 ```@repl abc
 using QuranTree
 
@@ -38,7 +38,7 @@ tnzldata = table(tnzl);
 crpsdata[2][9]
 tnzldata[2][9]
 ```
-As shown above, the output of the indexing returns the label for the chapter name, both in Arabic and in English. Again the output of the `crpsdata[2][9]` is not shown, since the width of the output is wider than the width of the output pane. So, PrettyTables.jl can be used to view the table, as follows:
+As shown above, the output of the indexing contains label for the chapter name, both in Arabic and in English. Again, the output of the `crpsdata[2][9]` is not shown, since the width of the output is wider than the width of the output pane. So, [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) is used to view the table:
 ```@setup abc
 using Pkg
 Pkg.add("PrettyTables")
@@ -49,12 +49,15 @@ using PrettyTables
 @pt crpsdata[2][9]
 ```
 ## Combinations of Indices
-Combinations of these indices are also supported. For example, to extract chapters 111 to 114, verses 1 and 3, is done as follows:
+Combinations of these indices are also supported. For example, the following will extract chapters 111 to 114, each with verses 1 and 3:
 ```@repl abc
-@pt crpsdata[111:114][[1,3]] # or crpsdata[end-3:end][[1,3]]
-@pt tnzldata[111:114][[1,3]] # or tnzldata[end-3:end][[1,3]]
+@pt crpsdata[111:114][[1,3]]
+@pt tnzldata[111:114][[1,3]] 
 ```
-Further, to extract part 1 of words 1 to 3 of the above `CorpusData` output, is done as follows:
+!!! info "Info"
+    Node that special index like `end` is applicable, for example `crpsdata[111:114][[1,3]]` is the same as `crpsdata[end-3:end][[1,3]]`, and `tnzldata[111:114][[1,3]]` is equivalent to `tnzldata[end-3:end][[1,3]]`.
+
+Another example, the following will extract part 1 of words 1 to 3 of the above `CorpusData` output:
 ```@repl abc
 @pt crpsdata[111:114][[1,3]][1:3][1] 
 ```

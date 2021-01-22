@@ -2,7 +2,7 @@ Morphological Features
 =====
 QuranTree.jl provides complete types for all morphological features and part of speech of [The Quranic Arabic Corpus](https://corpus.quran.com/). 
 ## Parsing
-The features of each token are encoded as `String` in its raw form, and in order to parse this as morphological feature, the function `parse(Features, x)` is used. For example, the following will parse the 2nd part of the 3rd word of 1st verse of chapter 1:
+The features of each token are encoded as `String` in its raw form, and in order to parse this as morphological feature, the function `parse(Features, x)` is used, where `x` is the raw `String` input. For example, the following will parse the 2nd part of the 3rd word of 1st verse of chapter 1:
 ```@setup abc
 using Pkg
 Pkg.add("JuliaDB")
@@ -19,45 +19,52 @@ token = select(crpsdata[1][1][3][2].data, :features)
 mfeat = parse(Features, token[1])
 typeof(mfeat)
 ```
+!!! note 'Note'
+    You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) to successfully run the code. 
+    ```julia
+    using Pkg
+    Pkg.add("JuliaDB")
+    ```
 ## Extracting Detailed Description
 To see the detailed description of the features, `@desc` is used.
 ```@repl abc
 @desc mfeat
 ```
-Dumping the object gives details on how to access the properties of the `Stem` object.
+The Julia's `dump` function can be used as to how to access the properties of the `Stem` object.
 ```@repl abc
 dump(mfeat)
 
 # access other feats of the token
 mfeat.feats
 ```
-## Checking Part of Speech
-`isfeature(token, pos)` checks whether the `token`'s parsed feature is a particular part of speech (`pos`). For example, the following checks whether `mfeat` above is indeed `Masculine` and `Singular`, among others.
+## Checking Parts of Speech
+`isfeature(token, pos)` checks whether the `token`'s parsed feature is a particular part of speech (`pos`). For example, the following checks whether `mfeat` above, among others, is indeed `Masculine` and `Singular`.
 ```@repl abc
 isfeature(mfeat, Masculine)
 isfeature(mfeat, Feminine)
 isfeature(mfeat, Singular)
 isfeature(mfeat, Adjective) && isfeature(mfeat, Genetive)
 ```
-To further check if it has Root and Lemma,
+Another example on checking whether the token has `Root` and `Lemma` features.
 ```@repl abc
 isfeature(mfeat, Root) && isfeature(mfeat, Lemma)
 ```
-`isfeature(...)` is useful when working with the JuliaDB.jl's filter function, instead of using regular expressions. For example,
-```@setup abc
-using Pkg
-Pkg.add("PrettyTables")
-```
-```@repl abc
-using PrettyTables
-@ptconf vcrop_mode=:middle tf=tf_compact
+!!! tip "Tips"
+    `isfeature(...)` is useful when working with the JuliaDB.jl's filter function, instead of using regular expressions. For example,
+    ```@setup abc
+    using Pkg
+    Pkg.add("PrettyTables")
+    ```
+    ```@repl abc
+    using PrettyTables
+    @ptconf vcrop_mode=:middle tf=tf_compact
 
-tbl = filter(t -> isfeature(parse(Features, t.features), ActiveParticle), crpsdata.data)
+    tbl = filter(t -> isfeature(parse(Features, t.features), ActiveParticle), crpsdata.data)
 
-@pt select(tbl, Not(:word, :part, :tag))
-```
+    @pt select(tbl, Not(:word, :part, :tag))
+    ```
 ## Lemma, Root and Special
-`root`, `lemma` and `special` functions extract the Root, Lemma and Special morphological features, respectively. 
+`root`, `lemma` and `special` functions are used for extracting the Root, Lemma and Special morphological features, respectively. 
 ```@repl abc
 root(mfeat)
 lemma(mfeat)
@@ -73,7 +80,7 @@ special(mfeat2)
 arabic(special(mfeat2))
 ```
 ## Implied Verb Features
-Arabic Verbs are rich in morphology and some features are implied. For example, the *Voice* feature of the Verb is default to *Active voice*, the *Mood* feature is default to *Indicative mood*, and the *Verb form* feature is default to *First form*. 
+Some features of Quranic Arabic Verbs are implied. For example, the *Voice* feature of the Verb is default to *Active voice*, the *Mood* feature is default to *Indicative mood*, and the *Verb form* feature is default to *First form*. 
 ```@repl abc
 token3 = select(crpsdata.data, :features)[27]
 ```
@@ -89,7 +96,7 @@ mfeat4 = parse(Features, token4)
 @desc mfeat4
 ```
 ## POS Abstract Types
-As shown in the table below, each part of speech has a corresponding parent type, which is a superset type in the type hierarchy. This is useful for grouping. For example, instead of using `||` (or) in checking for all tokens that are either `FirstPerson`, `SecondPerson`, or `ThirdPerson`, the parent type `AbstractPerson` can be used.
+The table below contains the complete list of the Part of Speech with its corresponding types. As shown in the table below, each part of speech has a corresponding parent type, which is a superset type in the Type Hierarchy. This is useful for grouping. For example, instead of using `||` (or) in checking for all tokens that are either `FirstPerson`, `SecondPerson`, or `ThirdPerson`, the parent type `AbstractPerson` can be used.
 ```@repl abc
 # without using parent type
 function allpersons(t)

@@ -18,7 +18,7 @@ include("print.jl")
 export BW_ENCODING, AR_DIACS_REGEX, SP_REGEX_CHARS, _TF_COMPACT_
 export @data, load, table, arabic, verses, chapter_name, description,
        dediac, normalize, encode, verses, feature, isfeature,
-       root, lemma, special
+       root, lemma, special, words
 export @desc, @transliterator, Transliterator, genproperties
 export CorpusRaw, TanzilRaw, CorpusData, TanzilData, QuranData, Suffix, Prefix, Stem, Features, 
        SimpleEncoder, MetaData, Root, Lemma, Special

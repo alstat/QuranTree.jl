@@ -1,3 +1,11 @@
 Natural Language Processing
 =====
-In this section, we will demonstrate how to perform some Natural Language Processing task using QuranTree.jl with Julia's TextAnalysis.jl library. In particular, we will emphasize on how to come up with a feature matrix that can be used as input for any NLP tasks.
+The goal of this section is to demonstrate the use of the package for Natural Language Processing. At the moment, the following are the available applications:
+
+```@contents
+Pages = [
+    "man/nlp/text_summarization.md"
+    "man/nlp/topic_modeling.md"
+]
+Depth = 2
+```

@@ -1,5 +1,6 @@
-# Topic Modeling
-In this section, we are going to extract the topics for Chapters 2 to Chapters 12. To do this, Latent Dirichlet Allocation (LDA) is used to model the topics. Let's start with fresh data:
+Topic Modeling
+============
+Another application of Natural Language Processing is Topic Modeling, and in this section, we are going to extract the topics for Chapter 18 (The Cave). To do this, again [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/) (Julia's leading NLP library) is used. The model for this task will be Latent Dirichlet Allocation (LDA), but Latent Semantic Analysis (LSA) is also available in [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/). To start with, load the data as follows:
 ```@setup abc
 using Pkg
 Pkg.add("JuliaDB")
@@ -17,62 +18,73 @@ crps, tnzl = QuranData() |> load;
 crpsdata = table(crps)
 ```
 
+You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code above. 
+
 ## Data Preprocessing
-To start with, we first clean the data by removing the Disconnected Letters such as الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:
+The first data processing will be the removal of all Disconnected Letters like الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:
 ```@repl abc
 function preprocess(s::String)
     feat = parse(Features, s)
     disletters = isfeature(feat, AbstractDisLetters)
-    prepositions = isfeature(feat, Stem) && isfeature(feat, Preposition)
+    prepositions = isfeature(feat, AbstractPreposition)
+    particles = isfeature(feat, AbstractParticle)
     conjunctions = isfeature(feat, AbstractConjunction)
     pronouns = isfeature(feat, AbstractPronoun)
+    adverbs = isfeature(feat, AbstractAdverb)
 
-    return !disletters && !prepositions && !conjunctions && !pronouns
+    return !disletters && !prepositions && !particles && !conjunctions && !pronouns && !adverbs
 end
 
-crpstbl = filter(t -> preprocess(t.features), crpsdata[2].data)
+crpstbl = filter(t -> preprocess(t.features), crpsdata[18].data)
 ```
-Next, we need to create a copy of the above data so we have the original state, and use the copy to do further data processing.
+Next, we create a copy of the above data so we have the original state, and use the copy to do further data processing.
 ```@repl abc
 crpsnew = deepcopy(crpstbl)
 feats = select(crpsnew, :features)
 feats = parse.(Features, feats)
 ```
 ## Lemmatization
-Using the above parsed features, we then convert the `form` of the tokens to its lemma. This is useful for addressing minimal variations due to inflection.
+Using the above parsed features, we then convert the `form` of the tokens into its lemma. This is useful for addressing minimal variations due to inflection.
 ```@repl abc
 lemmas = lemma.(feats)
 forms1 = select(crpsnew, :form)
 forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]
 ```
-We can also use the Root features instead, which is done by simply replacing `lemma.(feats)` with `root.(feats)`. We now put back the new form to the corpus:
+!!! tip "Tips"
+    We can also use the `Root` features instead, which is done by simply replacing `lemma.(feats)` with `root.(feats)`. 
+
+We now put back the new form to the corpus:
 ```@repl abc
 crpsnew = transform(crpsnew, :form => forms1)
 crpsnew = CorpusData(crpsnew)
 ```
 ## Tokenization
-We want to summarize the document, in this case the Qur'an, using its verses. In doing so, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:
+We want to summarize the Qur'an at the verse level. Thus, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:
 ```@repl abc
 lem_vrs = verses(crpsnew)
 vrs = QuranTree.normalize.(dediac.(lem_vrs))
 ```
 ## Creating a TextAnalysis Corpus
-To make use of the TextAnalysis.jl's api, we need to encode the processed Quranic Corpus to TextAnalysis.jl's Corpus. In this case, we will create a String document of the verses.
+To make use of the [TextAnalysis.jl's APIs](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/APIReference/), we need to encode the processed Quranic Corpus to [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/)'s Corpus. In this case, we will create a `StringDocument` of the verses.
 ```@repl abc
-crps1 = Corpus(NGramDocument.(ngrams.(StringDocument.(vrs), 3)))
+crps1 = Corpus(StringDocument.(vrs))
 ```
 We then update the lexicon and inverse index for efficient indexing of the corpus.
 ```@repl abc
 update_lexicon!(crps1)
 update_inverse_index!(crps1)
 ```
-We then create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.
+Next, we create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.
 ```@repl abc
 m1 = DocumentTermMatrix(crps1)
-k = 3       # number of topics
-iter = 1000 # number of gibbs sampling iterations
-alpha = 0.1 # hyperparameter
-beta = 0.1  # hyperparameter
+```
+## Latent Dirichlet Allocation
+Finally, run LDA as follows:
+```@repl abc
+k = 3          # number of topics
+iter = 1000    # number of gibbs sampling iterations
+alpha = 0.1    # hyperparameter
+beta = 0.1     # hyperparameter
 ϕ, θ = lda(m1, k, iter, alpha, beta)
 ```
 Extract the topic for first cluster:
@@ -93,3 +105,13 @@ for i = 1:dtm(m1).m
 end
 @pt vrs_topics
 ```
+Tabulating this propery would give us the following
+```@example abc
+Pkg.add("DataFrames")
+Pkg.add("Latexify")
+using DataFrames: DataFrame
+using Latexify
+
+mdtable(convert(DataFrame, cluster_topics), latex=false)
+```
+As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their own use. This section, however, demonstrated how [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/)'s LDA can be used for Topic Modeling the QuranTree.jl's corpus.
