@@ -44,6 +44,4 @@ julia> Pkg.add("https://github.com/alstat/QuranTree.jl")
  * PrettyTables.jl >= 0.10.1
 
 ## Usage
-See the [documentation](docs-dev-url).
-
-[docs-dev-url]: https://alstat.github.io/QuranTree.jl/dev/
+See the [documentation](https://alstat.github.io/QuranTree.jl/dev/).
