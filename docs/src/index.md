@@ -41,6 +41,6 @@ julia> using Pkg
 julia> Pkg.add("https://github.com/alstat/QuranTree.jl")
 ```
 ## Requirements
- * Julia >= 1.0
- * JuliaDB.jl >= 0.13.0
- * PrettyTables.jl >= 0.10.1
+ * [Julia](https://julialang.org/) >= 1.0
+ * [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) >= 0.13.0
+ * [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) >= 0.10.1
