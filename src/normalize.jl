@@ -55,6 +55,7 @@ julia> crpsdata = table(crps);
 julia> tnzldata = table(tnzl);
 julia> normalize(arabic(verses(crpsdata[1][1])[1]), [:alif_khanjareeya, :hamzat_wasl])
 "بِسْمِ اللَّهِ الرَّحْمَانِ الرَّحِيمِ"
+```
 """
 function normalize(s::String, chars::Array{Symbol,1})
     for char in chars

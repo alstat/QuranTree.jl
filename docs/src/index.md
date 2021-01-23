@@ -35,10 +35,10 @@ The following are the features of the package:
     * Read-only array for raw datasets (Corpus and Tanzil)
 
 ## Installation
-The library will soon be added to the Julia Package Registry, still finishing up the documentation. For now, QuranTree.jl can be installed as follows:
+QuranTree.jl is a Julia registered package, and can be installed as follows:
 ```julia
 julia> using Pkg
-julia> Pkg.add("https://github.com/alstat/QuranTree.jl")
+julia> Pkg.add("QuranTree")
 ```
 ## Requirements
  * [Julia](https://julialang.org/) >= 1.0
