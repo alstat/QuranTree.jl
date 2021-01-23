@@ -4,7 +4,7 @@ using QuranTree
 makedocs(
     sitename = "QuranTree.jl",
     format = Documenter.HTML(
-        assets = ["assets/favicon.ico"]
+        assets = ["assets/logo.ico"]
     ),
     modules = [QuranTree],
     authors = "Al-Ahmadgaid B. Asaad",
