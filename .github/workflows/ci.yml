@@ -50,6 +50,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - run: pip install camel-tools
+      - run: camel_tools light
       - uses: julia-actions/setup-julia@v1
         with:
           version: '1'
@@ -63,7 +68,6 @@ jobs:
             using Documenter: doctest
             using QuranTree
             doctest(QuranTree)'
-      - run: pip install camel-tools; camel_tools light
       - run: julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
