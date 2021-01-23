@@ -1,7 +1,7 @@
 name = "QuranTree"
 uuid = "f647ab69-6f05-4d64-883f-59d0fbe08d2b"
 authors = ["Al-Ahmadgaid B. Asaad"]
-version = "0.1.1"
+version = "0.1.0"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"

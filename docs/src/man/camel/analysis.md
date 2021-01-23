@@ -42,8 +42,10 @@ using Latexify
 
 mdtable(DataFrame(tbl), latex=false)
 ```
-\
-\
+```@raw html
+<br/>
+```
+
 !!! info "Note"
     You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
     ```julia

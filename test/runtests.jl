@@ -80,6 +80,12 @@ end
     # arabic
     @test arabic(verses(crpsdata[114])[1]) === "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
     @test arabic(verses(crpsdata[1][7])[1]) === "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
+    # number
+    @test verses(tnzldata[1][7], number=true)[1] === "1:(7)"
+    @test verses(tnzldata[1][7], number=true, start_end=false)[1] == ([1], [7])
+
+    # words
+    @test words(tnzldata[1][7])[1] === "صِرَٰطَ"
 
     # encoding
     @test encode(arabic(verses(crpsdata[1][7])[1])) === verses(crpsdata[1][7])[1]
