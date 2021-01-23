@@ -17,7 +17,7 @@ using TextAnalysis
 crps, tnzl = QuranData() |> load;
 crpsdata = table(crps)
 ```
-!!! info 'Note'
+!!! info "Note"
     You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
     ```julia
     using Pkg
@@ -102,14 +102,6 @@ for i = 1:k
 end
 @pt cluster_topics
 ```
-Extract the topic for each verse
-```@repl abc
-vrs_topics = []
-for i = 1:dtm(m1).m
-    push!(vrs_topics, sortperm(θ[:, i], rev=true)[1])
-end
-@pt vrs_topics
-```
 Tabulating this propery would give us the following
 ```@example abc
 Pkg.add("DataFrames")
@@ -120,3 +112,12 @@ using Latexify
 mdtable(convert(DataFrame, cluster_topics), latex=false)
 ```
 As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their own use. This section, however, demonstrated how [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/)'s LDA can be used for Topic Modeling the QuranTree.jl's corpus.
+
+Finally, the following will extract the topic for each verse:
+```@repl abc
+vrs_topics = []
+for i = 1:dtm(m1).m
+    push!(vrs_topics, sortperm(θ[:, i], rev=true)[1])
+end
+@pt vrs_topics
+```

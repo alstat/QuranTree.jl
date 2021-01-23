@@ -1,5 +1,11 @@
 Natural Language Processing
 =====
+```@meta
+CurrentModule = PrettyTables
+DocTestSetup = quote
+    using PrettyTables
+end
+```
 The goal of this section is to demonstrate the use of the package for Natural Language Processing. At the moment, the following are the available applications:
 
 ```@contents

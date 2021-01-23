@@ -13,7 +13,7 @@ encode(vrs[1])
 The `verses` function above is used to extract the corresponding verse from the Qur'an data of type `AbstractQuran`.
 !!! tip "Tips"
     `verses` by default only returns the verse form of the table, but one can also extract the corresponding verse number instead of the form, example:
-    ```@repl abc
+    ```julia
     verses(tnzldata, number=true, start_end=true)
     verses(tnzldata, number=true, start_end=false)
     ```

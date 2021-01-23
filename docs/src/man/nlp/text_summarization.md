@@ -17,7 +17,7 @@ using TextAnalysis
 crps, tnzl = QuranData() |> load;
 crpsdata = table(crps)
 ```
-!!! info 'Note'
+!!! info "Note"
     You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
     ```julia
     using Pkg
@@ -146,11 +146,11 @@ The following is the table of the above output properly formatted in HTML.
 Pkg.add("DataFrames")
 Pkg.add("IterableTables")
 Pkg.add("Latexify")
-using DataFrames
+using DataFrames: DataFrame
 using IterableTables
 using Latexify
 
-mdtable(DataFrame(tbl), cluster_topics), latex=false)
+mdtable(DataFrame(tbl), latex=false)
 ```
 The following are the translations of the above verses:
 ```@raw html

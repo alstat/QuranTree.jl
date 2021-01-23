@@ -19,7 +19,7 @@ token = select(crpsdata[1][1][3][2].data, :features)
 mfeat = parse(Features, token[1])
 typeof(mfeat)
 ```
-!!! info 'Note'
+!!! info "Note"
     You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) to successfully run the code. 
     ```julia
     using Pkg
@@ -52,11 +52,11 @@ isfeature(mfeat, Root) && isfeature(mfeat, Lemma)
 ```
 !!! tip "Tips"
     `isfeature(...)` is useful when working with the JuliaDB.jl's filter function, instead of using regular expressions. For example,
-    ```@setup abc
+    ```julia
     using Pkg
     Pkg.add("PrettyTables")
     ```
-    ```@repl abc
+    ```julia
     using PrettyTables
     @ptconf vcrop_mode=:middle tf=tf_compact
 
