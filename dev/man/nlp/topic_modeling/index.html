@@ -271,26 +271,26 @@ julia&gt; beta = 0.1     # hyperparameter
 
 julia&gt; ϕ, θ = lda(m1, k, iter, alpha, beta)
 (
-  [2,   1]  =  0.015748
-  [2,   2]  =  0.00524934
-  [2,   3]  =  0.00524934
-  [2,   4]  =  0.00262467
-  [3,   5]  =  0.00319489
-  [2,   6]  =  0.00262467
-  [3,   6]  =  0.0159744
-  [2,   7]  =  0.00262467
-  [2,   8]  =  0.0551181
+  [1,   1]  =  0.00564972
+  [2,   1]  =  0.0124224
+  [1,   2]  =  0.00564972
+  [1,   3]  =  0.00564972
+  [2,   4]  =  0.00310559
+  [2,   5]  =  0.00310559
+  [1,   6]  =  0.00282486
+  [2,   6]  =  0.0124224
+  [3,   6]  =  0.0042735
   ⋮
-  [2, 352]  =  0.00262467
-  [1, 353]  =  0.00925926
-  [3, 354]  =  0.00319489
-  [1, 355]  =  0.00462963
-  [1, 356]  =  0.00462963
-  [2, 357]  =  0.00524934
-  [1, 358]  =  0.00462963
-  [3, 359]  =  0.00319489
-  [3, 360]  =  0.00638978
-  [3, 361]  =  0.00319489, [0.0 0.0 … 0.23076923076923078 0.0; 0.5 1.0 … 0.0 0.13333333333333333; 0.5 0.0 … 0.7692307692307693 0.8666666666666667])</code></pre><p>Extract the topic for first cluster:</p><pre><code class="language-julia-repl">julia&gt; ntopics = 10
+  [1, 353]  =  0.00282486
+  [3, 353]  =  0.0042735
+  [3, 354]  =  0.0042735
+  [3, 355]  =  0.0042735
+  [3, 356]  =  0.0042735
+  [1, 357]  =  0.00564972
+  [3, 358]  =  0.0042735
+  [3, 359]  =  0.0042735
+  [2, 360]  =  0.00621118
+  [2, 361]  =  0.00310559, [1.0 1.0 … 0.0 0.4; 0.0 0.0 … 0.15384615384615385 0.0; 0.0 0.0 … 0.8461538461538461 0.6])</code></pre><p>Extract the topic for first cluster:</p><pre><code class="language-julia-repl">julia&gt; ntopics = 10
 10
 
 julia&gt; cluster_topics = Matrix(undef, ntopics, k);
@@ -304,22 +304,22 @@ julia&gt; @pt cluster_topics
  -------- -------- --------
   Col. 1   Col. 2   Col. 3
  -------- -------- --------
-     قال        ذ        ء
-     كان        ء      قال
-      رب      قال       رب
-  استطاع      وجد      كان
-     امر     الله      جعل
-    اتبع      اتخ        ل
-     لبث        ر      امن
-    اراد        ا      ارض
-     علم       رب      اتي
-     بحر      دون       جا
+       ذ        ء      قال
+       ء      قال      كان
+     قال       رب       رب
+     وجد      جعل   استطاع
+     دون      اتي     اتبع
+    الله      كان      بحر
+     اتخ        ل      لبث
+       ر      امن     اعلم
+      رب     الله     اراد
+       ا      ارض      علم
  -------- -------- --------</code></pre><p>Tabulating this propery would give us the following</p><pre><code class="language-julia">Pkg.add(&quot;DataFrames&quot;)
 Pkg.add(&quot;Latexify&quot;)
 using DataFrames: DataFrame
 using Latexify
 
-mdtable(convert(DataFrame, cluster_topics), latex=false)</code></pre><div class="markdown"><table><tr><th align="right">x1</th><th align="right">x2</th><th align="right">x3</th></tr><tr><td align="right">قال</td><td align="right">ذ</td><td align="right">ء</td></tr><tr><td align="right">كان</td><td align="right">ء</td><td align="right">قال</td></tr><tr><td align="right">رب</td><td align="right">قال</td><td align="right">رب</td></tr><tr><td align="right">استطاع</td><td align="right">وجد</td><td align="right">كان</td></tr><tr><td align="right">امر</td><td align="right">الله</td><td align="right">جعل</td></tr><tr><td align="right">اتبع</td><td align="right">اتخ</td><td align="right">ل</td></tr><tr><td align="right">لبث</td><td align="right">ر</td><td align="right">امن</td></tr><tr><td align="right">اراد</td><td align="right">ا</td><td align="right">ارض</td></tr><tr><td align="right">علم</td><td align="right">رب</td><td align="right">اتي</td></tr><tr><td align="right">بحر</td><td align="right">دون</td><td align="right">جا</td></tr></table>
+mdtable(convert(DataFrame, cluster_topics), latex=false)</code></pre><div class="markdown"><table><tr><th align="right">x1</th><th align="right">x2</th><th align="right">x3</th></tr><tr><td align="right">ذ</td><td align="right">ء</td><td align="right">قال</td></tr><tr><td align="right">ء</td><td align="right">قال</td><td align="right">كان</td></tr><tr><td align="right">قال</td><td align="right">رب</td><td align="right">رب</td></tr><tr><td align="right">وجد</td><td align="right">جعل</td><td align="right">استطاع</td></tr><tr><td align="right">دون</td><td align="right">اتي</td><td align="right">اتبع</td></tr><tr><td align="right">الله</td><td align="right">كان</td><td align="right">بحر</td></tr><tr><td align="right">اتخ</td><td align="right">ل</td><td align="right">لبث</td></tr><tr><td align="right">ر</td><td align="right">امن</td><td align="right">اعلم</td></tr><tr><td align="right">رب</td><td align="right">الله</td><td align="right">اراد</td></tr><tr><td align="right">ا</td><td align="right">ارض</td><td align="right">علم</td></tr></table>
 </div><p>As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their own use. This section, however, demonstrated how <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>&#39;s LDA can be used for Topic Modeling the QuranTree.jl&#39;s corpus.</p><p>Finally, the following will extract the topic for each verse:</p><pre><code class="language-julia-repl">julia&gt; vrs_topics = []
 Any[]
 
@@ -331,22 +331,22 @@ julia&gt; @pt vrs_topics
  --------
   Col. 1
  --------
-       2
-       2
-       2
+       1
+       1
+       1
        3
-       3
+       2
+       1
        3
        1
-       2
     ⋮
+       3
+       2
        1
-       3
+       1
        2
-       2
-       3
        3
        3
        3
  --------
-93 rows omitted</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../text_summarization/">« Text Summarization</a><a class="docs-footer-nextpage" href="../../camel/external/">Getting Started »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 23 January 2021 12:42">Saturday 23 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+93 rows omitted</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../text_summarization/">« Text Summarization</a><a class="docs-footer-nextpage" href="../../camel/external/">Getting Started »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 23 January 2021 16:13">Saturday 23 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
