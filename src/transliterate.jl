@@ -57,7 +57,7 @@ macro transliterator(dict, name)
 end
 
 """
-    @transliterator(dict)
+    @transliterator(symbl)
 
 Fallback to the default `Buckwalter` transliterator.
 ```julia-repl
