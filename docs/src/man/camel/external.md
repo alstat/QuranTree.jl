@@ -6,7 +6,7 @@ pip3 install camel-tools
 ```
 Then, download the necessary data as follows:
 ```bash
-camel_tools light
+camel_data light
 ```
 For this tutorial, we are going to use only the light version of the CAMeL data which is around 19mb.
 ## Julia PyCall.jl

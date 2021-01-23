@@ -54,7 +54,7 @@ jobs:
         with:
           python-version: '3.x'
       - run: pip install camel-tools
-      - run: camel_tools light
+      - run: camel_data light
       - uses: julia-actions/setup-julia@v1
         with:
           version: '1'
