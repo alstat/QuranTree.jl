@@ -6,7 +6,6 @@ DocTestSetup = quote
     using QuranTree
 end
 ```
-
 A Julia package for working with the Qur'an (Islam's Holy Book), computationally. QuranTree.jl is based on [The Quranic Arabic Corpus](https://corpus.quran.com/) by Kais Dukes of University of Leeds, and is aimed at offerring a high-level API alternative to the Java package, [JQuranTree](https://corpus.quran.com/java/overview.jsp). 
 ## Features
 The following are the features of the package:
