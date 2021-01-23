@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Topic Modeling · QuranTree.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../../"><img class="docs-light-only" src="../../../assets/logo.png" alt="QuranTree.jl logo"/><img class="docs-dark-only" src="../../../assets/logo-dark.png" alt="QuranTree.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit">QuranTree.jl</span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">Home</a></li><li><a class="tocitem" href="../../getting_started/">Getting Started</a></li><li><a class="tocitem" href="../../indexing/">Indexing</a></li><li><a class="tocitem" href="../../transliteration/">Transliteration</a></li><li><a class="tocitem" href="../../morphological_features/">Morphological Features</a></li><li><a class="tocitem" href="../../data_processing/">Data Processing</a></li><li><span class="tocitem">Natural Language Processing</span><ul><li><a class="tocitem" href="../nlp/">Introduction</a></li><li><a class="tocitem" href="../text_summarization/">Text Summarization</a></li><li class="is-active"><a class="tocitem" href>Topic Modeling</a></li></ul></li><li><span class="tocitem">CAMeL Tools</span><ul><li><a class="tocitem" href="../../camel/external/">Content</a></li></ul></li><li><a class="tocitem" href="../../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Natural Language Processing</a></li><li class="is-active"><a href>Topic Modeling</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Topic Modeling</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/alstat/QuranTree.jl/blob/master/docs/src/man/nlp/topic_modeling.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Topic-Modeling"><a class="docs-heading-anchor" href="#Topic-Modeling">Topic Modeling</a><a id="Topic-Modeling-1"></a><a class="docs-heading-anchor-permalink" href="#Topic-Modeling" title="Permalink"></a></h1><p>Another application of Natural Language Processing is Topic Modeling, and in this section, we are going to extract the topics for Chapter 18 (The Cave). To do this, again <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a> (Julia&#39;s leading NLP library) is used. The model for this task will be Latent Dirichlet Allocation (LDA), but Latent Semantic Analysis (LSA) is also available in <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>. To start with, load the data as follows:</p><pre><code class="language-julia-repl">julia&gt; using JuliaDB
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Topic Modeling · QuranTree.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../../"><img class="docs-light-only" src="../../../assets/logo.png" alt="QuranTree.jl logo"/><img class="docs-dark-only" src="../../../assets/logo-dark.png" alt="QuranTree.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit">QuranTree.jl</span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">Home</a></li><li><a class="tocitem" href="../../getting_started/">Getting Started</a></li><li><a class="tocitem" href="../../indexing/">Indexing</a></li><li><a class="tocitem" href="../../transliteration/">Transliteration</a></li><li><a class="tocitem" href="../../morphological_features/">Morphological Features</a></li><li><a class="tocitem" href="../../data_processing/">Data Processing</a></li><li><span class="tocitem">Natural Language Processing</span><ul><li><a class="tocitem" href="../nlp/">Introduction</a></li><li><a class="tocitem" href="../text_summarization/">Text Summarization</a></li><li class="is-active"><a class="tocitem" href>Topic Modeling</a><ul class="internal"><li><a class="tocitem" href="#Data-Preprocessing"><span>Data Preprocessing</span></a></li><li><a class="tocitem" href="#Lemmatization"><span>Lemmatization</span></a></li><li><a class="tocitem" href="#Tokenization"><span>Tokenization</span></a></li><li><a class="tocitem" href="#Creating-a-TextAnalysis-Corpus"><span>Creating a TextAnalysis Corpus</span></a></li><li><a class="tocitem" href="#Latent-Dirichlet-Allocation"><span>Latent Dirichlet Allocation</span></a></li></ul></li></ul></li><li><span class="tocitem">CAMeL Tools</span><ul><li><a class="tocitem" href="../../camel/external/">Content</a></li></ul></li><li><a class="tocitem" href="../../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Natural Language Processing</a></li><li class="is-active"><a href>Topic Modeling</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Topic Modeling</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/alstat/QuranTree.jl/blob/master/docs/src/man/nlp/topic_modeling.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Topic-Modeling"><a class="docs-heading-anchor" href="#Topic-Modeling">Topic Modeling</a><a id="Topic-Modeling-1"></a><a class="docs-heading-anchor-permalink" href="#Topic-Modeling" title="Permalink"></a></h1><p>Another application of Natural Language Processing is Topic Modeling, and in this section, we are going to extract the topics for Chapter 18 (The Cave). To do this, again <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a> (Julia&#39;s leading NLP library) is used. The model for this task will be Latent Dirichlet Allocation (LDA), but Latent Semantic Analysis (LSA) is also available in <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>. To start with, load the data as follows:</p><pre><code class="language-julia-repl">julia&gt; using JuliaDB
 
 julia&gt; using PrettyTables
 
@@ -25,17 +25,328 @@ Columns:
 4  part      Int64
 5  form      String
 6  tag       String
-7  features  String</code></pre><p>!!! info &#39;Note&#39;     You need to install <a href="https://github.com/JuliaData/JuliaDB.jl">JuliaDB.jl</a> and <a href="https://github.com/ronisbr/PrettyTables.jl">PrettyTables.jl</a> to successfully run the code. </p><pre><code class="language-julia">    using Pkg
-    Pkg.add(&quot;JuliaDB&quot;)
-    Pkg.add(&quot;PrettyTables&quot;)
-    ```
+7  features  String</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>You need to install <a href="https://github.com/JuliaData/JuliaDB.jl">JuliaDB.jl</a> and <a href="https://github.com/ronisbr/PrettyTables.jl">PrettyTables.jl</a> to successfully run the code. </p><pre><code class="language-julia">using Pkg
+Pkg.add(&quot;JuliaDB&quot;)
+Pkg.add(&quot;PrettyTables&quot;)</code></pre></div></div><h2 id="Data-Preprocessing"><a class="docs-heading-anchor" href="#Data-Preprocessing">Data Preprocessing</a><a id="Data-Preprocessing-1"></a><a class="docs-heading-anchor-permalink" href="#Data-Preprocessing" title="Permalink"></a></h2><p>The first data processing will be the removal of all Disconnected Letters like الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:</p><pre><code class="language-julia-repl">julia&gt; function preprocess(s::String)
+           feat = parse(Features, s)
+           disletters = isfeature(feat, AbstractDisLetters)
+           prepositions = isfeature(feat, AbstractPreposition)
+           particles = isfeature(feat, AbstractParticle)
+           conjunctions = isfeature(feat, AbstractConjunction)
+           pronouns = isfeature(feat, AbstractPronoun)
+           adverbs = isfeature(feat, AbstractAdverb)
+       
+           return !disletters &amp;&amp; !prepositions &amp;&amp; !particles &amp;&amp; !conjunctions &amp;&amp; !pronouns &amp;&amp; !adverbs
+       end
+preprocess (generic function with 1 method)
 
-## Data Preprocessing
-The first data processing will be the removal of all Disconnected Letters like الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:</code></pre><p>@repl abc function preprocess(s::String)     feat = parse(Features, s)     disletters = isfeature(feat, AbstractDisLetters)     prepositions = isfeature(feat, AbstractPreposition)     particles = isfeature(feat, AbstractParticle)     conjunctions = isfeature(feat, AbstractConjunction)     pronouns = isfeature(feat, AbstractPronoun)     adverbs = isfeature(feat, AbstractAdverb)</p><pre><code class="language-none">return !disletters &amp;&amp; !prepositions &amp;&amp; !particles &amp;&amp; !conjunctions &amp;&amp; !pronouns &amp;&amp; !adverbs</code></pre><p>end</p><p>crpstbl = filter(t -&gt; preprocess(t.features), crpsdata[18].data)</p><pre><code class="language-none">Next, we create a copy of the above data so we have the original state, and use the copy to do further data processing.</code></pre><p>@repl abc crpsnew = deepcopy(crpstbl) feats = select(crpsnew, :features) feats = parse.(Features, feats)</p><pre><code class="language-none">## Lemmatization
-Using the above parsed features, we then convert the `form` of the tokens into its lemma. This is useful for addressing minimal variations due to inflection.</code></pre><p>@repl abc lemmas = lemma.(feats) forms1 = select(crpsnew, :form) forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]</p><pre><code class="language-none">!!! tip &quot;Tips&quot;
-    We can also use the `Root` features instead, which is done by simply replacing `lemma.(feats)` with `root.(feats)`. 
+julia&gt; crpstbl = filter(t -&gt; preprocess(t.features), crpsdata[18].data)
+Table with 827 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String</code></pre><p>Next, we create a copy of the above data so we have the original state, and use the copy to do further data processing.</p><pre><code class="language-julia-repl">julia&gt; crpsnew = deepcopy(crpstbl)
+Table with 827 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String
 
-We now put back the new form to the corpus:</code></pre><p>@repl abc crpsnew = transform(crpsnew, :form =&gt; forms1) crpsnew = CorpusData(crpsnew)</p><pre><code class="language-none">## Tokenization
-We want to summarize the Qur&#39;an at the verse level. Thus, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:</code></pre><p>@repl abc lem<em>vrs = verses(crpsnew) vrs = QuranTree.normalize.(dediac.(lem</em>vrs))</p><pre><code class="language-none">## Creating a TextAnalysis Corpus
-To make use of the [TextAnalysis.jl&#39;s APIs](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/APIReference/), we need to encode the processed Quranic Corpus to [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/)&#39;s Corpus. In this case, we will create a `StringDocument` of the verses.</code></pre><p>@repl abc crps1 = Corpus(StringDocument.(vrs))</p><pre><code class="language-none">We then update the lexicon and inverse index for efficient indexing of the corpus.</code></pre><p>@repl abc update<em>lexicon!(crps1) update</em>inverse_index!(crps1)</p><pre><code class="language-none">Next, we create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.</code></pre><p>@repl abc m1 = DocumentTermMatrix(crps1)</p><pre><code class="language-none">## Latent Dirichlet Allocation
-Finally, run LDA as follows:</code></pre><p>@repl abc k = 3          # number of topics iter = 1000    # number of gibbs sampling iterations alpha = 0.1    # hyperparameter beta = 0.1     # hyperparameter ϕ, θ = lda(m1, k, iter, alpha, beta)</p><pre><code class="language-none">Extract the topic for first cluster:</code></pre><p>@repl abc ntopics = 10 cluster<em>topics = Matrix(undef, ntopics, k); for i = 1:k     topics</em>idcs = sortperm(ϕ[i, :], rev=true)     cluster<em>topics[:, i] = arabic.(m1.terms[topics</em>idcs][1:ntopics]) end @pt cluster_topics</p><pre><code class="language-none">Extract the topic for each verse</code></pre><p>@repl abc vrs<em>topics = [] for i = 1:dtm(m1).m     push!(vrs</em>topics, sortperm(θ[:, i], rev=true)[1]) end @pt vrs_topics</p><pre><code class="language-none">Tabulating this propery would give us the following</code></pre><p>@example abc Pkg.add(&quot;DataFrames&quot;) Pkg.add(&quot;Latexify&quot;) using DataFrames: DataFrame using Latexify</p><p>mdtable(convert(DataFrame, cluster_topics), latex=false) ``` As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their own use. This section, however, demonstrated how <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>&#39;s LDA can be used for Topic Modeling the QuranTree.jl&#39;s corpus.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../text_summarization/">« Text Summarization</a><a class="docs-footer-nextpage" href="../../camel/external/">Content »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 23 January 2021 00:27">Saturday 23 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+julia&gt; feats = select(crpsnew, :features)
+827-element WeakRefStrings.StringArray{String,1}:
+ &quot;STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM&quot;
+ &quot;STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN&quot;
+ &quot;STEM|POS:V|PERF|(IV)|LEM:&gt;anzala|ROOT:nzl|3MS&quot;
+ &quot;STEM|POS:N|LEM:Eabod|ROOT:Ebd|M|GEN&quot;
+ &quot;STEM|POS:V|IMPF|LEM:jaEala|ROOT:jEl|3MS|MOOD:JUS&quot;
+ &quot;STEM|POS:N|LEM:Eiwaj|ROOT:Ewj|M|NOM&quot;
+ &quot;PREFIX|l:PRP+&quot;
+ &quot;STEM|POS:V|IMPF|(IV)|LEM:&gt;an*ara|ROOT:n*r|3MS|MOOD:SUBJ&quot;
+ &quot;STEM|POS:N|LEM:l~adun|ROOT:ldn|GEN&quot;
+ &quot;STEM|POS:V|IMPF|(II)|LEM:bu\$~ira|ROOT:b\$r|3MS|MOOD:SUBJ&quot;
+ ⋮
+ &quot;STEM|POS:ADJ|LEM:wa`Hid|ROOT:wHd|MS|INDEF|NOM&quot;
+ &quot;STEM|POS:V|PERF|LEM:kaAna|ROOT:kwn|SP:kaAn|3MS&quot;
+ &quot;STEM|POS:V|IMPF|LEM:yarojuwA@|ROOT:rjw|3MS&quot;
+ &quot;STEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN&quot;
+ &quot;PREFIX|l:IMPV+&quot;
+ &quot;STEM|POS:V|IMPF|LEM:Eamila|ROOT:Eml|3MS|MOOD:JUS&quot;
+ &quot;STEM|POS:V|IMPF|(IV)|LEM:&gt;a\$oraka|ROOT:\$rk|3MS|MOOD:JUS&quot;
+ &quot;STEM|POS:N|LEM:EibaAdat|ROOT:Ebd|F|GEN&quot;
+ &quot;STEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN&quot;
+
+julia&gt; feats = parse.(Features, feats)
+827-element Array{AbstractFeature,1}:
+ Stem(:N, N, AbstractFeature[Lemma(&quot;Hamod&quot;), Root(&quot;Hmd&quot;), M, NOM])
+ Stem(:PN, PN, AbstractFeature[Lemma(&quot;{ll~ah&quot;), Root(&quot;Alh&quot;), GEN])
+ Stem(:V, V, AbstractFeature[Lemma(&quot;&gt;anzala&quot;), Root(&quot;nzl&quot;), PERF, IV, 3, M, S, IND, ACT])
+ Stem(:N, N, AbstractFeature[Lemma(&quot;Eabod&quot;), Root(&quot;Ebd&quot;), M, GEN])
+ Stem(:V, V, AbstractFeature[Lemma(&quot;jaEala&quot;), Root(&quot;jEl&quot;), JUS, IMPF, 3, M, S, ACT, I])
+ Stem(:N, N, AbstractFeature[Lemma(&quot;Eiwaj&quot;), Root(&quot;Ewj&quot;), M, NOM])
+ Prefix(Symbol(&quot;l:PRP+&quot;), PRP)
+ Stem(:V, V, AbstractFeature[Lemma(&quot;&gt;an*ara&quot;), Root(&quot;n*r&quot;), SUBJ, IMPF, IV, 3, M, S, ACT])
+ Stem(:N, N, AbstractFeature[Lemma(&quot;l~adun&quot;), Root(&quot;ldn&quot;), GEN])
+ Stem(:V, V, AbstractFeature[Lemma(&quot;bu\$~ira&quot;), Root(&quot;b\$r&quot;), SUBJ, IMPF, II, 3, M, S, ACT])
+ ⋮
+ Stem(:ADJ, ADJ, AbstractFeature[Lemma(&quot;wa`Hid&quot;), Root(&quot;wHd&quot;), M, S, INDEF, NOM])
+ Stem(:V, V, AbstractFeature[Lemma(&quot;kaAna&quot;), Root(&quot;kwn&quot;), Special(&quot;kaAn&quot;), PERF, 3, M, S, IND, ACT, I])
+ Stem(:V, V, AbstractFeature[Lemma(&quot;yarojuwA@&quot;), Root(&quot;rjw&quot;), IMPF, 3, M, S, IND, ACT, I])
+ Stem(:N, N, AbstractFeature[Lemma(&quot;rab~&quot;), Root(&quot;rbb&quot;), M, GEN])
+ Prefix(Symbol(&quot;l:IMPV+&quot;), IMPV)
+ Stem(:V, V, AbstractFeature[Lemma(&quot;Eamila&quot;), Root(&quot;Eml&quot;), JUS, IMPF, 3, M, S, ACT, I])
+ Stem(:V, V, AbstractFeature[Lemma(&quot;&gt;a\$oraka&quot;), Root(&quot;\$rk&quot;), JUS, IMPF, IV, 3, M, S, ACT])
+ Stem(:N, N, AbstractFeature[Lemma(&quot;EibaAdat&quot;), Root(&quot;Ebd&quot;), F, GEN])
+ Stem(:N, N, AbstractFeature[Lemma(&quot;rab~&quot;), Root(&quot;rbb&quot;), M, GEN])</code></pre><h2 id="Lemmatization"><a class="docs-heading-anchor" href="#Lemmatization">Lemmatization</a><a id="Lemmatization-1"></a><a class="docs-heading-anchor-permalink" href="#Lemmatization" title="Permalink"></a></h2><p>Using the above parsed features, we then convert the <code>form</code> of the tokens into its lemma. This is useful for addressing minimal variations due to inflection.</p><pre><code class="language-julia-repl">julia&gt; lemmas = lemma.(feats)
+827-element Array{Union{Missing, String},1}:
+ &quot;Hamod&quot;
+ &quot;{ll~ah&quot;
+ &quot;&gt;anzala&quot;
+ &quot;Eabod&quot;
+ &quot;jaEala&quot;
+ &quot;Eiwaj&quot;
+ missing
+ &quot;&gt;an*ara&quot;
+ &quot;l~adun&quot;
+ &quot;bu\$~ira&quot;
+ ⋮
+ &quot;wa`Hid&quot;
+ &quot;kaAna&quot;
+ &quot;yarojuwA@&quot;
+ &quot;rab~&quot;
+ missing
+ &quot;Eamila&quot;
+ &quot;&gt;a\$oraka&quot;
+ &quot;EibaAdat&quot;
+ &quot;rab~&quot;
+
+julia&gt; forms1 = select(crpsnew, :form)
+827-element WeakRefStrings.StringArray{String,1}:
+ &quot;Hamodu&quot;
+ &quot;l~ahi&quot;
+ &quot;&gt;anzala&quot;
+ &quot;Eabodi&quot;
+ &quot;yajoEal&quot;
+ &quot;EiwajaA&quot;
+ &quot;l~i&quot;
+ &quot;yun*ira&quot;
+ &quot;l~aduno&quot;
+ &quot;yuba\$~ira&quot;
+ ⋮
+ &quot;wa`HidN&quot;
+ &quot;kaAna&quot;
+ &quot;yarojuwA@&quot;
+ &quot;rab~i&quot;
+ &quot;lo&quot;
+ &quot;yaEomalo&quot;
+ &quot;yu\$oriko&quot;
+ &quot;EibaAdapi&quot;
+ &quot;rab~i&quot;
+
+julia&gt; forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]
+795-element Array{Union{Missing, String},1}:
+ &quot;Hamod&quot;
+ &quot;{ll~ah&quot;
+ &quot;&gt;anzala&quot;
+ &quot;Eabod&quot;
+ &quot;jaEala&quot;
+ &quot;Eiwaj&quot;
+ &quot;&gt;an*ara&quot;
+ &quot;l~adun&quot;
+ &quot;bu\$~ira&quot;
+ &quot;Eamila&quot;
+ ⋮
+ &quot;&lt;ila`h&quot;
+ &quot;wa`Hid&quot;
+ &quot;kaAna&quot;
+ &quot;yarojuwA@&quot;
+ &quot;rab~&quot;
+ &quot;Eamila&quot;
+ &quot;&gt;a\$oraka&quot;
+ &quot;EibaAdat&quot;
+ &quot;rab~&quot;</code></pre><div class="admonition is-success"><header class="admonition-header">Tips</header><div class="admonition-body"><p>We can also use the <code>Root</code> features instead, which is done by simply replacing <code>lemma.(feats)</code> with <code>root.(feats)</code>. </p></div></div><p>We now put back the new form to the corpus:</p><pre><code class="language-julia-repl">julia&gt; crpsnew = transform(crpsnew, :form =&gt; forms1)
+Table with 827 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String
+
+julia&gt; crpsnew = CorpusData(crpsnew)
+Quranic Arabic Corpus (morphology)
+(C) 2011 Kais Dukes
+
+Table with 827 rows, 7 columns:
+Columns:
+#  colname   type
+───────────────────
+1  chapter   Int64
+2  verse     Int64
+3  word      Int64
+4  part      Int64
+5  form      String
+6  tag       String
+7  features  String</code></pre><h2 id="Tokenization"><a class="docs-heading-anchor" href="#Tokenization">Tokenization</a><a id="Tokenization-1"></a><a class="docs-heading-anchor-permalink" href="#Tokenization" title="Permalink"></a></h2><p>We want to summarize the Qur&#39;an at the verse level. Thus, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:</p><pre><code class="language-julia-repl">julia&gt; lem_vrs = verses(crpsnew)
+109-element Array{String,1}:
+ &quot;Hamod {ll~ah &gt;anzala Eabod jaEala Eiwaj&quot;
+ &quot;l~i&gt;an*ara l~adun bu\$~ira Eamila&quot;
+ &quot;&gt;an*ara qaAla {t~axa*a {ll~ah&quot;
+ &quot;Eilom A^baA&#39; kabura xaraja &gt;afowa`h qaAla&quot;
+ &quot;ba`xiE &gt;avar &#39;aAmana Hadiyv&quot;
+ &quot;jaEala &gt;aroD libalawo &gt;aHosan&quot;
+ &quot;lajaAEil&quot;
+ &quot;Hasiba kahof r~aqiym kaAna &#39;aAyap&quot;
+ &quot;&gt;awaY fitoyap kahof qaAla A^taY l~adun yuhay~i}o &gt;amor&quot;
+ &quot;Daraba &gt;u*unN kahof&quot;
+ ⋮
+ &quot;Hasiba kafara {t~axa*a Eabod duwn &gt;aEotadato jahan~am ka`firuwn&quot;
+ &quot;qaAla nab~a&gt;a &gt;axosariyn&quot;
+ &quot;Dal~a saEoy Hayaw`p d~unoyaA Hasiba &gt;aHosana&quot;
+ &quot;kafara &#39;aAyap rab~ liqaA^&#39; HabiTa Eamal &gt;aqaAma qiya`map&quot;
+ &quot;jazaA^&#39; jahan~am kafara {t~axa*a &#39;aAyap rasuwl&quot;
+ &quot;&#39;aAmana Eamila S~a`liHa`t kaAna jan~ap firodawos&quot;
+ &quot;bagaY`&quot;
+ &quot;qaAla kaAna baHor kalima`t rab~ lanafida baHor nafida kalima`t rab~ jaA^&#39;a mivol&quot;
+ &quot;qaAla ba\$ar mivol &gt;awoHaY`^ &lt;ila`h &lt;ila`h wa`Hid kaAna yarojuwA@ rab~ loEamila &gt;a\$oraka EibaAdat rab~&quot;
+
+julia&gt; vrs = QuranTree.normalize.(dediac.(lem_vrs))
+109-element Array{String,1}:
+ &quot;Hmd Allh Anzl Ebd jEl Ewj&quot;
+ &quot;lAn*r ldn b\$r Eml&quot;
+ &quot;An*r qAl Atx* Allh&quot;
+ &quot;Elm AbA&#39; kbr xrj AfwAh qAl&quot;
+ &quot;bAxE Avr &#39;Amn Hdyv&quot;
+ &quot;jEl ArD lblw AHsn&quot;
+ &quot;ljAEl&quot;
+ &quot;Hsb khf rqym kAn &#39;Ayh&quot;
+ &quot;Awy ftyh khf qAl Aty ldn yhyy Amr&quot;
+ &quot;Drb A*n khf&quot;
+ ⋮
+ &quot;Hsb kfr Atx* Ebd dwn AEtdt jhnm kAfrwn&quot;
+ &quot;qAl nbA Axsryn&quot;
+ &quot;Dl sEy HywAh dnyA Hsb AHsn&quot;
+ &quot;kfr &#39;Ayh rb lqA&#39; HbT Eml AqAm qyAmh&quot;
+ &quot;jzA&#39; jhnm kfr Atx* &#39;Ayh rswl&quot;
+ &quot;&#39;Amn Eml SAlHAt kAn jnh frdws&quot;
+ &quot;bgyA&quot;
+ &quot;qAl kAn bHr klmAt rb lnfd bHr nfd klmAt rb jA&#39; mvl&quot;
+ &quot;qAl b\$r mvl AwHyA AlAh AlAh wAHd kAn yrjwA@ rb lEml A\$rk EbAdt rb&quot;</code></pre><h2 id="Creating-a-TextAnalysis-Corpus"><a class="docs-heading-anchor" href="#Creating-a-TextAnalysis-Corpus">Creating a TextAnalysis Corpus</a><a id="Creating-a-TextAnalysis-Corpus-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-a-TextAnalysis-Corpus" title="Permalink"></a></h2><p>To make use of the <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/APIReference/">TextAnalysis.jl&#39;s APIs</a>, we need to encode the processed Quranic Corpus to <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>&#39;s Corpus. In this case, we will create a <code>StringDocument</code> of the verses.</p><pre><code class="language-julia-repl">julia&gt; crps1 = Corpus(StringDocument.(vrs))
+A Corpus with 109 documents:
+ * 109 StringDocument&#39;s
+ * 0 FileDocument&#39;s
+ * 0 TokenDocument&#39;s
+ * 0 NGramDocument&#39;s
+
+Corpus&#39;s lexicon contains 0 tokens
+Corpus&#39;s index contains 0 tokens</code></pre><p>We then update the lexicon and inverse index for efficient indexing of the corpus.</p><pre><code class="language-julia-repl">julia&gt; update_lexicon!(crps1)
+
+julia&gt; update_inverse_index!(crps1)</code></pre><p>Next, we create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.</p><pre><code class="language-julia-repl">julia&gt; m1 = DocumentTermMatrix(crps1)
+A 109 X 361 DocumentTermMatrix</code></pre><h2 id="Latent-Dirichlet-Allocation"><a class="docs-heading-anchor" href="#Latent-Dirichlet-Allocation">Latent Dirichlet Allocation</a><a id="Latent-Dirichlet-Allocation-1"></a><a class="docs-heading-anchor-permalink" href="#Latent-Dirichlet-Allocation" title="Permalink"></a></h2><p>Finally, run LDA as follows:</p><pre><code class="language-julia-repl">julia&gt; k = 3          # number of topics
+3
+
+julia&gt; iter = 1000    # number of gibbs sampling iterations
+1000
+
+julia&gt; alpha = 0.1    # hyperparameter
+0.1
+
+julia&gt; beta = 0.1     # hyperparameter
+0.1
+
+julia&gt; ϕ, θ = lda(m1, k, iter, alpha, beta)
+(
+  [2,   1]  =  0.0163934
+  [2,   2]  =  0.00546448
+  [2,   3]  =  0.00546448
+  [2,   4]  =  0.00273224
+  [1,   5]  =  0.00353357
+  [1,   6]  =  0.0141343
+  [2,   6]  =  0.00546448
+  [2,   7]  =  0.00273224
+  [1,   8]  =  0.0848057
+  ⋮
+  [1, 352]  =  0.00353357
+  [3, 353]  =  0.00766284
+  [3, 354]  =  0.00383142
+  [3, 355]  =  0.00383142
+  [2, 356]  =  0.00273224
+  [2, 357]  =  0.00546448
+  [3, 358]  =  0.00383142
+  [1, 359]  =  0.00353357
+  [1, 360]  =  0.00706714
+  [1, 361]  =  0.00353357, [1.0 0.5 … 0.0 0.0; 0.0 0.5 … 0.0 0.0; 0.0 0.0 … 1.0 1.0])</code></pre><p>Extract the topic for first cluster:</p><pre><code class="language-julia-repl">julia&gt; ntopics = 10
+10
+
+julia&gt; cluster_topics = Matrix(undef, ntopics, k);
+
+julia&gt; for i = 1:k
+           topics_idcs = sortperm(ϕ[i, :], rev=true)
+           cluster_topics[:, i] = arabic.(m1.terms[topics_idcs][1:ntopics])
+       end
+
+julia&gt; @pt cluster_topics
+ -------- -------- --------
+  Col. 1   Col. 2   Col. 3
+ -------- -------- --------
+       ء        ذ      قال
+     جعل        ء       رب
+     اتي      قال      كان
+     قال      وجد   استطاع
+      رب     الله     اراد
+     كان      اتخ     اتبع
+     امن        ر      لبث
+     ارض        ا        ء
+       ل       رب      علم
+    الله      امر     اشرك
+ -------- -------- --------</code></pre><p>Tabulating this propery would give us the following</p><pre><code class="language-julia">Pkg.add(&quot;DataFrames&quot;)
+Pkg.add(&quot;Latexify&quot;)
+using DataFrames: DataFrame
+using Latexify
+
+mdtable(convert(DataFrame, cluster_topics), latex=false)</code></pre><div class="markdown"><table><tr><th align="right">x1</th><th align="right">x2</th><th align="right">x3</th></tr><tr><td align="right">ء</td><td align="right">ذ</td><td align="right">قال</td></tr><tr><td align="right">جعل</td><td align="right">ء</td><td align="right">رب</td></tr><tr><td align="right">اتي</td><td align="right">قال</td><td align="right">كان</td></tr><tr><td align="right">قال</td><td align="right">وجد</td><td align="right">استطاع</td></tr><tr><td align="right">رب</td><td align="right">الله</td><td align="right">اراد</td></tr><tr><td align="right">كان</td><td align="right">اتخ</td><td align="right">اتبع</td></tr><tr><td align="right">امن</td><td align="right">ر</td><td align="right">لبث</td></tr><tr><td align="right">ارض</td><td align="right">ا</td><td align="right">ء</td></tr><tr><td align="right">ل</td><td align="right">رب</td><td align="right">علم</td></tr><tr><td align="right">الله</td><td align="right">امر</td><td align="right">اشرك</td></tr></table>
+</div><p>As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their own use. This section, however, demonstrated how <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>&#39;s LDA can be used for Topic Modeling the QuranTree.jl&#39;s corpus.</p><p>Finally, the following will extract the topic for each verse:</p><pre><code class="language-julia-repl">julia&gt; vrs_topics = []
+Any[]
+
+julia&gt; for i = 1:dtm(m1).m
+           push!(vrs_topics, sortperm(θ[:, i], rev=true)[1])
+       end
+
+julia&gt; @pt vrs_topics
+ --------
+  Col. 1
+ --------
+       1
+       1
+       2
+       3
+       1
+       1
+       1
+       2
+    ⋮
+       3
+       1
+       2
+       2
+       1
+       3
+       3
+       3
+ --------
+93 rows omitted</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../text_summarization/">« Text Summarization</a><a class="docs-footer-nextpage" href="../../camel/external/">Content »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 23 January 2021 01:41">Saturday 23 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

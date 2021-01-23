@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Content · QuranTree.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../../"><img class="docs-light-only" src="../../../assets/logo.png" alt="QuranTree.jl logo"/><img class="docs-dark-only" src="../../../assets/logo-dark.png" alt="QuranTree.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit">QuranTree.jl</span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">Home</a></li><li><a class="tocitem" href="../../getting_started/">Getting Started</a></li><li><a class="tocitem" href="../../indexing/">Indexing</a></li><li><a class="tocitem" href="../../transliteration/">Transliteration</a></li><li><a class="tocitem" href="../../morphological_features/">Morphological Features</a></li><li><a class="tocitem" href="../../data_processing/">Data Processing</a></li><li><span class="tocitem">Natural Language Processing</span><ul><li><a class="tocitem" href="../../nlp/nlp/">Introduction</a></li><li><a class="tocitem" href="../../nlp/text_summarization/">Text Summarization</a></li><li><a class="tocitem" href="../../nlp/topic_modeling/">Topic Modeling</a></li></ul></li><li><span class="tocitem">CAMeL Tools</span><ul><li class="is-active"><a class="tocitem" href>Content</a><ul class="internal"><li><a class="tocitem" href="#Character-Dediacritization"><span>Character Dediacritization</span></a></li><li><a class="tocitem" href="#Character-Normalization"><span>Character Normalization</span></a></li></ul></li></ul></li><li><a class="tocitem" href="../../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">CAMeL Tools</a></li><li class="is-active"><a href>Content</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Content</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/alstat/QuranTree.jl/blob/master/docs/src/man/camel/external.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="CAMeL-Tools"><a class="docs-heading-anchor" href="#CAMeL-Tools">CAMeL Tools</a><a id="CAMeL-Tools-1"></a><a class="docs-heading-anchor-permalink" href="#CAMeL-Tools" title="Permalink"></a></h1><p>In this section, we will explore the use of CAMeL tools from New York University Abu Dhabi. CAMeL is a To install the library, run the following in the terminal:</p><pre><code class="language-bash">pip3 install camel-tools</code></pre><p>Then, download the necessary data as follows:</p><pre><code class="language-bash">camel_tools light</code></pre><p>For this, tutorial we are going to use only the light version of the CAMeL data which is about 19mb. Install pycall</p><pre><code class="language-julia-repl">julia&gt; using Pkg
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Content · QuranTree.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../../"><img class="docs-light-only" src="../../../assets/logo.png" alt="QuranTree.jl logo"/><img class="docs-dark-only" src="../../../assets/logo-dark.png" alt="QuranTree.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit">QuranTree.jl</span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">Home</a></li><li><a class="tocitem" href="../../getting_started/">Getting Started</a></li><li><a class="tocitem" href="../../indexing/">Indexing</a></li><li><a class="tocitem" href="../../transliteration/">Transliteration</a></li><li><a class="tocitem" href="../../morphological_features/">Morphological Features</a></li><li><a class="tocitem" href="../../data_processing/">Data Processing</a></li><li><span class="tocitem">Natural Language Processing</span><ul><li><a class="tocitem" href="../../nlp/nlp/">Introduction</a></li><li><a class="tocitem" href="../../nlp/text_summarization/">Text Summarization</a></li><li><a class="tocitem" href="../../nlp/topic_modeling/">Topic Modeling</a></li></ul></li><li><span class="tocitem">CAMeL Tools</span><ul><li class="is-active"><a class="tocitem" href>Content</a><ul class="internal"><li><a class="tocitem" href="#Julia-PyCall.jl"><span>Julia PyCall.jl</span></a></li><li><a class="tocitem" href="#Character-Dediacritization"><span>Character Dediacritization</span></a></li><li><a class="tocitem" href="#Character-Normalization"><span>Character Normalization</span></a></li><li><a class="tocitem" href="#Analysis"><span>Analysis</span></a></li></ul></li></ul></li><li><a class="tocitem" href="../../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">CAMeL Tools</a></li><li class="is-active"><a href>Content</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Content</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/alstat/QuranTree.jl/blob/master/docs/src/man/camel/external.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="CAMeL-Tools"><a class="docs-heading-anchor" href="#CAMeL-Tools">CAMeL Tools</a><a id="CAMeL-Tools-1"></a><a class="docs-heading-anchor-permalink" href="#CAMeL-Tools" title="Permalink"></a></h1><p>In this section, we will explore how to use CAMeL Tools of New York University Abu Dhabi. CAMeL is a suite of tools for Arabic Natural Language Processing, and by far the most feature-rich library to date for universal Arabic NLP. To install the library, follow the instructions <a href="https://camel-tools.readthedocs.io/en/latest/getting_started.html#installation">here</a>. However for macOS users, simply run the following in the terminal:</p><pre><code class="language-bash">pip3 install camel-tools</code></pre><p>Then, download the necessary data as follows:</p><pre><code class="language-bash">camel_tools light</code></pre><p>For this tutorial, we are going to use only the light version of the CAMeL data which is around 19mb.</p><h2 id="Julia-PyCall.jl"><a class="docs-heading-anchor" href="#Julia-PyCall.jl">Julia PyCall.jl</a><a id="Julia-PyCall.jl-1"></a><a class="docs-heading-anchor-permalink" href="#Julia-PyCall.jl" title="Permalink"></a></h2><p>Julia can interoperate with Python through the library <a href="https://github.com/JuliaPy/PyCall.jl">PyCall.jl</a>. The following is the installation:</p><pre><code class="language-julia-repl">julia&gt; using Pkg
 
 julia&gt; Pkg.add(&quot;PyCall&quot;)
   Resolving package versions...
 Updating `~/work/QuranTree.jl/QuranTree.jl/docs/Project.toml`
   [438e738f] + PyCall v1.92.2
-No Changes to `~/work/QuranTree.jl/QuranTree.jl/docs/Manifest.toml`</code></pre><pre><code class="language-julia-repl">julia&gt; ENV[&quot;PYTHON&quot;] = &quot;/Library/Frameworks/Python.framework/Versions/3.8/bin/python3&quot;
-&quot;/Library/Frameworks/Python.framework/Versions/3.8/bin/python3&quot;
-
-julia&gt; Pkg.build(&quot;PyCall&quot;)
-   Building Conda ─→ `~/.julia/packages/Conda/x5ml4/deps/build.log`
-   Building PyCall → `~/.julia/packages/PyCall/tqyST/deps/build.log`</code></pre><h2 id="Character-Dediacritization"><a class="docs-heading-anchor" href="#Character-Dediacritization">Character Dediacritization</a><a id="Character-Dediacritization-1"></a><a class="docs-heading-anchor-permalink" href="#Character-Dediacritization" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; using PyCall
+No Changes to `~/work/QuranTree.jl/QuranTree.jl/docs/Manifest.toml`</code></pre><div class="admonition is-warning"><header class="admonition-header">Important</header><div class="admonition-body"><p>It is required to specify the environment variable for Python, as to which version to use. Hence, after installation of <a href="https://github.com/JuliaPy/PyCall.jl">PyCall.jl</a>, specify the path, for example:</p><pre><code class="language-">ENV[&quot;PYTHON&quot;] = &quot;/Library/Frameworks/Python.framework/Versions/3.8/bin/python3&quot;
+Pkg.build(&quot;PyCall&quot;)</code></pre><p>The last line will build the library and <a href="https://github.com/JuliaPy/PyCall.jl">PyCall.jl</a> will remember the path.</p></div></div><div class="admonition is-warning"><header class="admonition-header">Important</header><div class="admonition-body"><p>Make sure the Python version you setup is where the CAMeL Tools was installed.</p></div></div><h2 id="Character-Dediacritization"><a class="docs-heading-anchor" href="#Character-Dediacritization">Character Dediacritization</a><a id="Character-Dediacritization-1"></a><a class="docs-heading-anchor-permalink" href="#Character-Dediacritization" title="Permalink"></a></h2><p>At this point, Julia can now connect Python and CAMeL Tools can be loaded via the macro <code>@pyimport</code>. For example, the following will load the <code>dediac</code> module of the said library:</p><pre><code class="language-julia-repl">julia&gt; using PyCall
 
 julia&gt; @pyimport camel_tools.utils.dediac as camel_dediac
 ERROR: PyError (PyImport_ImportModule
@@ -18,20 +14,29 @@ ERROR: PyError (PyImport_ImportModule
 The Python package camel_tools.utils.dediac could not be imported by pyimport. Usually this means
 that you did not install camel_tools.utils.dediac in the Python version being used by PyCall.
 
-PyCall is currently configured to use the Julia-specific Python distribution
-installed by the Conda.jl package.  To install the camel_tools.utils.dediac module, you can
-use `pyimport_conda(&quot;camel_tools.utils.dediac&quot;, PKG)`, where PKG is the Anaconda
-package the contains the module camel_tools.utils.dediac, or alternatively you can use the
-Conda package directly (via `using Conda` followed by `Conda.add` etcetera).
+PyCall is currently configured to use the Python version at:
 
-Alternatively, if you want to use a different Python distribution on your
-system, such as a system-wide Python (as opposed to the Julia-specific Python),
-you can re-configure PyCall with that Python.   As explained in the PyCall
-documentation, set ENV[&quot;PYTHON&quot;] to the path/name of the python executable
-you want to use, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia.
+/usr/bin/python3
+
+and you should use whatever mechanism you usually use (apt-get, pip, conda,
+etcetera) to install the Python package containing the camel_tools.utils.dediac module.
+
+One alternative is to re-configure PyCall to use a different Python
+version on your system: set ENV[&quot;PYTHON&quot;] to the path/name of the python
+executable you want to use, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia.
+
+Another alternative is to configure PyCall to use a Julia-specific Python
+distribution via the Conda.jl package (which installs a private Anaconda
+Python distribution), which has the advantage that packages can be installed
+and kept up-to-date via Julia.  As explained in the PyCall documentation,
+set ENV[&quot;PYTHON&quot;]=&quot;&quot;, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia. Then,
+To install the camel_tools.utils.dediac module, you can use `pyimport_conda(&quot;camel_tools.utils.dediac&quot;, PKG)`,
+where PKG is the Anaconda package that contains the module camel_tools.utils.dediac,
+or alternatively you can use the Conda package directly (via
+`using Conda` followed by `Conda.add` etcetera).
 
 ) &lt;class &#39;ModuleNotFoundError&#39;&gt;
-ModuleNotFoundError(&quot;No module named &#39;camel_tools&#39;&quot;)
+ModuleNotFoundError(&quot;No module named &#39;camel_tools&#39;&quot;,)
 
 julia&gt; @pyimport camel_tools.utils.normalize as camel_normalize
 ERROR: PyError (PyImport_ImportModule
@@ -39,20 +44,29 @@ ERROR: PyError (PyImport_ImportModule
 The Python package camel_tools.utils.normalize could not be imported by pyimport. Usually this means
 that you did not install camel_tools.utils.normalize in the Python version being used by PyCall.
 
-PyCall is currently configured to use the Julia-specific Python distribution
-installed by the Conda.jl package.  To install the camel_tools.utils.normalize module, you can
-use `pyimport_conda(&quot;camel_tools.utils.normalize&quot;, PKG)`, where PKG is the Anaconda
-package the contains the module camel_tools.utils.normalize, or alternatively you can use the
-Conda package directly (via `using Conda` followed by `Conda.add` etcetera).
+PyCall is currently configured to use the Python version at:
 
-Alternatively, if you want to use a different Python distribution on your
-system, such as a system-wide Python (as opposed to the Julia-specific Python),
-you can re-configure PyCall with that Python.   As explained in the PyCall
-documentation, set ENV[&quot;PYTHON&quot;] to the path/name of the python executable
-you want to use, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia.
+/usr/bin/python3
+
+and you should use whatever mechanism you usually use (apt-get, pip, conda,
+etcetera) to install the Python package containing the camel_tools.utils.normalize module.
+
+One alternative is to re-configure PyCall to use a different Python
+version on your system: set ENV[&quot;PYTHON&quot;] to the path/name of the python
+executable you want to use, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia.
+
+Another alternative is to configure PyCall to use a Julia-specific Python
+distribution via the Conda.jl package (which installs a private Anaconda
+Python distribution), which has the advantage that packages can be installed
+and kept up-to-date via Julia.  As explained in the PyCall documentation,
+set ENV[&quot;PYTHON&quot;]=&quot;&quot;, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia. Then,
+To install the camel_tools.utils.normalize module, you can use `pyimport_conda(&quot;camel_tools.utils.normalize&quot;, PKG)`,
+where PKG is the Anaconda package that contains the module camel_tools.utils.normalize,
+or alternatively you can use the Conda package directly (via
+`using Conda` followed by `Conda.add` etcetera).
 
 ) &lt;class &#39;ModuleNotFoundError&#39;&gt;
-ModuleNotFoundError(&quot;No module named &#39;camel_tools&#39;&quot;)</code></pre><pre><code class="language-julia-repl">julia&gt; using QuranTree
+ModuleNotFoundError(&quot;No module named &#39;camel_tools&#39;&quot;,)</code></pre><p>Let&#39;s use this and compare the results with QuranTree.jl&#39;s built in <code>dediac</code> function.</p><pre><code class="language-julia-repl">julia&gt; using QuranTree
 
 julia&gt; crps, tnzl = load(QuranData());
 
@@ -64,35 +78,29 @@ julia&gt; avrs1 = verses(tnzldata[1][1])[1]
 &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
 
 julia&gt; dediac(avrs1)
-&quot;بسم ٱلله ٱلرحمٰن ٱلرحيم&quot;
-
-julia&gt; camel_dediac.dediac_ar(avrs1)
-ERROR: UndefVarError: camel_dediac not defined
-
-julia&gt; vrs1 = verses(crpsdata[1][1])[1]
+&quot;بسم ٱلله ٱلرحمٰن ٱلرحيم&quot;</code></pre><p>Now using CAMeL tools, we get the following:</p><pre><code class="language-julia-repl">julia&gt; camel_dediac.dediac_ar(avrs1)
+ERROR: UndefVarError: camel_dediac not defined</code></pre><p>The difference is on the Alif Khanjareeya, where at the moment QuranTree.jl tree does not consider it as part of the diacritics, but part of the characters to be normalized. </p><p>Let&#39;s try this on <code>CorpusData</code> as well, to see how it handles Buckwalter dediacritization:</p><pre><code class="language-julia-repl">julia&gt; vrs1 = verses(crpsdata[1][1])[1]
 &quot;bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi&quot;
 
 julia&gt; dediac(vrs1)
 &quot;bsm {llh {lrHm`n {lrHym&quot;
 
 julia&gt; camel_dediac.dediac_bw(vrs1)
-ERROR: UndefVarError: camel_dediac not defined</code></pre><h2 id="Character-Normalization"><a class="docs-heading-anchor" href="#Character-Normalization">Character Normalization</a><a id="Character-Normalization-1"></a><a class="docs-heading-anchor-permalink" href="#Character-Normalization" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; avrs2 = verses(tnzldata[2][3])[1]
+ERROR: UndefVarError: camel_dediac not defined</code></pre><h2 id="Character-Normalization"><a class="docs-heading-anchor" href="#Character-Normalization">Character Normalization</a><a id="Character-Normalization-1"></a><a class="docs-heading-anchor-permalink" href="#Character-Normalization" title="Permalink"></a></h2><p>To normalize, QuranTree.jl uses argument for specifying the character to normalize. However for CAMeL tools, this is part of the name of the function:</p><pre><code class="language-julia-repl">julia&gt; avrs2 = verses(tnzldata[2][3])[1]
 &quot;ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ&quot;
 
 julia&gt; normalize(avrs2, :ta_marbuta)
 &quot;ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰهَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ&quot;
 
 julia&gt; camel_normalize.normalize_teh_marbuta_ar(avrs2)
-ERROR: UndefVarError: camel_normalize not defined
-
-julia&gt; vrs2 = verses(crpsdata[2][3])[1]
+ERROR: UndefVarError: camel_normalize not defined</code></pre><p>Another example, normalizing over the Buckwalter encoding:</p><pre><code class="language-julia-repl">julia&gt; vrs2 = verses(crpsdata[2][3])[1]
 &quot;{l~a*iyna yu&amp;ominuwna bi{logayobi wayuqiymuwna {lS~alaw`pa wamim~aA razaqona`humo yunfiquwna&quot;
 
 julia&gt; normalize(vrs2, :ta_marbuta)
 &quot;{l~a*iyna yu&amp;ominuwna bi{logayobi wayuqiymuwna {lS~alaw`ha wamim~aA razaqona`humo yunfiquwna&quot;
 
 julia&gt; camel_normalize.normalize_teh_marbuta_bw(vrs2)
-ERROR: UndefVarError: camel_normalize not defined</code></pre><pre><code class="language-julia-repl">julia&gt; using JuliaDB
+ERROR: UndefVarError: camel_normalize not defined</code></pre><h2 id="Analysis"><a class="docs-heading-anchor" href="#Analysis">Analysis</a><a id="Analysis-1"></a><a class="docs-heading-anchor-permalink" href="#Analysis" title="Permalink"></a></h2><p>Among the features of CAMeL Tools, is the availability of a token analyzer. In the following example, we will analyze the first word of the basmalah from <code>avrs1</code> above.</p><pre><code class="language-julia-repl">julia&gt; using JuliaDB
 
 julia&gt; using PyCall
 
@@ -106,20 +114,29 @@ ERROR: PyError (PyImport_ImportModule
 The Python package camel_tools.morphology.database could not be imported by pyimport. Usually this means
 that you did not install camel_tools.morphology.database in the Python version being used by PyCall.
 
-PyCall is currently configured to use the Julia-specific Python distribution
-installed by the Conda.jl package.  To install the camel_tools.morphology.database module, you can
-use `pyimport_conda(&quot;camel_tools.morphology.database&quot;, PKG)`, where PKG is the Anaconda
-package the contains the module camel_tools.morphology.database, or alternatively you can use the
-Conda package directly (via `using Conda` followed by `Conda.add` etcetera).
+PyCall is currently configured to use the Python version at:
 
-Alternatively, if you want to use a different Python distribution on your
-system, such as a system-wide Python (as opposed to the Julia-specific Python),
-you can re-configure PyCall with that Python.   As explained in the PyCall
-documentation, set ENV[&quot;PYTHON&quot;] to the path/name of the python executable
-you want to use, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia.
+/usr/bin/python3
+
+and you should use whatever mechanism you usually use (apt-get, pip, conda,
+etcetera) to install the Python package containing the camel_tools.morphology.database module.
+
+One alternative is to re-configure PyCall to use a different Python
+version on your system: set ENV[&quot;PYTHON&quot;] to the path/name of the python
+executable you want to use, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia.
+
+Another alternative is to configure PyCall to use a Julia-specific Python
+distribution via the Conda.jl package (which installs a private Anaconda
+Python distribution), which has the advantage that packages can be installed
+and kept up-to-date via Julia.  As explained in the PyCall documentation,
+set ENV[&quot;PYTHON&quot;]=&quot;&quot;, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia. Then,
+To install the camel_tools.morphology.database module, you can use `pyimport_conda(&quot;camel_tools.morphology.database&quot;, PKG)`,
+where PKG is the Anaconda package that contains the module camel_tools.morphology.database,
+or alternatively you can use the Conda package directly (via
+`using Conda` followed by `Conda.add` etcetera).
 
 ) &lt;class &#39;ModuleNotFoundError&#39;&gt;
-ModuleNotFoundError(&quot;No module named &#39;camel_tools&#39;&quot;)
+ModuleNotFoundError(&quot;No module named &#39;camel_tools&#39;&quot;,)
 
 julia&gt; @pyimport camel_tools.morphology.analyzer as camel_analyzer
 ERROR: PyError (PyImport_ImportModule
@@ -127,20 +144,29 @@ ERROR: PyError (PyImport_ImportModule
 The Python package camel_tools.morphology.analyzer could not be imported by pyimport. Usually this means
 that you did not install camel_tools.morphology.analyzer in the Python version being used by PyCall.
 
-PyCall is currently configured to use the Julia-specific Python distribution
-installed by the Conda.jl package.  To install the camel_tools.morphology.analyzer module, you can
-use `pyimport_conda(&quot;camel_tools.morphology.analyzer&quot;, PKG)`, where PKG is the Anaconda
-package the contains the module camel_tools.morphology.analyzer, or alternatively you can use the
-Conda package directly (via `using Conda` followed by `Conda.add` etcetera).
+PyCall is currently configured to use the Python version at:
 
-Alternatively, if you want to use a different Python distribution on your
-system, such as a system-wide Python (as opposed to the Julia-specific Python),
-you can re-configure PyCall with that Python.   As explained in the PyCall
-documentation, set ENV[&quot;PYTHON&quot;] to the path/name of the python executable
-you want to use, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia.
+/usr/bin/python3
+
+and you should use whatever mechanism you usually use (apt-get, pip, conda,
+etcetera) to install the Python package containing the camel_tools.morphology.analyzer module.
+
+One alternative is to re-configure PyCall to use a different Python
+version on your system: set ENV[&quot;PYTHON&quot;] to the path/name of the python
+executable you want to use, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia.
+
+Another alternative is to configure PyCall to use a Julia-specific Python
+distribution via the Conda.jl package (which installs a private Anaconda
+Python distribution), which has the advantage that packages can be installed
+and kept up-to-date via Julia.  As explained in the PyCall documentation,
+set ENV[&quot;PYTHON&quot;]=&quot;&quot;, run Pkg.build(&quot;PyCall&quot;), and re-launch Julia. Then,
+To install the camel_tools.morphology.analyzer module, you can use `pyimport_conda(&quot;camel_tools.morphology.analyzer&quot;, PKG)`,
+where PKG is the Anaconda package that contains the module camel_tools.morphology.analyzer,
+or alternatively you can use the Conda package directly (via
+`using Conda` followed by `Conda.add` etcetera).
 
 ) &lt;class &#39;ModuleNotFoundError&#39;&gt;
-ModuleNotFoundError(&quot;No module named &#39;camel_tools&#39;&quot;)
+ModuleNotFoundError(&quot;No module named &#39;camel_tools&#39;&quot;,)
 
 julia&gt; db = camel_database.MorphologyDB.builtin_db()
 ERROR: UndefVarError: camel_database not defined
@@ -151,5 +177,17 @@ ERROR: UndefVarError: camel_analyzer not defined
 julia&gt; analyses = analyzer.analyze(split(avrs1)[1])
 ERROR: UndefVarError: analyzer not defined
 
-julia&gt; @pt table([(;Dict(Symbol.(keys(d)) .=&gt; collect(values(d)))...) for d in analyses])
-ERROR: UndefVarError: analyses not defined</code></pre><p>!!! info &#39;Note&#39;     You need to install <a href="https://github.com/JuliaData/JuliaDB.jl">JuliaDB.jl</a> to successfully run the code.      <code>julia     using Pkg     Pkg.add(&quot;JuliaDB&quot;)</code></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../nlp/topic_modeling/">« Topic Modeling</a><a class="docs-footer-nextpage" href="../../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 23 January 2021 00:27">Saturday 23 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+julia&gt; tbl = table([(;Dict(Symbol.(keys(d)) .=&gt; collect(values(d)))...) for d in analyses]);
+ERROR: UndefVarError: analyses not defined
+
+julia&gt; @pt tbl
+ERROR: UndefVarError: tbl not defined</code></pre><p>The following is the table of the above output properly formatted in HTML.</p><pre><code class="language-">Pkg.add(&quot;DataFrames&quot;)
+Pkg.add(&quot;IterableTables&quot;)
+Pkg.add(&quot;Latexify&quot;)
+using DataFrames: DataFrame
+using IterableTables
+using Latexify
+
+mdtable(DataFrame(tbl), latex=false)</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>You need to install <a href="https://github.com/JuliaData/JuliaDB.jl">JuliaDB.jl</a> and <a href="https://github.com/ronisbr/PrettyTables.jl">PrettyTables.jl</a> to successfully run the code. </p><pre><code class="language-julia">using Pkg
+Pkg.add(&quot;JuliaDB&quot;)
+Pkg.add(&quot;PrettyTables&quot;)</code></pre></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../nlp/topic_modeling/">« Topic Modeling</a><a class="docs-footer-nextpage" href="../../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 23 January 2021 01:41">Saturday 23 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
