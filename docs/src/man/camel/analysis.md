@@ -16,8 +16,10 @@ dediac(avrs1)
 ```
 To analyze the Morphological feature of the basmalah, run the following:
 ```@repl abc
-using JuliaDB
+using Pkg
+Pkg.add("PyCall")
 using PyCall
+using JuliaDB
 using PrettyTables
 @ptconf vcrop_mode=:middle tf=tf_compact
 @pyimport camel_tools.morphology.database as camel_database

@@ -33,6 +33,6 @@ disambig = mled.disambiguate(split(avrs1))
 ```
 ## Extracting Diacritized Output
 Finally, tying up all diacritized output:
-```@repl
+```@repl abc
 join([d[2][1][2]["diac"] for d in disambig], " ")
 ```
