@@ -31,6 +31,13 @@ analyses = analyzer.analyze(split(avrs1)[1])
 tbl = table([(;Dict(Symbol.(keys(d)) .=> collect(values(d)))...) for d in analyses])
 @pt tbl
 ```
+!!! info "Note"
+    You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
+    ```julia
+    using Pkg
+    Pkg.add("JuliaDB")
+    Pkg.add("PrettyTables")
+    ```
 The following is the table of the above output properly formatted in HTML.
 ```@example abc
 Pkg.add("DataFrames")
@@ -42,14 +49,3 @@ using Latexify
 
 mdtable(DataFrame(tbl), latex=false)
 ```
-```@raw html
-<br/>
-```
-
-!!! info "Note"
-    You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
-    ```julia
-    using Pkg
-    Pkg.add("JuliaDB")
-    Pkg.add("PrettyTables")
-    ```
