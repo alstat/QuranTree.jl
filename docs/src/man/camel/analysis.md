@@ -28,7 +28,7 @@ using PrettyTables
 db = camel_database.MorphologyDB.builtin_db()
 analyzer = camel_analyzer.Analyzer(db)
 analyses = analyzer.analyze(split(avrs1)[1])
-tbl = table([(;Dict(Symbol.(keys(d)) .=> collect(values(d)))...) for d in analyses]);
+tbl = table([(;Dict(Symbol.(keys(d)) .=> collect(values(d)))...) for d in analyses])
 @pt tbl
 ```
 The following is the table of the above output properly formatted in HTML.
@@ -42,7 +42,8 @@ using Latexify
 
 mdtable(DataFrame(tbl), latex=false)
 ```
-<br/><br/>
+\
+\
 !!! info "Note"
     You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
     ```julia
