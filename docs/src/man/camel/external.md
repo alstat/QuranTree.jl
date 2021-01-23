@@ -20,10 +20,14 @@ Pkg.add("PrettyTables")
 using Pkg
 Pkg.add("PyCall")
 ```
+```setup abc
+ENV["PYTHON"] = "/usr/bin/python3"
+Pkg.build("PyCall")
+```
 !!! warning "Important"
     It is required to specify the environment variable for Python, as to which version to use. Hence, after installation of [PyCall.jl](https://github.com/JuliaPy/PyCall.jl), specify the path, for example:
-    ```@repl abc
-    ENV["PYTHON"] = "/Library/Frameworks/Python.framework/Versions/3.8/bin/python3"
+    ```julia
+    ENV["PYTHON"] = "/usr/bin/python3"
     Pkg.build("PyCall")
     ```
     The last line will build the library and [PyCall.jl](https://github.com/JuliaPy/PyCall.jl) will remember the path.
