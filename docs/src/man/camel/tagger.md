@@ -23,10 +23,11 @@ Pkg.add("PyCall")
 using PyCall
 @pyimport camel_tools.disambig.mle as camel_disambig
 @pyimport camel_tools.tagger.default as camel_tagger
-mled = camel_disambig.MLEDisambiguator.pretrained()
+mled = camel_disambig.MLEDisambiguator.pretrained();
 ```
-From the model, we instantiate the `DefaultTagger` and call the `tag` method to tag:
+## Tagging
+From the model, we instantiate the `DefaultTagger` and finally call the `tag` method to tag the token:
 ```@repl abc
-tagger = camel_tagger.DefaultTagger(mled, 'pos')
+tagger = camel_tagger.DefaultTagger(mled, "pos")
 tagger.tag(split(avrs1))
 ```
