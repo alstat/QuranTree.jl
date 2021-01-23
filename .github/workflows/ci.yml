@@ -63,7 +63,7 @@ jobs:
             using Documenter: doctest
             using QuranTree
             doctest(QuranTree)'
-      - run: pip3 install camel-tools
+      - run: pip install camel-tools
       - run: camel_tools light
       - run: julia --project=docs docs/make.jl
         env:
