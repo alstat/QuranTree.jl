@@ -81,8 +81,8 @@ end
     @test arabic(verses(crpsdata[114])[1]) === "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
     @test arabic(verses(crpsdata[1][7])[1]) === "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
     # number
-    @test verses(tnzldata[1][7], number=true)[1] === "1:(7)"
-    @test verses(tnzldata[1][7], number=true, start_end=false)[1] == ([1], [7])
+    @test verses(crpsdata[113:114], number=true)[1] === "113:(1,5)"
+    @test verses(crpsdata[113:114], number=true, start_end=false)[1] == ([113], [1, 2, 3, 4, 5])
 
     # words
     @test words(tnzldata[1][7])[1] === "صِرَٰطَ"

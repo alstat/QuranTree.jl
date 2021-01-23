@@ -7,6 +7,16 @@ end
 
 Encode the `String` object into Arabic characters. Custom `encoder`
 generated from `@transliterator` can be provided, but default is `Buckwalter`.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> arabic(verses(crpsdata[114])[1])
+"قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
+```
 """
 function arabic(s::String)
     trans = Transliterator()
@@ -29,6 +39,20 @@ end
     verses(quran::AbstractQuran; number=false, start_end=true)
 
 Extract the verses of a `AbstractQuran` object.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> verses(crpsdata[1])[7]
+"Sira`Ta {l~a*iyna >anoEamota Ealayohimo gayori {lomagoDuwbi Ealayohimo walaA {lD~aA^l~iyna"
+julia> verses(crpsdata[113:114], number=true)[1]
+"113:(1,5)"
+julia> verses(crpsdata[113:114], number=true, start_end=false)[1]
+([113], [1, 2, 3, 4, 5])
+```
 """
 function verses(quran::AbstractQuran; number::Bool=false, start_end::Bool=true)
     try
@@ -43,6 +67,16 @@ end
     verses(quran::TanzilData)
 
 Extract the verses of a `TanzilData` object.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> verses(tnzldata)[1]
+"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+```
 """
 function verses(quran::TanzilData)
     return select(quran.data, :form)
@@ -190,6 +224,16 @@ end
     words(quran::AbstractQuran)
 
 Extract words of the input quran.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> words(tnzldata[1][7])[1]
+"صِرَٰطَ"
+```
 """
 function words(quran::AbstractQuran)
     return string.(vcat(split.(verses(quran), " ")...))
@@ -199,6 +243,16 @@ end
     chapter_name(quran::AbstractQuran, transliterate::Bool=false; lang::Symbol=:arabic)
 
 Extract the chapter name of the input quran, in either `:arabic` (default) or `:english`
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> chapter_name(crpsdata[13][2][1])
+"ٱلرَّعْد"
+```
 """
 function chapter_name(quran::AbstractQuran, transliterate::Bool=false; lang::Symbol=:arabic)
     chapterlabel = ChapterLabel()

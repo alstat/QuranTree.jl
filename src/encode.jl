@@ -2,6 +2,17 @@
     encode(::Type{SimpleEncoder}, s::String)
 
 Encode the input `String` object as `SimpleEncoder`.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> basmala = arabic(verses(crpsdata[1][1])[1])
+julia> encode(SimpleEncoder, basmala)
+"Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
+```
 """
 function encode(::Type{SimpleEncoder}, s::String)
     sencoder = SimpleEncoder()
@@ -55,6 +66,17 @@ end
     encode(s::String)
 
 Transliterate the input `String` object using `Buckwalter`.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> basmala = arabic(verses(crpsdata[1][1])[1])
+julia> encode(basmala)
+"bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi"
+```
 """
 function encode(s::String)
     trans = Transliterator()

@@ -4,6 +4,12 @@ import JuliaDB: table, load
     load(data::QuranData)
 
 Load the raw `QuranData` as a `ReadOnlyArray` for both Quranic Corpus and Tanzil Data.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data);
+```
 """
 function load(data::QuranData)
     corpus = ReadOnlyArray(readlines(data.path.corpus))
@@ -17,6 +23,13 @@ end
 
 Convert the `CorpusRaw` read-only array into a tabularized `CorpusData`
 using `IndexedTable`.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps);
+```
 """
 function table(crps::CorpusRaw)
     rowdata = NamedTuple[];
@@ -44,6 +57,13 @@ end
 
 Convert the `TanzilRaw` read-only array into a tabularized `TanzilData`
 using `IndexedTable`.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> tnzldata = table(tnzl);
+```
 """
 function table(tnzl::TanzilRaw)
     rowdata = NamedTuple[];

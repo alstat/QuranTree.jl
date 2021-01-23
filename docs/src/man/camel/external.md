@@ -13,7 +13,7 @@ camel_data light
 ```
 For this tutorial, we are going to use only the light version of the CAMeL data which is around 19mb.
 ## Julia PyCall.jl
-Julia can interoperate with Python through the library [PyCall.jl](https://github.com/JuliaPy/PyCall.jl). The following is the installation:
+Julia can interoperate with Python through the library [PyCall.jl](https://github.com/JuliaPy/PyCall.jl). To install, run the following:
 ```@setup abc
 using Pkg
 Pkg.add("JuliaDB")
@@ -28,7 +28,7 @@ ENV["PYTHON"] = "/usr/bin/python3"
 Pkg.build("PyCall")
 ```
 ## Character Dediacritization
-At this point, Julia can now connect Python and CAMeL Tools can be loaded via the macro `@pyimport`. For example, the following will load the `dediac` module of the said library:
+At this point, Julia can now connect to Python, and CAMeL Tools can now be loaded via the macro `@pyimport`. For example, the following will load the `dediac` module of the said library:
 ```@repl abc
 using PyCall
 @pyimport camel_tools.utils.dediac as camel_dediac
