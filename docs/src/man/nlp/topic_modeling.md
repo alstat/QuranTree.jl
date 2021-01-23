@@ -17,8 +17,13 @@ using TextAnalysis
 crps, tnzl = QuranData() |> load;
 crpsdata = table(crps)
 ```
-
-You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code above. 
+!!! info 'Note'
+    You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
+    ```julia
+    using Pkg
+    Pkg.add("JuliaDB")
+    Pkg.add("PrettyTables")
+    ```
 
 ## Data Preprocessing
 The first data processing will be the removal of all Disconnected Letters like الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:

@@ -39,7 +39,7 @@ using PrettyTables
 @ptconf vcrop_mode=:middle tf=tf_compact
 @pt crpsdata
 ```
-!!! note 'Note'
+!!! info 'Note'
     You need to install [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
     ```julia
     using Pkg
@@ -73,7 +73,7 @@ select(crpstbl, :features)
 # or equivalent to
 select(crpsdata.data, :features)
 ```
-!!! note 'Note'
+!!! info 'Note'
     You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) to successfully run the code. 
     ```julia
     using Pkg

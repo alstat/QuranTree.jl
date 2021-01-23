@@ -17,7 +17,7 @@ using TextAnalysis
 crps, tnzl = QuranData() |> load;
 crpsdata = table(crps)
 ```
-!!! note 'Note'
+!!! info 'Note'
     You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
     ```julia
     using Pkg

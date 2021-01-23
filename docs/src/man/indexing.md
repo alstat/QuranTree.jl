@@ -54,8 +54,8 @@ Combinations of these indices are also supported. For example, the following wil
 @pt crpsdata[111:114][[1,3]]
 @pt tnzldata[111:114][[1,3]] 
 ```
-!!! info "Info"
-    Node that special index like `end` is applicable, for example `crpsdata[111:114][[1,3]]` is the same as `crpsdata[end-3:end][[1,3]]`, and `tnzldata[111:114][[1,3]]` is equivalent to `tnzldata[end-3:end][[1,3]]`.
+!!! info "Note"
+    Special indexing `end` is also applicable, for example `crpsdata[111:114][[1,3]]` is the same as `crpsdata[end-3:end][[1,3]]`, and `tnzldata[111:114][[1,3]]` is equivalent to `tnzldata[end-3:end][[1,3]]`.
 
 Another example, the following will extract part 1 of words 1 to 3 of the above `CorpusData` output:
 ```@repl abc

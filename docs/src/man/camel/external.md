@@ -1,6 +1,6 @@
 CAMeL Tools
 =====
-In this section, we will explore the use of CAMeL tools from New York University Abu Dhabi. To install the library, run the following in the terminal:
+In this section, we will explore the use of CAMeL tools from New York University Abu Dhabi. CAMeL is a To install the library, run the following in the terminal:
 ```bash
 pip3 install camel-tools
 ```
@@ -66,7 +66,7 @@ analyzer = camel_analyzer.Analyzer(db)
 analyses = analyzer.analyze(split(avrs1)[1])
 @pt table([(;Dict(Symbol.(keys(d)) .=> collect(values(d)))...) for d in analyses])
 ```
-!!! note 'Note'
+!!! info 'Note'
     You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) to successfully run the code. 
     ```julia
     using Pkg

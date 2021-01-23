@@ -19,12 +19,13 @@ token = select(crpsdata[1][1][3][2].data, :features)
 mfeat = parse(Features, token[1])
 typeof(mfeat)
 ```
-!!! note 'Note'
+!!! info 'Note'
     You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) to successfully run the code. 
     ```julia
     using Pkg
     Pkg.add("JuliaDB")
     ```
+
 ## Extracting Detailed Description
 To see the detailed description of the features, `@desc` is used.
 ```@repl abc
