@@ -19,6 +19,7 @@ Suppressor = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
 TextAnalysis = "a2db99b7-8b79-58f8-94bf-bbc811eef33d"
 
 [compat]
+Documenter = "0.26"
 JuliaDB = "0.13"
 PyCall = "1.92"
 PrettyTables = "0.10"
