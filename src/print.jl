@@ -128,6 +128,26 @@ end
     @desc(expr)
 
 Extract the detailed description of a `AbstractFeature`.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps);
+julia> tnzldata = table(tnzl);
+julia> feat = parse(Features, select(crpsdata.data, :features)[53])
+julia> @desc feat
+Stem
+────
+Negative:
+ ├ data: NEG
+ ├ desc: Negative particle
+ └ ar_label: حرف نفي
+Lemma:
+ └ data: laA
+Special:
+ └ data: <in~
+```
 """
 macro desc(expr)
     esc(quote
@@ -143,6 +163,17 @@ end
     @data(expr)
 
 Extract the data property object.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps);
+julia> tnzldata = table(tnzl);
+julia> feat = parse(Features, select(crpsdata.data, :features)[53])
+julia> @data feat
+:NEG
+```
 """
 macro data(expr)
     return esc(Meta.parse(string(expr) * ".data"))

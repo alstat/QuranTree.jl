@@ -10,8 +10,8 @@ The goal of this section is to demonstrate the use of the package for Natural La
 
 ```@contents
 Pages = [
-    "man/nlp/text_summarization.md"
-    "man/nlp/topic_modeling.md"
+    "text_summarization.md"
+    "topic_modeling.md"
 ]
 Depth = 2
 ```

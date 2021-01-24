@@ -18,6 +18,21 @@ abstract type AbstractEncoder end
 Create a custom transliterator using an input `dict` (`Dict` object) with its corresponding
 `name` as `String` object. This will automatically update the transliterator inside all 
 functions like `arabic`, `verses`, and `encode`.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps);
+julia> tnzldata = table(tnzl);
+julia> old_keys = collect(keys(BW_ENCODING))
+julia> new_vals = reverse(collect(values(BW_ENCODING)))
+julia> my_encoder = Dict(old_keys .=> new_vals)
+julia> basmala = arabic(verses(crpsdata[1][1])[1])
+julia> @transliterator my_encoder "MyEncoder"
+julia> encode(basmala)
+"\"S%gAS zppj[KS zp`j[&gA[r]S zp`j[&SkAS"
+```
 """
 macro transliterator(dict, name)
     T = Symbol(uppercasefirst(name))
@@ -42,9 +57,25 @@ macro transliterator(dict, name)
 end
 
 """
-    @transliterator(dict)
+    @transliterator(symbl)
 
 Fallback to the default `Buckwalter` transliterator.
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps);
+julia> tnzldata = table(tnzl);
+julia> old_keys = collect(keys(BW_ENCODING))
+julia> new_vals = reverse(collect(values(BW_ENCODING)))
+julia> my_encoder = Dict(old_keys .=> new_vals)
+julia> basmala = arabic(verses(crpsdata[1][1])[1])
+julia> @transliterator my_encoder "MyEncoder"
+julia> encode(basmala)
+"\"S%gAS zppj[KS zp`j[&gA[r]S zp`j[&SkAS"
+julia> @transliterator :default
+julia> encode(basmala)
+"bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi"
+```
 """
 macro transliterator(symbl)
     esc(quote

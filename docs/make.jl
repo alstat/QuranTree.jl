@@ -3,7 +3,9 @@ using QuranTree
 
 makedocs(
     sitename = "QuranTree.jl",
-    format = Documenter.HTML(),
+    format = Documenter.HTML(
+        assets = ["assets/logo.ico"]
+    ),
     modules = [QuranTree],
     authors = "Al-Ahmadgaid B. Asaad",
     pages = [
@@ -19,7 +21,10 @@ makedocs(
             "Topic Modeling" => "man/nlp/topic_modeling.md",
         ],
         "CAMeL Tools" => [
-            "Content" => "man/camel/external.md"
+            "Getting Started" => "man/camel/external.md",
+            "Morphological Analysis" => "man/camel/analysis.md",
+            "POS Tagging" => "man/camel/tagger.md",
+            "Disambiguation" => "man/camel/disambig.md"
         ],
         "API" => "man/api.md"
     ]

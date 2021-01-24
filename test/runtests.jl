@@ -80,6 +80,12 @@ end
     # arabic
     @test arabic(verses(crpsdata[114])[1]) === "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
     @test arabic(verses(crpsdata[1][7])[1]) === "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
+    # number
+    @test verses(crpsdata[113:114], number=true)[1] === "113:(1,5)"
+    @test verses(crpsdata[113:114], number=true, start_end=false)[1] == ([113], [1, 2, 3, 4, 5])
+
+    # words
+    @test words(tnzldata[1][7])[1] === "صِرَٰطَ"
 
     # encoding
     @test encode(arabic(verses(crpsdata[1][7])[1])) === verses(crpsdata[1][7])[1]
@@ -123,17 +129,77 @@ end
     @test normalize(verses(tnzldata[1][1])[1], [:alif_khanjareeya, :hamzat_wasl]) === "بِسْمِ اللَّهِ الرَّحْمَانِ الرَّحِيمِ"
 
     # setting new transliterator
-    old_keys = collect(keys(BW_ENCODING))
-    new_vals = reverse(collect(values(BW_ENCODING)))
-    my_encoder = Dict(old_keys .=> new_vals);
+    my_encoder = Dict(
+        Symbol(Char(0x0621)) => Symbol('('),
+        Symbol(Char(0x0622)) => Symbol('\''),
+        Symbol(Char(0x0623)) => Symbol('&'),
+        Symbol(Char(0x0624)) => Symbol('>'),
+        Symbol(Char(0x0625)) => Symbol('}'),
+        Symbol(Char(0x0626)) => Symbol('<'),
+        Symbol(Char(0x0627)) => Symbol('b'),
+        Symbol(Char(0x0628)) => Symbol('A'),
+        Symbol(Char(0x0629)) => Symbol('t'),
+        Symbol(Char(0x062A)) => Symbol('p'),
+        Symbol(Char(0x062B)) => Symbol('j'),
+        Symbol(Char(0x062C)) => Symbol('v'),
+        Symbol(Char(0x062D)) => Symbol('x'),
+        Symbol(Char(0x062E)) => Symbol('H'),
+        Symbol(Char(0x062F)) => Symbol('*'),
+        Symbol(Char(0x0630)) => Symbol('d'),
+        Symbol(Char(0x0631)) => Symbol('z'),
+        Symbol(Char(0x0632)) => Symbol('r'),
+        Symbol(Char(0x0633)) => Symbol('$'),
+        Symbol(Char(0x0634)) => Symbol('s'),
+        Symbol(Char(0x0635)) => Symbol('D'),
+        Symbol(Char(0x0636)) => Symbol('S'),
+        Symbol(Char(0x0637)) => Symbol('Z'),
+        Symbol(Char(0x0638)) => Symbol('T'),
+        Symbol(Char(0x0639)) => Symbol('g'),
+        Symbol(Char(0x063A)) => Symbol('E'),
+        Symbol(Char(0x0640)) => Symbol('f'),
+        Symbol(Char(0x0641)) => Symbol('_'),
+        Symbol(Char(0x0642)) => Symbol('k'),
+        Symbol(Char(0x0643)) => Symbol('q'),
+        Symbol(Char(0x0644)) => Symbol('m'),
+        Symbol(Char(0x0645)) => Symbol('l'),
+        Symbol(Char(0x0646)) => Symbol('h'),
+        Symbol(Char(0x0647)) => Symbol('n'),
+        Symbol(Char(0x0648)) => Symbol('Y'),
+        Symbol(Char(0x0649)) => Symbol('w'),
+        Symbol(Char(0x064A)) => Symbol('F'),
+        Symbol(Char(0x064B)) => Symbol('y'),
+        Symbol(Char(0x064C)) => Symbol('K'),
+        Symbol(Char(0x064D)) => Symbol('N'),
+        Symbol(Char(0x064E)) => Symbol('u'),
+        Symbol(Char(0x064F)) => Symbol('a'),
+        Symbol(Char(0x0650)) => Symbol('~'),
+        Symbol(Char(0x0651)) => Symbol('i'),
+        Symbol(Char(0x0652)) => Symbol('^'),
+        Symbol(Char(0x0653)) => Symbol('o'),
+        Symbol(Char(0x0654)) => Symbol('`'),
+        Symbol(Char(0x0670)) => Symbol('#'),
+        Symbol(Char(0x0671)) => Symbol(':'),
+        Symbol(Char(0x06DC)) => Symbol('{'),
+        Symbol(Char(0x06DF)) => Symbol('\"'),
+        Symbol(Char(0x06E0)) => Symbol('@'),
+        Symbol(Char(0x06E2)) => Symbol(';'),
+        Symbol(Char(0x06E3)) => Symbol('['),
+        Symbol(Char(0x06E5)) => Symbol('.'),
+        Symbol(Char(0x06E6)) => Symbol(','),
+        Symbol(Char(0x06E8)) => Symbol('-'),
+        Symbol(Char(0x06EA)) => Symbol('!'),
+        Symbol(Char(0x06EB)) => Symbol('%'),
+        Symbol(Char(0x06EC)) => Symbol('+'),
+        Symbol(Char(0x06ED)) => Symbol(']')
+    );
 
     basmala = arabic(verses(crpsdata[1][1])[1])
 
     @transliterator my_encoder "MyEncoder"
-    @test encode(basmala) === "\"S%gAS zppj[KS zp`j[&gA[r]S zp`j[&SkAS"
+    @test encode(basmala) === "A~\$^l~ :mmiun~ :mziux^lu#h~ :mziux~Fl~"
     @test arabic(encode(basmala)) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
-    @test dediac(encode(basmala)) === "\"%A zppK zp`&Ar] zp`&kA"
-    @test normalize(encode(basmala)) === "\"S%gAS mppj[KS mp`j[&gA[m]S mp`j[&SkAS"
+    @test dediac(encode(basmala)) === "A\$l :mmn :mzxl#h :mzxFl"
+    @test normalize(encode(basmala)) === "A~\$^l~ bmmiun~ bmziux^lubh~ bmziux~Fl~"
 
     @transliterator :default
     @test encode(basmala) === "bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi"
@@ -243,9 +309,6 @@ end
 
     out = capture_io(Noun())
     @test out === "N\n"
-
-    out = capture_io(SimpleEncoder())
-    @test out === "SimpleEncoder:\n └ encoder: Dict(:ذ => :Thal,:ء => :Hamza,Symbol(\"ۜ\") => :SmallHighSeen,Symbol(\"َ\") => :Fatha,Symbol(\"ٰ\") => :AlifKhanjareeya,:ي => :Ya,:ن => :Noon,:ب => :Ba,:ص => :Sad,:ا => :Alif,:ى => :AlifMaksura,Symbol(\"۫\") => :EmptyCenterHighStop,:ؤ => :HamzaAbove,Symbol(\"۟\") => :SmallHighRoundedZero,Symbol(\"ْ\") => :Sukun,:س => :Seen,:ۦ => :SmallYa,:و => :Waw,Symbol(\"ً\") => :Fathatan,:خ => :Kha,:ع => :Ain,:د => :Dal,:ه => :Ha,Symbol(\"ّ\") => :Shadda,:ظ => :DTha,Symbol(\"ٔ\") => :HamzaAbove,:ز => :Zain,:ض => :DDad,Symbol(\"ُ\") => :Damma,:ل => :Lam,Symbol(\"ۣ\") => :SmallLowSeen,:ة => :TaMarbuta,:ۥ => :SmallWaw,:ت => :Ta,:ٱ => :HamzatWasl,:ث => :Tha,:إ => :HamzaBelow,:ج => :Jeem,Symbol(\"ٍ\") => :Kasratan,Symbol(\"ٓ\") => :Maddah,Symbol(\"ۨ\") => :SmallHighNoon,:ئ => :HamzaAbove,Symbol(\"ٌ\") => :Dammatan,Symbol(\"۪\") => :EmptyCenterLowStop,:ش => :Sheen,Symbol(\"۬\") => :RoundedHighStopWithFilledCenter,:غ => :Ghain,:ط => :TTa,:ح => :HHa,:أ => :HamzaAbove,:ـ => :Tatweel,:م => :Meem,Symbol(\"ِ\") => :Kasra,Symbol(\"۠\") => :SmallHighUprightRectangularZero,Symbol(\"ۭ\") => :SmallLowMeem,:ك => :Kaf,:ر => :Ra,Symbol(\"ۢ\") => :SmallHighMeemIsolatedForm,:ف => :Fa,:آ => Symbol(\"Alif+Maddah\"),:ق => :Qaf)\n\n"
 
     out = capture_io(crps);
     @test out[5000:6000] === "ka\\tDEM\\tSTEM|POS:DEM|LEM:*a`lik|MS\", \"(2:2:2:1)\\t{lo\\tDET\\tPREFIX|Al+\", \"(2:2:2:2)\\tkita`bu\\tN\\tSTEM|POS:N|LEM:kita`b|ROOT:ktb|M|NOM\", \"(2:2:3:1)\\tlaA\\tNEG\\tSTEM|POS:NEG|LEM:laA|SP:<in~\", \"(2:2:4:1)\\trayoba\\tN\\tSTEM|POS:N|LEM:rayob|ROOT:ryb|M|ACC\", \"(2:2:5:1)\\tfiy\\tP\\tSTEM|POS:P|LEM:fiY\", \"(2:2:5:2)\\thi\\tPRON\\tSUFFIX|PRON:3MS\", \"(2:2:6:1)\\thudFY\\tN\\tSTEM|POS:N|LEM:hudFY|ROOT:hdy|M|INDEF|NOM\", \"(2:2:7:1)\\tl~i\\tP\\tPREFIX|l:P+\", \"(2:2:7:2)\\tlo\\tDET\\tPREFIX|Al+\", \"(2:2:7:3)\\tmut~aqiyna\\tN\\tSTEM|POS:N|ACT|PCPL|(VIII)|LEM:mut~aqiyn|ROOT:wqy|MP|GEN\", \"(2:3:1:1)\\t{l~a*iyna\\tREL\\tSTEM|POS:REL|LEM:{l~a*iY|MP\", \"(2:3:2:1)\\tyu&ominu\\tV\\tSTEM|POS:V|IMPF|(IV)|LEM:'aAmana|ROOT:Amn|3MP\", \"(2:3:2:2)\\twna\\tPRON\\tSUFFIX|PRON:3MP\", \"(2:3:3:1)\\tbi\\tP\\tPREFIX|bi+\", \"(2:3:3:2)\\t{lo\\tDET\\tPREFIX|Al+\", \"(2:3:3:3)\\tgayobi\\tN\\tSTEM|POS:N|LEM:gayob|ROOT:gyb|M|GEN\", \"(2:3:4:1)\\twa\\tCONJ\\tPREFIX|w:CONJ+\", \"(2:3:4:2)\\tyuqiymu\\tV\\tSTEM|POS:V|IMPF|(IV)|LEM:>aqaAma|ROOT:qwm|3MP\", \"(2:3:4:3)\\twna\\tPRON\\tSUFFIX|PRON:3MP\""

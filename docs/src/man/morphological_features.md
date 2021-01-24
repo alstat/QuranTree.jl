@@ -2,7 +2,7 @@ Morphological Features
 =====
 QuranTree.jl provides complete types for all morphological features and part of speech of [The Quranic Arabic Corpus](https://corpus.quran.com/). 
 ## Parsing
-The features of each token are encoded as `String` in its raw form, and in order to parse this as morphological feature, the function `parse(Features, x)` is used, where `x` is the raw `String` input. For example, the following will parse the 2nd part of the 3rd word of 1st verse of chapter 1:
+The features of each token are encoded as `String` in its raw form, and in order to parse this as morphological feature, the function `parse(Features, x)` is used, where `x` is the raw `String` input. For example, the following will parse the 2nd part of the 3rd word of 1st verse of Chapter 1:
 ```@setup abc
 using Pkg
 Pkg.add("JuliaDB")

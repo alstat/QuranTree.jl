@@ -11,6 +11,16 @@ end
     normalize(s::String)
 
 Normalize a Arabic or Buckwalter `String` characters.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps);
+julia> tnzldata = table(tnzl);
+julia> normalize(dediac(verses(crpsdata[1][1])[1]))
+"bsm Allh AlrHmAn AlrHym"
+```
 """
 function normalize(s::String)
     trans = Transliterator()
@@ -36,6 +46,16 @@ end
     normalize(s::String, chars::Array{Symbol,1})
 
 Normalize a specific Arabic or Buckwalter `String` character/s (`chars`).
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps);
+julia> tnzldata = table(tnzl);
+julia> normalize(arabic(verses(crpsdata[1][1])[1]), [:alif_khanjareeya, :hamzat_wasl])
+"بِسْمِ اللَّهِ الرَّحْمَانِ الرَّحِيمِ"
+```
 """
 function normalize(s::String, chars::Array{Symbol,1})
     for char in chars
@@ -48,6 +68,16 @@ end
     normalize(s::String, char::Symbol)
 
 Normalize a specific Arabic or Buckwalter `String` character (`chars`).
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps);
+julia> tnzldata = table(tnzl);
+julia> normalize(arabic(verses(crpsdata[1][1])[1]), :hamzat_wasl)
+"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
+```
 """
 function normalize(s::String, char::Symbol)
     trans = Transliterator()

@@ -10,24 +10,24 @@ tnzldata[<chapters>][<verses>]
 ```
 The following are the options supported for each index:
  * Chapters:
-    * Int64 - `crpsdata[1]` (extracts chapter 1)
-    * UnitRange - `crpsdata[15:24]` (extracts chapters 15 to 24)
-    * Array{Int64,1} - `crpsdata[[3,9,10]]` (extracts chapters 3, 9 and 10)
-    * end (special) - `crpsdata[end-3:end]` (extracts chapters 111 to 114).
+    * Int64 - `crpsdata[1]` (extracts Chapter 1)
+    * UnitRange - `crpsdata[15:24]` (extracts Chapter 15 to 24)
+    * Array{Int64,1} - `crpsdata[[3,9,10]]` (extracts Chapter 3, 9 and 10)
+    * end (special) - `crpsdata[end-3:end]` (extracts Chapter 111 to 114).
  * Verses:
-    * Int64 - `crpsdata[1][1]` (extracts verse 1 of chapter 1)
-    * UnitRange - `crpsdata[2][15:24]` (extracts verses 15 to 24 of chapter 2)
-    * Array{Int64,1} - `crpsdata[10][[3,9,10]]` (extracts verses 3, 9 and 10 of chapter 10)
+    * Int64 - `crpsdata[1][1]` (extracts Verse 1 of Chapter 1)
+    * UnitRange - `crpsdata[2][15:24]` (extracts verses 15 to 24 of Chapter 2)
+    * Array{Int64,1} - `crpsdata[10][[3,9,10]]` (extracts verses 3, 9 and 10 of Chapter 10)
  * Words: (not applicable for `TanzilData`, only `CorpusData`)
-    * Int64 - `crpsdata[1][1][1]` (extracts word 1 of verse 1 of chapter 1)
-    * UnitRange - `crpsdata[2][8][1:3]` (extracts words 1 to 3 of verse 8 of chapter 2)
-    * Array{Int64,1} - `crpsdata[2][8][[1,3]]` (extracts words 1 and 3 of verse 8 of chapter 2)
+    * Int64 - `crpsdata[1][1][1]` (extracts Word 1 of Verse 1 of Chapter 1)
+    * UnitRange - `crpsdata[2][8][1:3]` (extracts words 1 to 3 of Verse 8 of Chapter 2)
+    * Array{Int64,1} - `crpsdata[2][8][[1,3]]` (extracts words 1 and 3 of Verse 8 of Chapter 2)
 * Parts: (not applicable for `TanzilData`, only `CorpusData`)
-    * Int64 - `crpsdata[1][1][1][1]` (extracts part 1 of word 1 of verse 1 of chapter 1)
-    * UnitRange - `crpsdata[2][9][1][1:2]` (extracts part 1 to part 2 of word 1 of verse 9 of chapter 2)
-    * Array{Int64,1} - `crpsdata[2][9][1][[1,2]]` (extracts part 1 and part 2 of word 1 of verse 9 of chapter 2)
+    * Int64 - `crpsdata[1][1][1][1]` (extracts Part 1 of Word 1 of Verse 1 of Chapter 1)
+    * UnitRange - `crpsdata[2][9][1][1:2]` (extracts Part 1 to Part 2 of Word 1 of Verse 9 of Chapter 2)
+    * Array{Int64,1} - `crpsdata[2][9][1][[1,2]]` (extracts Part 1 and Part 2 of Word 1 of Verse 9 of Chapter 2)
 
-As an example, the following will extract verse 9 of chapter 2 in both `TanzilData` and `CorpusData`:
+As an example, the following will extract Verse 9 of Chapter 2 in both `TanzilData` and `CorpusData`:
 ```@repl abc
 using QuranTree
 
@@ -49,7 +49,7 @@ using PrettyTables
 @pt crpsdata[2][9]
 ```
 ## Combinations of Indices
-Combinations of these indices are also supported. For example, the following will extract chapters 111 to 114, each with verses 1 and 3:
+Combinations of these indices are also supported. For example, the following will extract Chapter 111 to 114, each with verses 1 and 3:
 ```@repl abc
 @pt crpsdata[111:114][[1,3]]
 @pt tnzldata[111:114][[1,3]] 
@@ -57,7 +57,7 @@ Combinations of these indices are also supported. For example, the following wil
 !!! info "Note"
     Special indexing `end` is also applicable, for example `crpsdata[111:114][[1,3]]` is the same as `crpsdata[end-3:end][[1,3]]`, and `tnzldata[111:114][[1,3]]` is equivalent to `tnzldata[end-3:end][[1,3]]`.
 
-Another example, the following will extract part 1 of words 1 to 3 of the above `CorpusData` output:
+Another example, the following will extract Part 1 of Words 1 to 3 of the above `CorpusData` output:
 ```@repl abc
 @pt crpsdata[111:114][[1,3]][1:3][1] 
 ```

@@ -99,7 +99,7 @@ function pagerank(A; Niter=20, damping=.15)
     Nmax = size(A, 1)
     r = rand(1, Nmax);              # Generate a random starting rank.
     r = r ./ norm(r, 1);            # Normalize
-    a = (1 - damping) ./ Nmax;       # Create damping vector
+    a = (1 - damping) ./ Nmax;      # Create damping vector
 
     for i=1:Niter
         s = r * A
@@ -155,7 +155,7 @@ mdtable(DataFrame(tbl), latex=false)
 The following are the translations of the above verses:
 ```@raw html
 <table>
-    <thead><td>Chapter</td><td>Verse</td><td>Enlish Translation</td></thead>
+    <thead><td>Chapter</td><td>Verse</td><td>English Translation</td></thead>
     <tbody>
     <tr><td>18</td><td>85</td><td>So he travelled a course,</td></tr>
     <tr><td>18</td><td>89</td><td>Then he travelled a ˹different˺ course</td></tr>

@@ -212,6 +212,16 @@ end
     parse(::Type{Features}, f::AbstractString)
 
 Extract the features of a morphological `Feature` object.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> parse(Features, select(crpsdata.data, :features)[53])
+Stem(:NEG, NEG, AbstractFeature[Lemma("laA"), Special("<in~")])
+```
 """
 function parse(::Type{Features}, f::AbstractString)
     try
@@ -229,6 +239,16 @@ end
     isfeature(feat::Features, pos::Type{<:AbstractFeature})
 
 Check if the morphological `Feature` object is a type of `pos`.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> isfeature(parse(Features, select(crpsdata[1].data, :features)[2]), Stem)
+true
+```
 """
 function isfeature(feat::AbstractFeature, pos::Type{<:AbstractFeature})
     try        
@@ -246,6 +266,16 @@ end
     root(feat::AbstractFeature)
 
 Extract the root of the feature.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> root(parse(Features, select(crpsdata[112].data, :features)[1]))
+"qwl"
+```
 """
 function root(feat::AbstractFeature)
     try
@@ -272,6 +302,16 @@ end
     lemma(feat::AbstractFeature)
 
 Extract the lemma of the feature.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> lemma(parse(Features, select(crpsdata[112].data, :features)[1]))
+"qaAla"
+```
 """
 function lemma(feat::AbstractFeature)
     try
@@ -292,9 +332,19 @@ function lemma(feat::AbstractFeature)
 end
 
 """
-    lemma(feat::AbstractFeature)
+    special(feat::AbstractFeature)
     
 Extract the special feature of the token.
+
+# Examples
+```julia-repl
+julia> data = QuranData()
+julia> crps, tnzl = load(data)
+julia> crpsdata = table(crps)
+julia> tnzldata = table(tnzl)
+julia> special(parse(Features, select(crpsdata.data, :features)[53]))
+"<in~"
+```
 """
 function special(feat::AbstractFeature)
     try

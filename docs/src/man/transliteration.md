@@ -1,6 +1,6 @@
 Transliteration
 =====
-QuranTree.jl uses Buckwalter as the default transliteration, which is based on the Quranic Arabic Corpus [encoding](https://corpus.quran.com/java/buckwalter.jsp). The transliteration is written as `encode` function, for example, the following will transliterate the first verse of chapter 1:
+QuranTree.jl uses Buckwalter as the default transliteration, which is based on the Quranic Arabic Corpus [encoding](https://corpus.quran.com/java/buckwalter.jsp). The transliteration is written as `encode` function, for example, the following will transliterate the first verse of Chapter 1:
 ```@repl abc
 using QuranTree
 
@@ -20,13 +20,13 @@ The `verses` function above is used to extract the corresponding verse from the 
 !!! tip "Tips"
     To extract the words of the corpus, use the function `words` instead.
 
-The function `verses` always returns an Array, and hence encoding multiple verses is possible using Julia's `.` (dot) broadcasting operation. For example, the following will transliterate all verses of chapter 114:
+The function `verses` always returns an Array, and hence encoding multiple verses is possible using Julia's `.` (dot) broadcasting operation. For example, the following will transliterate all verses of Chapter 114:
 ```@repl abc
 vrs = verses(tnzldata[114])
 encode.(vrs)
 ```
 ## Decoding
-To decode the transliterated back to Arabic form, use the `arabic` function. For example, the following will decode to Arabic the transliterated verses of chapter 114 above:
+To decode the transliterated back to Arabic form, use the `arabic` function. For example, the following will decode to Arabic the transliterated verses of Chapter 114 above:
 ```@repl abc
 arabic.(encode.(vrs))
 ```
@@ -73,13 +73,13 @@ bw_vrs
 arabic.(bw_vrs)
 ```
 ## Simple Encoding
-Another feature supported in QuranTree.jl is the [Simple Encoding](https://corpus.quran.com/java/simpleencoding.jsp). For example, the following will (Simple) encode the first verse of chapter 1:
+Another feature supported in QuranTree.jl is the [Simple Encoding](https://corpus.quran.com/java/simpleencoding.jsp). For example, the following will (Simple) encode the first verse of Chapter 1:
 ```@repl abc
 vrs = verses(tnzldata[1][1])
 encode(SimpleEncoder, vrs[1])
 ```
 !!! tip "Tips"
-    For verses 1 to 4 of chapter 114, use the broadcasting operator:
+    For verses 1 to 4 of Chapter 114, use the broadcasting operator:
     ```julia
     vrs = verses(tnzldata[114][1:4])
     encode.(SimpleEncoder, vrs)
