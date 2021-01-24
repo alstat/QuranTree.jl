@@ -1,6 +1,6 @@
 CAMeL Tools
 =====
-In this section, we will explore how to use CAMeL Tools of New York University Abu Dhabi. CAMeL is a suite of tools for Arabic Natural Language Processing, and by far the most feature-rich library to date for universal Arabic NLP. To install the library, follow the instructions [here](https://camel-tools.readthedocs.io/en/latest/getting_started.html#installation). 
+In this section, we will explore how to use [CAMeL Tools](https://github.com/CAMeL-Lab/camel_tools) of [New York University Abu Dhabi](https://nyuad.nyu.edu/en/research/faculty-labs-and-projects/computational-approaches-to-modeling-language-lab.html). CAMeL is a suite of tools for Arabic Natural Language Processing, and by far the most feature-rich library to date for universal Arabic NLP. To install the library, follow the instructions [here](https://camel-tools.readthedocs.io/en/latest/getting_started.html#installation). 
 
 ## Setting up
 For macOS users, however, simply run the following in the terminal:
