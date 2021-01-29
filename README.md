@@ -35,7 +35,7 @@ The following are the features of the package:
 To install the package, run the following:
 ```julia
 julia> using Pkg
-julia> Pkg.add("https://github.com/alstat/QuranTree.jl")
+julia> Pkg.add("QuranTree")
 ```
 
 ## Requirements
