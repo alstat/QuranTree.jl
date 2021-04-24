@@ -65,7 +65,7 @@ Columns:
 7  features  String
 
 julia&gt; feats = select(crpsnew, :features)
-827-element WeakRefStrings.StringArray{String,1}:
+827-element WeakRefStrings.StringVector{String}:
  &quot;STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM&quot;
  &quot;STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN&quot;
  &quot;STEM|POS:V|PERF|(IV)|LEM:&gt;anzala|ROOT:nzl|3MS&quot;
@@ -88,7 +88,7 @@ julia&gt; feats = select(crpsnew, :features)
  &quot;STEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN&quot;
 
 julia&gt; feats = parse.(Features, feats)
-827-element Array{AbstractFeature,1}:
+827-element Vector{AbstractFeature}:
  Stem(:N, N, AbstractFeature[Lemma(&quot;Hamod&quot;), Root(&quot;Hmd&quot;), M, NOM])
  Stem(:PN, PN, AbstractFeature[Lemma(&quot;{ll~ah&quot;), Root(&quot;Alh&quot;), GEN])
  Stem(:V, V, AbstractFeature[Lemma(&quot;&gt;anzala&quot;), Root(&quot;nzl&quot;), PERF, IV, 3, M, S, IND, ACT])
@@ -109,7 +109,7 @@ julia&gt; feats = parse.(Features, feats)
  Stem(:V, V, AbstractFeature[Lemma(&quot;&gt;a\$oraka&quot;), Root(&quot;\$rk&quot;), JUS, IMPF, IV, 3, M, S, ACT])
  Stem(:N, N, AbstractFeature[Lemma(&quot;EibaAdat&quot;), Root(&quot;Ebd&quot;), F, GEN])
  Stem(:N, N, AbstractFeature[Lemma(&quot;rab~&quot;), Root(&quot;rbb&quot;), M, GEN])</code></pre><h2 id="Lemmatization"><a class="docs-heading-anchor" href="#Lemmatization">Lemmatization</a><a id="Lemmatization-1"></a><a class="docs-heading-anchor-permalink" href="#Lemmatization" title="Permalink"></a></h2><p>Using the above parsed features, we then convert the <code>form</code> of the tokens into its lemma. This is useful for addressing minimal variations due to inflection.</p><pre><code class="language-julia-repl">julia&gt; lemmas = lemma.(feats)
-827-element Array{Union{Missing, String},1}:
+827-element Vector{Union{Missing, String}}:
  &quot;Hamod&quot;
  &quot;{ll~ah&quot;
  &quot;&gt;anzala&quot;
@@ -132,7 +132,7 @@ julia&gt; feats = parse.(Features, feats)
  &quot;rab~&quot;
 
 julia&gt; forms1 = select(crpsnew, :form)
-827-element WeakRefStrings.StringArray{String,1}:
+827-element WeakRefStrings.StringVector{String}:
  &quot;Hamodu&quot;
  &quot;l~ahi&quot;
  &quot;&gt;anzala&quot;
@@ -155,7 +155,7 @@ julia&gt; forms1 = select(crpsnew, :form)
  &quot;rab~i&quot;
 
 julia&gt; forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]
-795-element Array{Union{Missing, String},1}:
+795-element Vector{Union{Missing, String}}:
  &quot;Hamod&quot;
  &quot;{ll~ah&quot;
  &quot;&gt;anzala&quot;
@@ -203,7 +203,7 @@ Columns:
 5  form      String
 6  tag       String
 7  features  String</code></pre><h2 id="Tokenization"><a class="docs-heading-anchor" href="#Tokenization">Tokenization</a><a id="Tokenization-1"></a><a class="docs-heading-anchor-permalink" href="#Tokenization" title="Permalink"></a></h2><p>We want to summarize the Qur&#39;an at the verse level. Thus, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:</p><pre><code class="language-julia-repl">julia&gt; lem_vrs = verses(crpsnew)
-109-element Array{String,1}:
+109-element Vector{String}:
  &quot;Hamod {ll~ah &gt;anzala Eabod jaEala Eiwaj&quot;
  &quot;l~i&gt;an*ara l~adun bu\$~ira Eamila&quot;
  &quot;&gt;an*ara qaAla {t~axa*a {ll~ah&quot;
@@ -226,7 +226,7 @@ Columns:
  &quot;qaAla ba\$ar mivol &gt;awoHaY`^ &lt;ila`h &lt;ila`h wa`Hid kaAna yarojuwA@ rab~ loEamila &gt;a\$oraka EibaAdat rab~&quot;
 
 julia&gt; vrs = QuranTree.normalize.(dediac.(lem_vrs))
-109-element Array{String,1}:
+109-element Vector{String}:
  &quot;Hmd Allh Anzl Ebd jEl Ewj&quot;
  &quot;lAn*r ldn b\$r Eml&quot;
  &quot;An*r qAl Atx* Allh&quot;
@@ -271,26 +271,7 @@ julia&gt; beta = 0.1     # hyperparameter
 
 julia&gt; ϕ, θ = lda(m1, k, iter, alpha, beta)
 (
-  [2,   1]  =  0.012012
-  [3,   1]  =  0.00634921
-  [2,   2]  =  0.00600601
-  [2,   3]  =  0.00600601
-  [1,   4]  =  0.00381679
-  [1,   5]  =  0.00381679
-  [1,   6]  =  0.0229008
-  [2,   7]  =  0.003003
-  [1,   8]  =  0.0419847
-  ⋮
-  [3, 353]  =  0.00634921
-  [1, 354]  =  0.00381679
-  [3, 355]  =  0.0031746
-  [3, 356]  =  0.0031746
-  [2, 357]  =  0.003003
-  [3, 357]  =  0.0031746
-  [3, 358]  =  0.0031746
-  [3, 359]  =  0.0031746
-  [1, 360]  =  0.00763359
-  [1, 361]  =  0.00381679, [0.3333333333333333 0.0 … 0.07692307692307693 0.8666666666666667; 0.6666666666666666 1.0 … 0.0 0.13333333333333333; 0.0 0.0 … 0.9230769230769231 0.0])</code></pre><p>Extract the topic for first cluster:</p><pre><code class="language-julia-repl">julia&gt; ntopics = 10
+⠛⠛⠛⠙⠛⠛⠛⠋⠛⠛⠚⠓⠛⠛⠛⠛⠛⠛⠚⠛⠛⠛⠚⠛⠛⠛⠓⠛⠛⠛⠛⠚⠛⠛⠛⠚⠛⠛⠛⠊, [0.16666666666666666 0.16666666666666666 … 0.15384615384615385 0.13333333333333333; 0.0 0.0 … 0.8461538461538461 0.8; 0.8333333333333334 0.8333333333333334 … 0.0 0.06666666666666667])</code></pre><p>Extract the topic for first cluster:</p><pre><code class="language-julia-repl">julia&gt; ntopics = 10
 10
 
 julia&gt; cluster_topics = Matrix(undef, ntopics, k);
@@ -304,22 +285,22 @@ julia&gt; @pt cluster_topics
  -------- -------- --------
   Col. 1   Col. 2   Col. 3
  -------- -------- --------
-       ء        ذ      قال
-     جعل        ء        ء
-     قال      وجد      كان
-      رب     الله       رب
-     ارض      قال   استطاع
-     كان      اتخ        ل
-      شي        ر      امر
-     اتي       رب     اراد
-     جنه        ا       جا
-     سما      دون     اتبع
+       ء      قال        ذ
+     قال      كان        ء
+     جعل       رب      قال
+      رب   استطاع      وجد
+       ل     اراد     الله
+     امن     اتبع      اتخ
+     ارض      لبث        ر
+     اتي        ء        ا
+     كان      علم       رب
+      شي     اشرك      ايه
  -------- -------- --------</code></pre><p>Tabulating this propery would give us the following</p><pre><code class="language-julia">Pkg.add(&quot;DataFrames&quot;)
 Pkg.add(&quot;Latexify&quot;)
 using DataFrames: DataFrame
 using Latexify
 
-mdtable(convert(DataFrame, cluster_topics), latex=false)</code></pre><div class="markdown"><table><tr><th align="right">x1</th><th align="right">x2</th><th align="right">x3</th></tr><tr><td align="right">ء</td><td align="right">ذ</td><td align="right">قال</td></tr><tr><td align="right">جعل</td><td align="right">ء</td><td align="right">ء</td></tr><tr><td align="right">قال</td><td align="right">وجد</td><td align="right">كان</td></tr><tr><td align="right">رب</td><td align="right">الله</td><td align="right">رب</td></tr><tr><td align="right">ارض</td><td align="right">قال</td><td align="right">استطاع</td></tr><tr><td align="right">كان</td><td align="right">اتخ</td><td align="right">ل</td></tr><tr><td align="right">شي</td><td align="right">ر</td><td align="right">امر</td></tr><tr><td align="right">اتي</td><td align="right">رب</td><td align="right">اراد</td></tr><tr><td align="right">جنه</td><td align="right">ا</td><td align="right">جا</td></tr><tr><td align="right">سما</td><td align="right">دون</td><td align="right">اتبع</td></tr></table>
+mdtable(convert(DataFrame, cluster_topics), latex=false)</code></pre><div class="markdown"><table><tr><th align="right">x1</th><th align="right">x2</th><th align="right">x3</th></tr><tr><td align="right">ء</td><td align="right">قال</td><td align="right">ذ</td></tr><tr><td align="right">قال</td><td align="right">كان</td><td align="right">ء</td></tr><tr><td align="right">جعل</td><td align="right">رب</td><td align="right">قال</td></tr><tr><td align="right">رب</td><td align="right">استطاع</td><td align="right">وجد</td></tr><tr><td align="right">ل</td><td align="right">اراد</td><td align="right">الله</td></tr><tr><td align="right">امن</td><td align="right">اتبع</td><td align="right">اتخ</td></tr><tr><td align="right">ارض</td><td align="right">لبث</td><td align="right">ر</td></tr><tr><td align="right">اتي</td><td align="right">ء</td><td align="right">ا</td></tr><tr><td align="right">كان</td><td align="right">علم</td><td align="right">رب</td></tr><tr><td align="right">شي</td><td align="right">اشرك</td><td align="right">ايه</td></tr></table>
 </div><p>As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their own use. This section, however, demonstrated how <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>&#39;s LDA can be used for Topic Modeling the QuranTree.jl&#39;s corpus.</p><p>Finally, the following will extract the topic for each verse:</p><pre><code class="language-julia-repl">julia&gt; vrs_topics = []
 Any[]
 
@@ -331,22 +312,22 @@ julia&gt; @pt vrs_topics
  --------
   Col. 1
  --------
-       2
-       2
-       2
        3
+       3
+       3
+       2
        1
        1
        1
        2
     ⋮
+       2
+       1
+       3
        3
        1
        2
        2
-       3
-       1
-       3
-       1
+       2
  --------
-93 rows omitted</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../text_summarization/">« Text Summarization</a><a class="docs-footer-nextpage" href="../../camel/external/">Getting Started »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 29 January 2021 02:00">Friday 29 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+93 rows omitted</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../text_summarization/">« Text Summarization</a><a class="docs-footer-nextpage" href="../../camel/external/">Getting Started »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 24 April 2021 08:48">Saturday 24 April 2021</span>. Using Julia version 1.6.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

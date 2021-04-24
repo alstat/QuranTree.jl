@@ -8,13 +8,13 @@ julia&gt; crpsdata = table(crps);
 julia&gt; tnzldata = table(tnzl);
 
 julia&gt; vrs = verses(tnzldata[1][1])
-1-element Array{String,1}:
+1-element Vector{String}:
  &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
 
 julia&gt; encode(vrs[1])
 &quot;bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi&quot;</code></pre><p>The <code>verses</code> function above is used to extract the corresponding verse from the Qur&#39;an data of type <code>AbstractQuran</code>.</p><div class="admonition is-success"><header class="admonition-header">Tips</header><div class="admonition-body"><p><code>verses</code> by default only returns the verse form of the table, but one can also extract the corresponding verse number instead of the form, example:</p><pre><code class="language-julia">verses(tnzldata, number=true, start_end=true)
 verses(tnzldata, number=true, start_end=false)</code></pre></div></div><div class="admonition is-success"><header class="admonition-header">Tips</header><div class="admonition-body"><p>To extract the words of the corpus, use the function <code>words</code> instead.</p></div></div><p>The function <code>verses</code> always returns an Array, and hence encoding multiple verses is possible using Julia&#39;s <code>.</code> (dot) broadcasting operation. For example, the following will transliterate all verses of Chapter 114:</p><pre><code class="language-julia-repl">julia&gt; vrs = verses(tnzldata[114])
-6-element WeakRefStrings.StringArray{String,1}:
+6-element WeakRefStrings.StringVector{String}:
  &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
  &quot;مَلِكِ ٱلنَّاسِ&quot;
  &quot;إِلَٰهِ ٱلنَّاسِ&quot;
@@ -23,21 +23,21 @@ verses(tnzldata, number=true, start_end=false)</code></pre></div></div><div clas
  &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;
 
 julia&gt; encode.(vrs)
-6-element Array{String,1}:
+6-element Vector{String}:
  &quot;bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi qulo &gt;aEuw*u birab~i {ln~aAsi&quot;
  &quot;maliki {ln~aAsi&quot;
  &quot;&lt;ila`hi {ln~aAsi&quot;
  &quot;min \$ar~i {lowasowaAsi {loxan~aAsi&quot;
  &quot;{l~a*iY yuwasowisu fiY Suduwri {ln~aAsi&quot;
  &quot;mina {lojin~api wa{ln~aAsi&quot;</code></pre><h2 id="Decoding"><a class="docs-heading-anchor" href="#Decoding">Decoding</a><a id="Decoding-1"></a><a class="docs-heading-anchor-permalink" href="#Decoding" title="Permalink"></a></h2><p>To decode the transliterated back to Arabic form, use the <code>arabic</code> function. For example, the following will decode to Arabic the transliterated verses of Chapter 114 above:</p><pre><code class="language-julia-repl">julia&gt; arabic.(encode.(vrs))
-6-element Array{String,1}:
+6-element Vector{String}:
  &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
  &quot;مَلِكِ ٱلنَّاسِ&quot;
  &quot;إِلَٰهِ ٱلنَّاسِ&quot;
  &quot;مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ&quot;
  &quot;ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ&quot;
  &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><p>Or using the <code>CorpusData</code>, </p><pre><code class="language-julia-repl">julia&gt; vrs = verses(crpsdata[114])
-6-element Array{String,1}:
+6-element Vector{String}:
  &quot;qulo &gt;aEuw*u birab~i {ln~aAsi&quot;
  &quot;maliki {ln~aAsi&quot;
  &quot;&lt;ila`hi {ln~aAsi&quot;
@@ -46,71 +46,71 @@ julia&gt; encode.(vrs)
  &quot;mina {lojin~api wa{ln~aAsi&quot;
 
 julia&gt; avrs = arabic.(vrs)
-6-element Array{String,1}:
+6-element Vector{String}:
  &quot;قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
  &quot;مَلِكِ ٱلنَّاسِ&quot;
  &quot;إِلَٰهِ ٱلنَّاسِ&quot;
  &quot;مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ&quot;
  &quot;ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ&quot;
  &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><div class="admonition is-success"><header class="admonition-header">Tips</header><div class="admonition-body"><p><code>.</code> (dot) broadcasting is only used for arrays. So, for <code>String</code> input (not arrays of <code>String</code>), <code>arabic(...)</code> (without dot) is used. Example,</p><pre><code class="language-julia">arabic(vrs[1])</code></pre></div></div><h2 id="Custom-Transliteration"><a class="docs-heading-anchor" href="#Custom-Transliteration">Custom Transliteration</a><a id="Custom-Transliteration-1"></a><a class="docs-heading-anchor-permalink" href="#Custom-Transliteration" title="Permalink"></a></h2><p>Creating a custom transliteration requires only an input encoding in the form of a dictionary (<code>Dict</code>). For example, QuranTree.jl&#39;s Buckwalter&#39;s encoding is provided by the constant <code>BW_ENCODING</code> as shown below:</p><pre><code class="language-julia-repl">julia&gt; BW_ENCODING
-Dict{Symbol,Symbol} with 61 entries:
+Dict{Symbol, Symbol} with 61 entries:
+  Symbol(&quot;ۣ&quot;) =&gt; Symbol(&quot;;&quot;)
+  :ة          =&gt; :p
   :ذ          =&gt; :*
+  :ۥ          =&gt; Symbol(&quot;,&quot;)
   :ء          =&gt; Symbol(&quot;&#39;&quot;)
   Symbol(&quot;ۜ&quot;) =&gt; :(:)
   Symbol(&quot;َ&quot;) =&gt; :a
   Symbol(&quot;ٰ&quot;) =&gt; Symbol(&quot;`&quot;)
   :ي          =&gt; :y
+  :ت          =&gt; :t
   :ن          =&gt; :n
   :ب          =&gt; :b
   :ص          =&gt; :S
   :ا          =&gt; :A
+  :ث          =&gt; :v
+  :إ          =&gt; :&lt;
+  :ج          =&gt; :j
   :ى          =&gt; :Y
-  Symbol(&quot;۫&quot;) =&gt; :+
-  :ؤ          =&gt; :&amp;
-  Symbol(&quot;۟&quot;) =&gt; Symbol(&quot;@&quot;)
-  Symbol(&quot;ْ&quot;) =&gt; :o
-  :س          =&gt; :s
-  :ۦ          =&gt; :.
-  :و          =&gt; :w
-  Symbol(&quot;ً&quot;) =&gt; :F
+  Symbol(&quot;ٍ&quot;) =&gt; :K
   ⋮           =&gt; ⋮</code></pre><p>Suppose, we want to create a new transliteration by simply reversing the values of the dictionary. This is done as follows:</p><pre><code class="language-julia-repl">julia&gt; old_keys = collect(keys(BW_ENCODING));
 
 julia&gt; new_vals = reverse(collect(values(BW_ENCODING)));
 
 julia&gt; my_encoder = Dict(old_keys .=&gt; new_vals)
-Dict{Symbol,Symbol} with 61 entries:
-  :ذ          =&gt; :q
-  :ء          =&gt; Symbol(&quot;(&quot;)
+Dict{Symbol, Symbol} with 61 entries:
+  Symbol(&quot;ۣ&quot;) =&gt; :q
+  :ة          =&gt; Symbol(&quot;(&quot;)
+  :ذ          =&gt; :l
+  :ۥ          =&gt; :u
+  :ء          =&gt; :D
   Symbol(&quot;ۜ&quot;) =&gt; :f
   Symbol(&quot;َ&quot;) =&gt; Symbol(&quot;[&quot;)
-  Symbol(&quot;ٰ&quot;) =&gt; :r
-  :ي          =&gt; :k
-  :ن          =&gt; Symbol(&quot;]&quot;)
+  Symbol(&quot;ٰ&quot;) =&gt; :z
+  :ي          =&gt; Symbol(&quot;#&quot;)
+  :ت          =&gt; :r
+  :ن          =&gt; :k
+  :ب          =&gt; :Z
+  :ص          =&gt; Symbol(&quot;]&quot;)
+  :ا          =&gt; Symbol(&quot;\&quot;&quot;)
+  :ث          =&gt; :~
+  :إ          =&gt; :i
+  :ج          =&gt; :m
   :ى          =&gt; :_
-  :ب          =&gt; Symbol(&quot;\&quot;&quot;)
-  :ص          =&gt; :i
-  :ا          =&gt; :m
-  Symbol(&quot;۫&quot;) =&gt; :&gt;
-  :ؤ          =&gt; :H
-  Symbol(&quot;۟&quot;) =&gt; :T
-  Symbol(&quot;ْ&quot;) =&gt; :g
-  :س          =&gt; :%
-  :ۦ          =&gt; :$
-  :و          =&gt; :-
-  Symbol(&quot;ً&quot;) =&gt; :N
+  Symbol(&quot;ٍ&quot;) =&gt; :h
   ⋮           =&gt; ⋮
 
 julia&gt; @transliterator my_encoder &quot;MyEncoder&quot;</code></pre><p>The macro <code>@transliterator</code> is used for updating the transliteration, and it takes two inputs: the dictionary (<code>my_encoder</code>) and the name of the encoding (<code>&quot;MyEncoder&quot;</code>). Using this new encoding, the <code>avrs</code> above will have a new transliteration:</p><pre><code class="language-julia-repl">julia&gt; new_vrs = encode.(avrs);
 
 julia&gt; new_vrs
-6-element Array{String,1}:
- &quot;*,pg +[!,-q, \&quot;S`[\&quot;jS zp]j[m%S&quot;
- &quot;A[pSyS zp]j[m%S&quot;
- &quot;ZSp[rKS zp]j[m%S&quot;
- &quot;AS] .[`jS zpg-[%g-[m%S zpg}[]j[m%S&quot;
- &quot;zpj[qS_ k,-[%g-S%, :S_ i,^,-`S zp]j[m%S&quot;
- &quot;AS][ zpg~S]j[lS -[zp]j[m%S&quot;</code></pre><p>To confirm this new transliteration, decoding it back to arabic should generate the proper results:</p><pre><code class="language-julia-repl">julia&gt; arabic.(new_vrs)
-6-element Array{String,1}:
+6-element Vector{String}:
+ &quot;;,*g ^[},-l, Z&lt;t[Zv&lt; H*kv[\&quot;s&lt;&quot;
+ &quot;j[*&lt;n&lt; H*kv[\&quot;s&lt;&quot;
+ &quot;i&lt;*[zK&lt; H*kv[\&quot;s&lt;&quot;
+ &quot;j&lt;k %[tv&lt; H*g-[sg-[\&quot;s&lt; H*g+[kv[\&quot;s&lt;&quot;
+ &quot;H*v[l&lt;_ #,-[sg-&lt;s, :&lt;_ ],!,-t&lt; H*kv[\&quot;s&lt;&quot;
+ &quot;j&lt;k[ H*gm&lt;kv[(&lt; -[H*kv[\&quot;s&lt;&quot;</code></pre><p>To confirm this new transliteration, decoding it back to arabic should generate the proper results:</p><pre><code class="language-julia-repl">julia&gt; arabic.(new_vrs)
+6-element Vector{String}:
  &quot;قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
  &quot;مَلِكِ ٱلنَّاسِ&quot;
  &quot;إِلَٰهِ ٱلنَّاسِ&quot;
@@ -119,7 +119,7 @@ julia&gt; new_vrs
  &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><p>To reset the transliteration, simply run the following:</p><pre><code class="language-julia-repl">julia&gt; @transliterator :default</code></pre><p>This will fallback to the Buckwalter transliteration, as shown below:</p><pre><code class="language-julia-repl">julia&gt; bw_vrs = encode.(avrs);
 
 julia&gt; bw_vrs
-6-element Array{String,1}:
+6-element Vector{String}:
  &quot;qulo &gt;aEuw*u birab~i {ln~aAsi&quot;
  &quot;maliki {ln~aAsi&quot;
  &quot;&lt;ila`hi {ln~aAsi&quot;
@@ -128,16 +128,16 @@ julia&gt; bw_vrs
  &quot;mina {lojin~api wa{ln~aAsi&quot;
 
 julia&gt; arabic.(bw_vrs)
-6-element Array{String,1}:
+6-element Vector{String}:
  &quot;قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ&quot;
  &quot;مَلِكِ ٱلنَّاسِ&quot;
  &quot;إِلَٰهِ ٱلنَّاسِ&quot;
  &quot;مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ&quot;
  &quot;ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ&quot;
  &quot;مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ&quot;</code></pre><h2 id="Simple-Encoding"><a class="docs-heading-anchor" href="#Simple-Encoding">Simple Encoding</a><a id="Simple-Encoding-1"></a><a class="docs-heading-anchor-permalink" href="#Simple-Encoding" title="Permalink"></a></h2><p>Another feature supported in QuranTree.jl is the <a href="https://corpus.quran.com/java/simpleencoding.jsp">Simple Encoding</a>. For example, the following will (Simple) encode the first verse of Chapter 1:</p><pre><code class="language-julia-repl">julia&gt; vrs = verses(tnzldata[1][1])
-1-element Array{String,1}:
+1-element Vector{String}:
  &quot;بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ&quot;
 
 julia&gt; encode(SimpleEncoder, vrs[1])
 &quot;Ba+Kasra | Seen+Sukun | Meem+Kasra | &lt;space&gt; | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | &lt;space&gt; | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | &lt;space&gt; | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra&quot;</code></pre><div class="admonition is-success"><header class="admonition-header">Tips</header><div class="admonition-body"><p>For verses 1 to 4 of Chapter 114, use the broadcasting operator:</p><pre><code class="language-julia">vrs = verses(tnzldata[114][1:4])
-encode.(SimpleEncoder, vrs)</code></pre></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../indexing/">« Indexing</a><a class="docs-footer-nextpage" href="../morphological_features/">Morphological Features »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 29 January 2021 02:00">Friday 29 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+encode.(SimpleEncoder, vrs)</code></pre></div></div></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../indexing/">« Indexing</a><a class="docs-footer-nextpage" href="../morphological_features/">Morphological Features »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 24 April 2021 08:48">Saturday 24 April 2021</span>. Using Julia version 1.6.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

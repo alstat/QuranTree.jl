@@ -65,7 +65,7 @@ Columns:
 7  features  String
 
 julia&gt; feats = select(crpsnew, :features)
-827-element WeakRefStrings.StringArray{String,1}:
+827-element WeakRefStrings.StringVector{String}:
  &quot;STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM&quot;
  &quot;STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN&quot;
  &quot;STEM|POS:V|PERF|(IV)|LEM:&gt;anzala|ROOT:nzl|3MS&quot;
@@ -88,7 +88,7 @@ julia&gt; feats = select(crpsnew, :features)
  &quot;STEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN&quot;
 
 julia&gt; feats = parse.(Features, feats)
-827-element Array{AbstractFeature,1}:
+827-element Vector{AbstractFeature}:
  Stem(:N, N, AbstractFeature[Lemma(&quot;Hamod&quot;), Root(&quot;Hmd&quot;), M, NOM])
  Stem(:PN, PN, AbstractFeature[Lemma(&quot;{ll~ah&quot;), Root(&quot;Alh&quot;), GEN])
  Stem(:V, V, AbstractFeature[Lemma(&quot;&gt;anzala&quot;), Root(&quot;nzl&quot;), PERF, IV, 3, M, S, IND, ACT])
@@ -109,7 +109,7 @@ julia&gt; feats = parse.(Features, feats)
  Stem(:V, V, AbstractFeature[Lemma(&quot;&gt;a\$oraka&quot;), Root(&quot;\$rk&quot;), JUS, IMPF, IV, 3, M, S, ACT])
  Stem(:N, N, AbstractFeature[Lemma(&quot;EibaAdat&quot;), Root(&quot;Ebd&quot;), F, GEN])
  Stem(:N, N, AbstractFeature[Lemma(&quot;rab~&quot;), Root(&quot;rbb&quot;), M, GEN])</code></pre><h2 id="Lemmatization"><a class="docs-heading-anchor" href="#Lemmatization">Lemmatization</a><a id="Lemmatization-1"></a><a class="docs-heading-anchor-permalink" href="#Lemmatization" title="Permalink"></a></h2><p>Using the above parsed features, we then convert the <code>form</code> of the tokens into its lemma. This is useful for addressing minimal variations due to inflection.</p><pre><code class="language-julia-repl">julia&gt; lemmas = lemma.(feats)
-827-element Array{Union{Missing, String},1}:
+827-element Vector{Union{Missing, String}}:
  &quot;Hamod&quot;
  &quot;{ll~ah&quot;
  &quot;&gt;anzala&quot;
@@ -132,7 +132,7 @@ julia&gt; feats = parse.(Features, feats)
  &quot;rab~&quot;
 
 julia&gt; forms1 = select(crpsnew, :form)
-827-element WeakRefStrings.StringArray{String,1}:
+827-element WeakRefStrings.StringVector{String}:
  &quot;Hamodu&quot;
  &quot;l~ahi&quot;
  &quot;&gt;anzala&quot;
@@ -155,7 +155,7 @@ julia&gt; forms1 = select(crpsnew, :form)
  &quot;rab~i&quot;
 
 julia&gt; forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]
-795-element Array{Union{Missing, String},1}:
+795-element Vector{Union{Missing, String}}:
  &quot;Hamod&quot;
  &quot;{ll~ah&quot;
  &quot;&gt;anzala&quot;
@@ -203,7 +203,7 @@ Columns:
 5  form      String
 6  tag       String
 7  features  String</code></pre><h2 id="Tokenization"><a class="docs-heading-anchor" href="#Tokenization">Tokenization</a><a id="Tokenization-1"></a><a class="docs-heading-anchor-permalink" href="#Tokenization" title="Permalink"></a></h2><p>We want to summarize the Qur&#39;an at the verse level. Thus, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:</p><pre><code class="language-julia-repl">julia&gt; lem_vrs = verses(crpsnew)
-109-element Array{String,1}:
+109-element Vector{String}:
  &quot;Hamod {ll~ah &gt;anzala Eabod jaEala Eiwaj&quot;
  &quot;l~i&gt;an*ara l~adun bu\$~ira Eamila&quot;
  &quot;&gt;an*ara qaAla {t~axa*a {ll~ah&quot;
@@ -226,7 +226,7 @@ Columns:
  &quot;qaAla ba\$ar mivol &gt;awoHaY`^ &lt;ila`h &lt;ila`h wa`Hid kaAna yarojuwA@ rab~ loEamila &gt;a\$oraka EibaAdat rab~&quot;
 
 julia&gt; vrs = QuranTree.normalize.(dediac.(lem_vrs))
-109-element Array{String,1}:
+109-element Vector{String}:
  &quot;Hmd Allh Anzl Ebd jEl Ewj&quot;
  &quot;lAn*r ldn b\$r Eml&quot;
  &quot;An*r qAl Atx* Allh&quot;
@@ -258,48 +258,34 @@ Corpus&#39;s index contains 0 tokens</code></pre><p>We then update the lexicon a
 
 julia&gt; update_inverse_index!(crps1)</code></pre><p>Next, we create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.</p><pre><code class="language-julia-repl">julia&gt; m1 = DocumentTermMatrix(crps1)
 A 109 X 361 DocumentTermMatrix</code></pre><h2 id="TF-IDF"><a class="docs-heading-anchor" href="#TF-IDF">TF-IDF</a><a id="TF-IDF-1"></a><a class="docs-heading-anchor-permalink" href="#TF-IDF" title="Permalink"></a></h2><p>Finally, we compute the corresponding TF-IDF, which will serve as the feature matrix.</p><pre><code class="language-julia-repl">julia&gt; tfidf = tf_idf(m1)
-109×361 SparseArrays.SparseMatrixCSC{Float64,Int64} with 836 stored entries:
-  [23 ,   1]  =  0.280174
-  [28 ,   1]  =  0.246553
-  [38 ,   1]  =  0.342434
-  [68 ,   1]  =  0.513652
-  [76 ,   1]  =  0.205461
-  [16 ,   2]  =  0.210432
-  [17 ,   2]  =  0.235188
-  [85 ,   3]  =  0.285586
-  [89 ,   3]  =  0.571172
-  ⋮
-  [109, 354]  =  0.312757
-  [21 , 355]  =  0.223398
-  [81 , 356]  =  0.26063
-  [57 , 357]  =  0.333183
-  [72 , 357]  =  0.666367
-  [18 , 358]  =  0.195473
-  [12 , 359]  =  0.670193
-  [47 , 360]  =  0.444245
-  [51 , 360]  =  0.571172
-  [45 , 361]  =  0.469135</code></pre><h2 id="Summarizing-the-Qur&#39;an"><a class="docs-heading-anchor" href="#Summarizing-the-Qur&#39;an">Summarizing the Qur&#39;an</a><a id="Summarizing-the-Qur&#39;an-1"></a><a class="docs-heading-anchor-permalink" href="#Summarizing-the-Qur&#39;an" title="Permalink"></a></h2><p>Using the TF-IDF, we compute the product of it with its transpose to come up with a square matrix, where the elements describes the linkage between the verses, or the similarity between the verses.</p><pre><code class="language-julia-repl">julia&gt; sim_mat = tfidf * tfidf&#39;
-109×109 SparseArrays.SparseMatrixCSC{Float64,Int64} with 5199 stored entries:
-  [1  ,   1]  =  2.23101
-  [3  ,   1]  =  0.107656
-  [6  ,   1]  =  0.202849
-  [14 ,   1]  =  0.0753595
-  [15 ,   1]  =  0.202285
-  [16 ,   1]  =  0.0793258
-  [20 ,   1]  =  0.0502397
-  [23 ,   1]  =  0.0685086
-  [25 ,   1]  =  0.0538282
-  ⋮
-  [93 , 109]  =  0.00869631
-  [94 , 109]  =  0.0445483
-  [95 , 109]  =  0.0104356
-  [97 , 109]  =  0.0964851
-  [100, 109]  =  0.0575444
-  [102, 109]  =  0.0173926
-  [104, 109]  =  0.025966
-  [106, 109]  =  0.0328825
-  [108, 109]  =  0.127861
-  [109, 109]  =  1.18181</code></pre><p>At this point, we can now write the code for the PageRank algorithm:</p><pre><code class="language-julia-repl">julia&gt; using LinearAlgebra
+109×361 SparseArrays.SparseMatrixCSC{Float64, Int64} with 836 stored entries:
+⡀⣇⡠⢒⢐⣹⢑⠀⣧⡢⡙⠈⢺⠀⡈⡢⣀⡠⣀⠃⢲⣀⠱⡇⡀⡀⢠⠀⣧⣀⣡⡂⢀⠀⣀⣀⠐⠀⣄⠠
+⠮⠷⢯⠔⠡⡫⠰⠦⡔⠫⠭⠦⠮⡤⣅⠈⢝⡀⠽⢤⣔⣻⠹⢌⠕⠍⠈⣄⡏⠁⢹⠨⠑⡤⣋⡕⢋⢥⠄⠁
+⢑⡟⠰⢃⠄⢳⣺⢁⣅⣒⠠⠧⠐⢂⢤⠒⡾⠔⢀⡬⣖⢠⠀⠀⡳⢠⡄⡲⡇⡂⡽⠒⠸⡔⠀⢢⠶⠂⠄⢰
+⠴⡇⠡⠈⠈⢅⠂⡆⠖⠁⠶⠂⠀⠰⠈⠘⠋⠘⢉⡃⠂⢘⠁⢒⠈⠁⠨⢀⡏⢁⢋⠠⢐⠀⠀⠹⠀⡨⢁⡁
+⡝⠇⢈⠐⠃⠸⠙⠃⡏⠠⠨⠠⠠⠄⡠⢸⢑⠁⠆⡂⡓⠂⠁⠁⠀⠚⠁⠈⠇⢎⠰⠘⡈⠘⠂⢪⠂⠑⡘⠂
+⠀⣏⠂⠄⠈⡠⠌⠃⢇⠤⡢⠺⠰⠜⢁⢂⠔⠔⠀⡱⡷⡐⢀⢠⠀⠉⡀⢠⡇⠩⢩⠄⠅⠀⠐⡈⠀⠁⢐⠀</code></pre><h2 id="Summarizing-the-Qur&#39;an"><a class="docs-heading-anchor" href="#Summarizing-the-Qur&#39;an">Summarizing the Qur&#39;an</a><a id="Summarizing-the-Qur&#39;an-1"></a><a class="docs-heading-anchor-permalink" href="#Summarizing-the-Qur&#39;an" title="Permalink"></a></h2><p>Using the TF-IDF, we compute the product of it with its transpose to come up with a square matrix, where the elements describes the linkage between the verses, or the similarity between the verses.</p><pre><code class="language-julia-repl">julia&gt; sim_mat = tfidf * tfidf&#39;
+109×109 SparseArrays.SparseMatrixCSC{Float64, Int64} with 5199 stored entries:
+⠻⣦⢡⠖⣴⢻⡆⢷⡇⡗⡖⠱⠆⢿⣴⢻⢰⡷⣼⣶⡗⠗⢶⠷⢾⡶⢶⣶⠆⠰⡴⢶⠁⠸⠿⡇⡞⢶⣶⡶
+⢡⠖⢱⣶⠾⣶⡆⡴⣶⣷⢇⡱⠄⢴⠶⢚⢐⣷⢻⢲⣃⢅⢴⠤⠴⠦⡴⢶⡖⢰⢧⡴⠁⠨⠭⠇⣒⠜⡒⠶
+⣴⣛⢺⣧⣿⣿⡇⣿⣧⡷⡧⠰⠺⣿⣿⣾⢟⡿⣛⣻⣿⠢⢾⡔⢺⡓⢞⣻⠆⠿⣷⢿⡆⢰⠷⡇⡷⢺⣟⡿
+⢬⣍⢈⡭⣭⣭⡕⣭⡍⡭⡭⢨⣭⣭⣭⢬⣍⣭⣩⣩⣭⡭⣭⣨⣭⣭⣭⣭⡅⣭⣩⣭⠀⢨⣽⡅⡭⣭⣍⣭
+⢭⠭⢼⣿⢭⡿⡇⡭⡵⢏⢍⢨⠭⠭⠭⣭⡭⢭⣭⣭⣭⢍⢭⢬⡭⡭⡭⢭⣅⣭⢭⣭⡄⡨⠭⡅⣭⢭⣭⣭
+⢜⡉⢍⡱⢉⡋⡃⣋⡃⣑⣱⣾⡉⣉⣏⣸⠉⣝⣩⣙⠟⡕⣙⣈⣉⣉⣋⣙⣃⢙⣙⣋⠌⢨⣭⡅⡛⡉⢻⣉
+⣬⣅⢀⣅⣾⣦⡇⣿⡇⡇⡇⢨⡿⣯⣾⣤⢆⣿⣹⣢⡶⡅⣯⢨⣭⣯⣽⣭⡅⢾⣨⣯⠀⢨⣯⡇⡠⣵⣄⣿
+⣴⣛⣸⢃⣻⣿⡃⣟⡇⣧⣋⣹⠚⣿⣛⣼⣛⣻⣟⣟⣻⢂⢻⠑⢺⡓⣚⣛⣦⢻⣓⣛⠔⢰⡛⡇⣧⢚⣻⣿
+⢴⡶⢴⣴⣿⡵⡇⣽⡇⣏⣇⢤⣬⣵⣿⣸⡵⣯⣶⣶⣯⣄⣴⢤⣴⣦⣴⣶⣄⣭⢦⣵⡄⢠⣥⡇⣆⣼⣾⣯
+⢲⣿⢻⣒⣿⣸⡇⣺⡇⣿⣇⢺⠳⣺⣿⢽⢸⣿⣿⣿⣗⢂⣾⡒⢺⡗⣺⣿⡯⢸⣗⣺⠂⠘⢒⡇⣇⢺⣿⡿
+⢽⠍⠍⢜⠻⡛⡇⡿⡇⢟⢟⠥⠜⠯⠻⢚⠋⢿⠹⢙⣟⣽⢼⠢⠼⠥⡯⣽⡇⢻⢹⡯⡇⢸⠯⠇⣛⠜⡋⡿
+⢼⡗⠐⡗⢚⠷⡃⣻⡃⣗⡓⢸⡋⣛⢟⠒⠐⣟⢺⠻⠲⡓⣟⣽⣻⣛⣛⣿⡓⢘⢿⣛⡄⣸⣻⡃⠲⡓⠒⣛
+⢺⡷⠰⡇⢾⠲⡇⣿⡇⡯⡇⢸⡧⣿⢾⠲⠰⣿⢾⠶⠖⡇⣿⢺⣿⣿⣿⣿⡇⢸⢾⣿⠎⢼⣿⡇⡇⡷⠶⣿
+⢸⣷⢰⣏⣾⣱⡇⣿⡇⣏⣏⢸⡗⣿⣾⢸⢰⣿⣾⣾⣏⣯⣿⣼⣿⣿⣿⣿⡏⣸⣾⣿⡄⢸⣿⡇⣏⣷⣷⣿
+⢈⡁⢘⣉⣬⡅⡅⣭⡅⣽⣍⢘⣡⣍⣬⣛⡄⣽⣋⣋⣭⣉⣙⢈⣉⣉⣋⣩⣟⣽⢈⣍⡀⢈⣍⡇⣋⣩⣙⣿
+⢰⣏⢉⡷⣽⣟⡇⣾⡇⣷⡷⢸⡦⣾⣽⢸⢌⣷⣹⣹⡷⡶⣿⢳⣾⣷⣾⣿⡆⢴⣱⣾⠂⢺⣿⡇⡷⣮⣏⣷
+⣁⡀⡁⡀⢈⣉⡀⣀⡀⡩⡂⣁⡀⣀⢐⣁⠀⣉⣈⠀⣉⣉⣀⣩⣊⣅⣀⣉⡀⢈⣨⣀⡕⢍⣉⡁⢈⡀⠀⣀
+⠿⠧⠧⠇⠽⠧⠗⠿⠇⠧⠇⠿⠯⠿⠿⠬⠥⠿⠼⠴⠯⠇⠿⠺⠿⠿⠿⠿⠧⠽⠿⠿⠇⠸⢿⢗⠆⠯⠤⠿
+⢺⣍⣘⠜⣹⣋⡇⣯⡇⣟⡟⠨⢄⣮⣩⢛⣈⣽⣩⣙⣛⠜⢼⠢⢭⡭⢯⣽⡏⣸⡹⣯⠂⠰⡬⡅⣛⢜⣋⣭
+⢸⡿⢸⡌⣿⡽⡇⣽⡇⣿⡟⢲⣤⣽⣿⣾⡾⣿⣿⡿⣯⡬⣼⢠⣼⣧⣽⣿⣷⣼⢯⣽⠀⢠⣤⡇⡏⣼⢿⣷</code></pre><p>At this point, we can now write the code for the PageRank algorithm:</p><pre><code class="language-julia-repl">julia&gt; using LinearAlgebra
 
 julia&gt; function pagerank(A; Niter=20, damping=.15)
            Nmax = size(A, 1)
@@ -318,9 +304,9 @@ julia&gt; function pagerank(A; Niter=20, damping=.15)
            return r
        end
 pagerank (generic function with 1 method)</code></pre><p>Using this function, we apply it to the above similarity matrix (<code>sim_mat</code>) and extract the PageRank scores for all verses. This score will serve as the weights, and so higher scores suggest that the verse has a lot of connections to other verses in the corpus, which means it represents <em>per se</em> the corpus.</p><pre><code class="language-julia-repl">julia&gt; p = pagerank(sim_mat)
-1×109 Array{Float64,2}:
- 0.00258929  0.00258269  0.00269712  …  0.00629283  0.00256434  0.00239939</code></pre><p>Now we sort these scores in descending order and use it to rearrange the original verses:</p><pre><code class="language-julia-repl">julia&gt; idx = sortperm(vec(p), rev=true)[1:10]
-10-element Array{Int64,1}:
+1×109 Matrix{Float64}:
+ 0.00259003  0.00258338  0.00269779  …  0.00630848  0.00256497  0.00239999</code></pre><p>Now we sort these scores in descending order and use it to rearrange the original verses:</p><pre><code class="language-julia-repl">julia&gt; idx = sortperm(vec(p), rev=true)[1:10]
+10-element Vector{Int64}:
   84
   88
   91
@@ -331,7 +317,7 @@ pagerank (generic function with 1 method)</code></pre><p>Using this function, we
  107
   90
   67</code></pre><p>Finally, the following 10 verses best summarizes the corpus (Chapter 18) using TextRank:</p><pre><code class="language-julia-repl">julia&gt; verse_nos = verses(CorpusData(crpstbl), number=true, start_end=false)
-1-element Array{Tuple{Array{Int64,1},Array{Int64,1}},1}:
+1-element Vector{Tuple{Vector{Int64}, Vector{Int64}}}:
  ([18], [1, 2, 4, 5, 6, 7, 8, 9, 10, 11  …  101, 102, 103, 104, 105, 106, 107, 108, 109, 110])
 
 julia&gt; verse_out = String[];
@@ -390,4 +376,4 @@ mdtable(DataFrame(tbl), latex=false)</code></pre><div class="markdown"><table><t
     <tr><td>18</td><td>91</td><td>So it was. And We truly had full knowledge of him.</td></tr>
     <tr><td>18</td><td>68</td><td>And how can you be patient with what is beyond your ˹realm of˺ knowledge?”</td></tr>
     </tbody>
-</table></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../nlp/">« Introduction</a><a class="docs-footer-nextpage" href="../topic_modeling/">Topic Modeling »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 29 January 2021 02:00">Friday 29 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+</table></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../nlp/">« Introduction</a><a class="docs-footer-nextpage" href="../topic_modeling/">Topic Modeling »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 24 April 2021 08:48">Saturday 24 April 2021</span>. Using Julia version 1.6.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
