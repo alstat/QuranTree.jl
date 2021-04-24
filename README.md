@@ -38,6 +38,21 @@ julia> using Pkg
 julia> Pkg.add("QuranTree")
 ```
 
+## Citation
+```
+@inproceedings{asaad-2021-qurantree,
+    title = "{Q}uran{T}ree.jl: A Julia Package for Quranic {A}rabic Corpus",
+    author = "Asaad, Al-Ahmadgaid",
+    booktitle = "Proceedings of the Sixth Arabic Natural Language Processing Workshop",
+    month = apr,
+    year = "2021",
+    address = "Kyiv, Ukraine (Virtual)",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/2021.wanlp-1.22",
+    pages = "208--212",
+}
+```
+
 ## Requirements
  * [Julia](https://julialang.org/) >= 1.0
  * [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) >= 0.13.0
