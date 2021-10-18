@@ -1,6 +1,6 @@
 module QuranTree
 using Base: parse
-using JuliaDB: select, rows
+using DataFrames#: select, rows
 
 include("partofspeech.jl")
 include("constants.jl")

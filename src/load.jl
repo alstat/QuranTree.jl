@@ -1,4 +1,4 @@
-import JuliaDB: table, load
+import DataFrames: DataFrame, load
 
 """
     load(data::QuranData)
@@ -49,7 +49,7 @@ function table(crps::CorpusRaw)
             ),
         )
     end
-    return CorpusData(table(rowdata), MetaData(typeof(crps)))
+    return CorpusData(DataFrame(rowdata), MetaData(typeof(crps)))
 end
 
 """
@@ -79,5 +79,5 @@ function table(tnzl::TanzilRaw)
             )
         )
     end
-    return TanzilData(table(rowdata), MetaData(typeof(tnzl)))
+    return TanzilData(DataFrame(rowdata), MetaData(typeof(tnzl)))
 end

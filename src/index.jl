@@ -1,24 +1,24 @@
-import JuliaDB: select, groupby, filter
+import DataFrames: DataFrame, groupby, filter
 function Base.getindex(crps::Union{CorpusRaw,TanzilRaw}, i::Union{Int64,Array{Int64,1},UnitRange{Int64}})
     if i isa Int64
-        1 <= i <= length(crps.data) || throw(BoundsError(crps, i))
+        1 <= i <= nrow(crps.data) || throw(BoundsError(crps, i))
         return crps.data[i]
     elseif i isa Array{Int64}
-        1 <= maximum(i) <= length(crps.data) || throw(BoundsError(crps, maximum(i)))
+        1 <= maximum(i) <= nrow(crps.data) || throw(BoundsError(crps, maximum(i)))
         return crps.data[i]
     else
-        1 <= i.stop <= length(crps.data) || throw(BoundsError(crps, i))
+        1 <= i.stop <= nrow(crps.data) || throw(BoundsError(crps, i))
         return crps.data[i.start:i.stop]
     end
 end
 Base.firstindex(crps::Union{CorpusRaw,TanzilRaw}) = 1
-Base.lastindex(crps::Union{CorpusRaw,TanzilRaw}) = length(crps.data)
+Base.lastindex(crps::Union{CorpusRaw,TanzilRaw}) = nrow(crps.data)
 
 function Base.getindex(crps::Union{CorpusData,TanzilData}, i::Union{Int64,Array{Int64,1},UnitRange{Int64}})
     if i isa Int64
         1 <= i <= 114 || throw(BoundsError(crps, i)) 
         tbl = filter(t -> t.chapter === i, crps.data)
-        verses = select(tbl, :verse)
+        verses = tbl[!, :verse]
         if crps isa TanzilData
             return Chapter(tbl, i, verses, true)
         else
@@ -27,8 +27,13 @@ function Base.getindex(crps::Union{CorpusData,TanzilData}, i::Union{Int64,Array{
     else
         1 <= maximum(i) <= 114 || throw(BoundsError(crps, maximum(i))) 
         tbl = filter(t -> in(t.chapter, i), crps.data)
-        vrstbl = groupby((verse = :verse => x -> unique(x)[end],), tbl, :chapter)
-        verses = select(vrstbl, :verse)
+        chpgrp = groupby(tbl, :chapter)
+        vrstbl = combine(chpgrp) do sdf
+            DataFrame(verse = unique(sdf.verse)[end])
+        end
+        # vrstbl = groupby((verse = :verse => x -> unique(x)[end],), tbl, :chapter)
+
+        verses = vrstbl[!, :verse]
         if crps isa TanzilData
             return Chapter(tbl, i, verses, true)
         else
@@ -45,11 +50,15 @@ function Base.getindex(chapter::Chapter, i::Union{Int64,Array{Int64,1},UnitRange
         tbl = filter(t -> t.verse === i, chapter.data)
         try
             if chapter.numbers isa Int64
-                words = select(tbl, :word)
+                words = tbl[!, :word]
                 return Verse(tbl, i, chapter.numbers, words, chapter.istanzil)
             else
-                wrdtbl = groupby((word = :word => x -> unique(x)[end],), tbl, :chapter)
-                words = select(wrdtbl, :word)
+                chpgrp = groupby(tbl, :chapter)
+                wrdtbl = combine(chpgrp) do sdf
+                    DataFrame(word = unique(sdf.word)[end])
+                end
+                # wrdtbl = groupby((word = :word => x -> unique(x)[end],), tbl, :chapter)
+                words = wrdtbl[!, :word]
                 return Verse(tbl, i, chapter.numbers, words, chapter.istanzil)
             end
         catch
@@ -61,11 +70,19 @@ function Base.getindex(chapter::Chapter, i::Union{Int64,Array{Int64,1},UnitRange
         tbl = filter(t -> in(t.verse, i), chapter.data)
         try
             if chapter.numbers isa Int64
-                wrdtbl = groupby((word = :word => x -> unique(x)[end],), tbl, :verse)
+                vrsgrp = groupby(tbl, :verse)
+                wrdtbl = combine(vrsgrp) do sdf
+                    DataFrame(word = unique(sdf.word)[end])
+                end
+                # wrdtbl = groupby((word = :word => x -> unique(x)[end],), tbl, :verse)
             else
-                wrdtbl = groupby((word = :word => x -> unique(x)[end],), tbl, (:chapter, :verse))
+                vrsgrp = groupby(tbl, [:chapter, :verse])
+                wrdtbl = combine(vrsgrp) do sdf
+                    DataFrame(word = unique(sdf.word)[end])
+                end
+                # wrdtbl = groupby((word = :word => x -> unique(x)[end],), tbl, (:chapter, :verse))
             end
-            words = select(wrdtbl, :word)
+            words = wrdtbl[!, :word]
             return Verse(tbl, i, chapter.numbers, words, chapter.istanzil)
         catch
             words = missing
@@ -82,20 +99,32 @@ function Base.getindex(verse::Verse, i::Union{Int64,Array{Int64,1},UnitRange{Int
         tbl = filter(t -> t.word === i, verse.data)
         if verse.numbers isa Int64
             if verse.chapters isa Int64
-                parts = select(tbl, :part)
+                parts = tbl[!, :part]
                 return Word(tbl, i, verse.chapters, verse.numbers, parts)
             else
-                prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, :chapter)
-                parts = select(prttbl, :part)
+                chpgrp = groupby(tbl, :chapter)
+                prttbl = combine(chpgrp) do sdf
+                    DataFrame(part = unique(sdf.part)[end])
+                end
+                # prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, :chapter)
+                parts = prttbl[!, :part]
                 return Word(tbl, i, verse.chapters, verse.numbers, parts)
             end
         else
             if verse.chapters isa Int64
-                prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, :verse)  
+                vrsgrp = groupby(tbl, :verse)
+                prttbl = combine(vrsgrp) do sdf
+                    DataFrame(part = unique(sdf.part)[end])
+                end
+                # prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, :verse)  
             else
-                prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:chapter, :verse, :word))
+                wrdgrp = groupby(tbl, [:chapter, :verse, :word])
+                prttbl = combine(wrdgrp) do sdf
+                    DataFrame(part = unique(sdf.part)[end])
+                end
+                # prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:chapter, :verse, :word))
             end
-            parts = select(prttbl, :part)
+            parts = prttbl[!, :part]
             return Word(tbl, i, verse.chapters, verse.numbers, parts)
         end 
     else
@@ -103,18 +132,34 @@ function Base.getindex(verse::Verse, i::Union{Int64,Array{Int64,1},UnitRange{Int
         tbl = filter(t -> in(t.word, i), verse.data)
         if verse.numbers isa Int64
             if verse.chapters isa Int64
-                prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:chapter, :verse, :word))
+                wrdgrp = groupby(tbl, [:chapter, :verse, :word])
+                prttbl = combine(wrdgrp) do sdf
+                    DataFrame(part = unique(sdf.part)[end])
+                end
+                # prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:chapter, :verse, :word))
             else
-                prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:chapter, :verse, :word))
+                wrdgrp = groupby(tbl, [:chapter, :verse, :word])
+                prttbl = combine(wrdgrp) do sdf
+                    DataFrame(part = unique(sdf.part)[end])
+                end
+                # prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:chapter, :verse, :word))
             end          
         else
             if verse.chapters isa Int64
-                prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:verse, :word))
+                wrdgrp = groupby(tbl, [:verse, :word])
+                prttbl = combine(wrdgrp) do sdf
+                    DataFrame(part = unique(sdf.part)[end])
+                end
+                # prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:verse, :word))
             else
-                prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:chapter, :verse, :word))
+                wrdgrp = groupby(tbl, [:chapter, :verse, :word])
+                prttbl = combine(wrdgrp) do sdf
+                    DataFrame(part = unique(sdf.part)[end])
+                end
+                # prttbl = groupby((part = :part => x -> unique(x)[end],), tbl, (:chapter, :verse, :word))
             end
         end
-        parts = select(prttbl, :part)
+        parts = prttbl[!, :part]
         return Word(tbl, i, verse.chapters, verse.numbers, parts)               
     end
 end
