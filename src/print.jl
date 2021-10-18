@@ -1,93 +1,93 @@
-import JuliaDB: select, Not
-import PrettyTables: pretty_table, tf_html_simple, TextFormat, tf_mysql
-const _TF_COMPACT_ = TextFormat(up_right_corner = '─',
-                   up_left_corner      = '─',
-                   bottom_left_corner  = '─',
-                   bottom_right_corner = '─',
-                   up_intersection     = '─',
-                   left_intersection   = '─',
-                   right_intersection  = '─',
-                   middle_intersection = '─',
-                   bottom_intersection = '─',
-                   column              = ' ',
-                   row                 = '─',
-                   hlines              = [:begin,:header,:end],
-                   vlines              = :all);
+# using DataFrames: Not
+# import PrettyTables: pretty_table, tf_html_simple, TextFormat, tf_mysql
+# const _TF_COMPACT_ = TextFormat(up_right_corner = '─',
+#                    up_left_corner      = '─',
+#                    bottom_left_corner  = '─',
+#                    bottom_right_corner = '─',
+#                    up_intersection     = '─',
+#                    left_intersection   = '─',
+#                    right_intersection  = '─',
+#                    middle_intersection = '─',
+#                    bottom_intersection = '─',
+#                    column              = ' ',
+#                    row                 = '─',
+#                    hlines              = [:begin,:header,:end],
+#                    vlines              = :all);
 
-function pretty_table(quran::AbstractQuran; kwargs...)
-    if quran isa Chapter
-        if quran.numbers isa Int64
-            tbl = select(quran.data, Not(:chapter))
-        else
-            tbl = quran.data
-        end
-    elseif quran isa Verse
-        if quran.chapters isa Int64 && quran.numbers isa Int64
-            tbl = select(quran.data, Not(:chapter, :verse))
-        elseif quran.chapters isa Int64 && quran.numbers isa UnitRange{Int64}
-            tbl = select(quran.data, Not(:chapter))
-        elseif quran.chapters isa UnitRange{Int64} && quran.numbers isa Int64
-            tbl = quran.data
-        else
-            tbl = quran.data
-        end
-    elseif quran isa Word
-        if quran.chapters isa Int64 && quran.verses isa Int64 && quran.numbers isa Int64
-            tbl = select(quran.data, Not(:chapter, :verse, :word))
-        elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.numbers isa UnitRange{Int64}
-            tbl = select(quran.data, Not(:chapter, :verse))
-        elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.numbers isa Int64
-            tbl = select(quran.data, Not(:chapter))
-        elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-            tbl = select(quran.data, Not(:chapter))
-        elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.numbers isa Int64
-            tbl = quran.data
-        elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.numbers isa UnitRange{Int64}
-            tbl = quran.data
-        elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.numbers isa Int64
-            tbl = quran.data
-        else
-            tbl = quran.data
-        end
-    elseif quran isa Part
-        if quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa Int64 && quran.numbers isa Int64
-            tbl = select(quran.data, Not(:chapter, :verse, :word, :part))
-        elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
-            tbl = select(quran.data, Not(:chapter, :verse, :word))
-        elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-            tbl = select(quran.data, Not(:chapter, :verse))
-        elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
-            tbl = select(quran.data, Not(:chapter, :verse))
-        elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-            tbl = select(quran.data, Not(:chapter, :verse))
-        elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
-            tbl = select(quran.data, Not(:chapter, :verse))
-        elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
-            tbl = select(quran.data, Not(:chapter))
-        elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-            tbl = quran.data
-        elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
-            tbl = quran.data
-        elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
-            tbl = quran.data
-        elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-            tbl = quran.data
-        elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa Int64 && quran.numbers isa Int64
-            tbl = quran.data
-        elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-            tbl = select(quran.data, Not(:chapter, :verse))
-        elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
-            tbl = select(quran.data, Not(:chapter))
-        elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
-            tbl = quran.data
-        else
-            tbl = quran.data
-        end
-    else 
-        tbl = quran.data
-    end
-    pretty_table(tbl; kwargs...)
-end
+# function pretty_table(quran::AbstractQuran; kwargs...)
+#     if quran isa Chapter
+#         if quran.numbers isa Int64
+#             tbl = select(quran.data, Not(:chapter))
+#         else
+#             tbl = quran.data
+#         end
+#     elseif quran isa Verse
+#         if quran.chapters isa Int64 && quran.numbers isa Int64
+#             tbl = select(quran.data, Not(:chapter, :verse))
+#         elseif quran.chapters isa Int64 && quran.numbers isa UnitRange{Int64}
+#             tbl = select(quran.data, Not(:chapter))
+#         elseif quran.chapters isa UnitRange{Int64} && quran.numbers isa Int64
+#             tbl = quran.data
+#         else
+#             tbl = quran.data
+#         end
+#     elseif quran isa Word
+#         if quran.chapters isa Int64 && quran.verses isa Int64 && quran.numbers isa Int64
+#             tbl = select(quran.data, Not(:chapter, :verse, :word))
+#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.numbers isa UnitRange{Int64}
+#             tbl = select(quran.data, Not(:chapter, :verse))
+#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.numbers isa Int64
+#             tbl = select(quran.data, Not(:chapter))
+#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
+#             tbl = select(quran.data, Not(:chapter))
+#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.numbers isa Int64
+#             tbl = quran.data
+#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.numbers isa UnitRange{Int64}
+#             tbl = quran.data
+#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.numbers isa Int64
+#             tbl = quran.data
+#         else
+#             tbl = quran.data
+#         end
+#     elseif quran isa Part
+#         if quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa Int64 && quran.numbers isa Int64
+#             tbl = select(quran.data, Not(:chapter, :verse, :word, :part))
+#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
+#             tbl = select(quran.data, Not(:chapter, :verse, :word))
+#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
+#             tbl = select(quran.data, Not(:chapter, :verse))
+#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
+#             tbl = select(quran.data, Not(:chapter, :verse))
+#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
+#             tbl = select(quran.data, Not(:chapter, :verse))
+#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
+#             tbl = select(quran.data, Not(:chapter, :verse))
+#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
+#             tbl = select(quran.data, Not(:chapter))
+#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
+#             tbl = quran.data
+#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
+#             tbl = quran.data
+#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
+#             tbl = quran.data
+#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
+#             tbl = quran.data
+#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa Int64 && quran.numbers isa Int64
+#             tbl = quran.data
+#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
+#             tbl = select(quran.data, Not(:chapter, :verse))
+#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
+#             tbl = select(quran.data, Not(:chapter))
+#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
+#             tbl = quran.data
+#         else
+#             tbl = quran.data
+#         end
+#     else 
+#         tbl = quran.data
+#     end
+#     pretty_table(tbl; kwargs...)
+# end
 
 function description(feat::Union{Lemma,Root,Special})
     println(typeof(feat), ":")
@@ -222,7 +222,7 @@ function Base.show(io::IO, quran::Chapter)
     chapterlab = ChapterLabel()
     if quran.numbers isa Int64
         println(io, "Chapter ", quran.numbers, ": ", chapterlab.arabic[quran.numbers], " (", chapterlab.english[quran.numbers], ")\n")
-        println(io, select(quran.data, Not(:chapter)))
+        println(io, quran.data[!, Not(:chapter)])
     elseif quran.numbers isa Array{Int64}
         println(io, "Chapters: "); j = 1
         for i in quran.numbers
@@ -260,11 +260,11 @@ function Base.show(io::IO, quran::Union{Verse,Word,Part})
     if quran.chapters isa Int64 && verse isa Int64
         println(io, "Chapter ", quran.chapters, " ", chapterlab.arabic[quran.chapters], " (", chapterlab.english[quran.chapters], ")")
         println(io, "Verse ", verse, "\n")
-        println(io, select(quran.data, Not(:chapter, :verse)))
+        println(io, quran.data[!, Not(:chapter, :verse)])
     elseif quran.chapters isa Int64 && verse isa UnitRange{Int64}
         println(io, "Chapter ", quran.chapters, " ", chapterlab.arabic[quran.chapters], " (", chapterlab.english[quran.chapters], ")")
         println(io, "Verses ", verse.start, "-", verse.stop, "\n")
-        println(io, select(quran.data, Not(:chapter)))
+        println(io, quran.data[!, Not(:chapter)])
     elseif quran.chapters isa Int64 && verse isa Array{Int64,1}
         println(io, "Chapter ", quran.chapters, " ", chapterlab.arabic[quran.chapters], " (", chapterlab.english[quran.chapters], ")")
         if length(verse) > 1
