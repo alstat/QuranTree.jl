@@ -260,7 +260,7 @@ function Base.show(io::IO, quran::Union{Verse,Word,Part})
     if quran.chapters isa Int64 && verse isa Int64
         println(io, "Chapter ", quran.chapters, " ", chapterlab.arabic[quran.chapters], " (", chapterlab.english[quran.chapters], ")")
         println(io, "Verse ", verse, "\n")
-        println(io, quran.data[!, Not(:chapter, :verse)])
+        println(io, quran.data[!, Not([:chapter, :verse])])
     elseif quran.chapters isa Int64 && verse isa UnitRange{Int64}
         println(io, "Chapter ", quran.chapters, " ", chapterlab.arabic[quran.chapters], " (", chapterlab.english[quran.chapters], ")")
         println(io, "Verses ", verse.start, "-", verse.stop, "\n")

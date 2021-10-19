@@ -1,4 +1,4 @@
-# import DataFrames: DataFrame, load
+# import DataFrames: DataFrame
 
 """
     load(data::QuranData)

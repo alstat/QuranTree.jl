@@ -2,7 +2,7 @@ using QuranTree
 using Test
 # using JuliaDB: select
 # using PrettyTables: pretty_table
-# using Suppressor: @capture_out
+using Suppressor: @capture_out
 using DataFrames
 
 function capture_io(x)
@@ -299,16 +299,25 @@ end
     @test isfeature(parse(Features, crpsdata.data[86, :features]), Active) === false
     @test isfeature(parse(Features, crpsdata.data[36, :features]), Active) === true
 
-    # @test encode(SimpleEncoder, basmala) === "Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
+    @test encode(SimpleEncoder, basmala) === "Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
 
-    # # printing
-    # out = capture_io(crpsdata)
-    # @test out === "Quranic Arabic Corpus (morphology)\n(C) 2011 Kais Dukes\n\nTable with 128219 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
+    # printing
+    # out = capture_io(crpsdata[1][1][1][1]);
+    # @test out === """
+    # Chapter 1 ٱلْفَاتِحَة (The Opening)
+    # Verse 1
+    
+    # 1×5 DataFrame
+    # │ Row │ word  │ part  │ form   │ tag    │ features   │
+    # │     │ Int64 │ Int64 │ String │ String │ String     │
+    # ├─────┼───────┼───────┼────────┼────────┼────────────┤
+    # │ 1   │ 1     │ 1     │ bi     │ P      │ PREFIX|bi+ │
+    # """
 
-    # out = capture_io(tnzldata)
+    # out = capture_io(tnzldata);
     # @test out === "Tanzil Quran Text (Uthmani)\n(C) 2008-2010 Tanzil.net\n\nTable with 6236 rows, 3 columns:\nchapter  verse  form\n─────────────────────────────────────────────────────────────────────\n1        1      \"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\"\n1        2      \"ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ\"\n1        3      \"ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\"\n1        4      \"مَٰلِكِ يَوْمِ ٱلدِّينِ\"\n1        5      \"إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\"\n1        6      \"ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ\"\n1        7      \"صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ\"\n2        1      \"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ\"\n2        2      \"ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًى لِّلْمُتَّقِينَ\"\n⋮\n113      4      \"وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ\"\n113      5      \"وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\"\n114      1      \"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ\"\n114      2      \"مَلِكِ ٱلنَّاسِ\"\n114      3      \"إِلَٰهِ ٱلنَّاسِ\"\n114      4      \"مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ\"\n114      5      \"ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ\"\n114      6      \"مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ\"\n\n"
 
-    # out = capture_io(Noun())
+    # out = capture_io(Noun());
     # @test out === "N\n"
 
     # out = capture_io(crps);
@@ -317,37 +326,37 @@ end
     # out = capture_io(tnzl);
     # @test out[5000:5110] === "ن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ\", \"2|22|ٱلَّذِى جَعَلَ لَكُ"
 
-    # out = capture_io(crpsdata[1])
+    # out = capture_io(crpsdata[1]);
     # @test out === "Chapter 1: ٱلْفَاتِحَة (The Opening)\n\nTable with 48 rows, 6 columns:\nColumns:\n#  colname   type\n───────────────────\n1  verse     Int64\n2  word      Int64\n3  part      Int64\n4  form      String\n5  tag       String\n6  features  String\n\n"
 
-    # out = capture_io(crpsdata[[112,113]])
+    # out = capture_io(crpsdata[[112,113]]);
     # @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\n\nTable with 49 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
-    # out = capture_io(crpsdata[end-1:end])
+    # out = capture_io(crpsdata[end-1:end]);
     # @test out === "Chapter 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\n\nTable with 60 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
-    # out = capture_io(crpsdata[1][1])
+    # out = capture_io(crpsdata[1][1]);
     # @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerse 1\n\nTable with 7 rows, 5 columns:\nword  part  form          tag    features\n─────────────────────────────────────────────────────────────────────────────\n1     1     \"bi\"          \"P\"    \"PREFIX|bi+\"\n1     2     \"somi\"        \"N\"    \"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\"\n2     1     \"{ll~ahi\"     \"PN\"   \"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\"\n3     1     \"{l\"          \"DET\"  \"PREFIX|Al+\"\n3     2     \"r~aHoma`ni\"  \"ADJ\"  \"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\"\n4     1     \"{l\"          \"DET\"  \"PREFIX|Al+\"\n4     2     \"r~aHiymi\"    \"ADJ\"  \"STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\"\n\n"
 
-    # out = capture_io(crpsdata[1][1:2])
+    # out = capture_io(crpsdata[1][1:2]);
     # @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerses 1-2\n\nTable with 14 rows, 6 columns:\nColumns:\n#  colname   type\n───────────────────\n1  verse     Int64\n2  word      Int64\n3  part      Int64\n4  form      String\n5  tag       String\n6  features  String\n\n"
 
-    # out = capture_io(crpsdata[1][[1,2]])
+    # out = capture_io(crpsdata[1][[1,2]]);
     # @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerses 1, 2\n\nTable with 14 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
     
-    # out = capture_io(crpsdata[end-1:end][1])
+    # out = capture_io(crpsdata[end-1:end][1]);
     # @test out === "Chapters 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\nVerse 1\n\nTable with 12 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
-    # out = capture_io(crpsdata[end-1:end][[1,2]])
+    # out = capture_io(crpsdata[end-1:end][[1,2]]);
     # @test out === "Chapters 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\nVerses 1, 2\n\nTable with 19 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
-    # out = capture_io(crpsdata[end-1:end][1:2])
+    # out = capture_io(crpsdata[end-1:end][1:2]);
     # @test out === "Chapters 113-114: ٱلْفَلَق-ٱلنَّاس (Daybreak-People)\nVerses 1-2\n\nTable with 19 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
-    # out = capture_io(crpsdata[[112,113]][1])
+    # out = capture_io(crpsdata[[112,113]][1]);
     # @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerse 1\n\nTable with 10 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
-    # out = capture_io(crpsdata[[112,113]][[1,2]])
+    # out = capture_io(crpsdata[[112,113]][[1,2]]);
     # @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1, 2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     # meta = MetaData(
@@ -360,10 +369,10 @@ end
     #     "GNU General Public License",
     #     "0.4"
     # )
-    # out = capture_io(meta)
+    # out = capture_io(meta);
     # @test out === "Quranic Arabic Corpus (morphology) v0.4\nCopyright (C) 2011 Kais Dukes\nGNU General Public License\nhttp://corpus.quran.com/\n\nThe Quranic Arabic Corpus includes syntactic and morphological\nannotation of the Qur'an, and builds on the verified Arabic text\ndistributed by the Tanzil project.\n\n"
 
-    # out = capture_io(crpsdata[[112,113]][1:2])
+    # out = capture_io(crpsdata[[112,113]][1:2]);
     # @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1-2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     # out = @capture_out begin
