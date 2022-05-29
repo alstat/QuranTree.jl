@@ -19,6 +19,7 @@ crpsdata = table(crps)
     ```julia
     using Pkg
     Pkg.add("Yunir")
+    Pkg.add("TextAnalysis")
     ```
 ## Data Preprocessing
 The first data processing will be the removal of all Disconnected Letters like الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:
@@ -156,7 +157,7 @@ The following are the translations of the above verses:
     <tr><td>18</td><td>66</td><td>Moses said to him, “May I follow you, provided that you teach me some of the right guidance you have been taught?”</td></tr>
     <tr><td>18</td><td>70</td><td>He responded, “Then if you follow me, do not question me about anything until I ˹myself˺ clarify it for you.”</td></tr>
     <tr><td>18</td><td>8</td><td>And We will certainly reduce whatever is on it to barren ground.</td></tr>
-    <tr><td>18</td><td>28</td><td>And patiently stick with those who call upon their Lord morning and evening, seeking His pleasure.1 Do not let your eyes look beyond them, desiring the luxuries of this worldly life. And do not obey those whose hearts We have made heedless of Our remembrance, who follow ˹only˺ their desires and whose state is ˹total˺ loss.</td></tr>
+    <tr><td>18</td><td>28</td><td>And patiently stick with those who call upon their Lord morning and evening, seeking His pleasure. Do not let your eyes look beyond them, desiring the luxuries of this worldly life. And do not obey those whose hearts We have made heedless of Our remembrance, who follow ˹only˺ their desires and whose state is ˹total˺ loss.</td></tr>
     <tr><td>18</td><td>108</td><td>where they will be forever, never desiring anywhere else.</td></tr>
     <tr><td>18</td><td>91</td><td>So it was. And We truly had full knowledge of him.</td></tr>
     <tr><td>18</td><td>68</td><td>And how can you be patient with what is beyond your ˹realm of˺ knowledge?”</td></tr>

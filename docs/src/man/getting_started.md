@@ -31,7 +31,7 @@ tnzldata
 The resulting tables are of type `CorpusData` and `TanzilData`, respectively, and are encoded on top of [DataFrames.jl](https://github.com/JuliaData/DataFrames.jl)'s `IndexedTable`, which can be accessed by simply calling the macro `@data` (for example, `@data crpsdata` or `crpsdata.data`).
 
 ## Manipulating the Table
-As mentioned above, the table is based on [DataFrames.jl](https://github.com/JuliaData/DataFrames.jl)'s  `IndexedTable`. Therefore, any data manipulation is done through the [DataFrames.jl's APIs](https://dataframes.juliadata.org/stable/#API). To access the data, simply call the property with `.data` or using the macro `@data`:
+As mentioned above, the table is based on [DataFrames.jl](https://github.com/JuliaData/DataFrames.jl)'s  `DataFrame`. Therefore, any data manipulation is done through the [DataFrames.jl's APIs](https://dataframes.juliadata.org/stable/#API). To access the data, simply call the property with `.data` or using the macro `@data`:
 
 ```@repl abc
 crpstbl = @data crpsdata; # or crpsdata.data
@@ -39,7 +39,7 @@ tnzltbl = @data tnzldata; # or tnzldata.data
 crpstbl
 tnzltbl
 ```
-Note that, `crpsdata` and `crpstbl` have different type (as in the case of `tnzldata` and `tnzltbl`) as shown below:
+Note that, `crpsdata` and `crpstbl` have different types (as in the case of `tnzldata` and `tnzltbl`) as shown below:
 ```@repl abc
 typeof(crpsdata)
 typeof(crpstbl)

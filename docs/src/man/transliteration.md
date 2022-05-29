@@ -1,6 +1,6 @@
 Transliteration
 =====
-For transliteration, we can use [Yunir.jl](https://github.com/alstat/Yunir.jl), a package for Arabic NLP tasks. Buckwalter is the default transliteration based on the Quranic Arabic Corpus [encoding](https://corpus.quran.com/java/buckwalter.jsp). The transliteration is done via the `encode` function of [Yunir.jl](https://github.com/alstat/Yunir.jl), for example, the following will transliterate the first verse of Chapter 1:
+For transliteration, we will use [Yunir.jl](https://github.com/alstat/Yunir.jl), a lightweight Arabic NLP toolkit. [Yunir.jl](https://github.com/alstat/Yunir.jl) uses Buckwalter as the default transliteration based on the Quranic Arabic Corpus [encoding](https://corpus.quran.com/java/buckwalter.jsp). The transliteration is done via the `encode` function, for example, the following will transliterate the first verse of Chapter 1:
 ```@setup
 using Pkg
 Pkg.add("Yunir")
@@ -33,7 +33,7 @@ The `verses` function above is used to extract the corresponding verse from the 
 
 The function `verses` always returns an Array, and hence encoding multiple verses is possible using Julia's `.` (dot) broadcasting operation. For example, the following will transliterate all verses of Chapter 114:
 ```@repl abc
-vrs = verses(tnzldata[114])
+vrs = verses.(tnzldata[114])
 encode.(vrs)
 ```
 ## Decoding
@@ -86,13 +86,7 @@ arabic.(bw_vrs)
 ## Simple Encoding
 Another feature supported in QuranTree.jl is the [Simple Encoding](https://corpus.quran.com/java/simpleencoding.jsp). For example, the following will (Simple) encode the first verse of Chapter 1:
 ```@repl abc
-vrs = verses(tnzldata[1][1])
+vrs = verses(tnzldata[1][1:5])
 parse(SimpleEncoding, vrs[1])
 parse.(SimpleEncoding, vrs)
 ```
-!!! tip "Tips"
-    For verses 1 to 4 of Chapter 114, use the broadcasting operator:
-    ```julia
-    vrs = verses(tnzldata[114][1:4])
-    encode.(SimpleEncoder, vrs)
-    ```

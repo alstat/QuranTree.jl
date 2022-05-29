@@ -19,6 +19,7 @@ crpsdata = table(crps)
     ```julia
     using Pkg
     Pkg.add("Yunir")
+    Pkg.add("TextAnalysis")
     ```
 
 ## Data Preprocessing
@@ -107,7 +108,7 @@ using Latexify
 
 mdtable(convert(DataFrame, cluster_topics), latex=false)
 ```
-As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their own use. This section, however, demonstrated how [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/)'s LDA can be used for Topic Modeling the QuranTree.jl's corpus.
+As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their own use. This section, however, demonstrated how [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/)'s LDA can be used for Topic Modeling of the QuranTree.jl's corpus.
 
 Finally, the following will extract the topic for each verse:
 ```@repl abc
