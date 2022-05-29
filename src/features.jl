@@ -1,10 +1,11 @@
 import Base: parse
+import Yunir: isfeat
 """
-    Features(data::String)
+    QuranFeatures(data::String)
 
 Convert a string to morphological feature object.
 """
-struct Features <: AbstractFeature
+struct QuranFeatures <: AbstractQuranFeature
     data::String
 end
 
@@ -14,7 +15,7 @@ end
 Create a new `Prefix` object with data as the symbol of the morphological feature with pos as 
 the corresponding Part of Speech.
 """
-struct Prefix <: AbstractFeature
+struct Prefix <: AbstractQuranFeature
     data::Symbol
     pos::AbstractPartOfSpeech
 end
@@ -25,10 +26,10 @@ end
 Create a new `Suffix` object with data as the symbol of the morphological feature with pos as 
 the corresponding Part of Speech.
 """
-struct Suffix <: AbstractFeature
+struct Suffix <: AbstractQuranFeature
     data::Symbol
     pos::AbstractPartOfSpeech
-    feats::Array{AbstractFeature,1}
+    feats::Array{AbstractQuranFeature,1}
 end
 
 """
@@ -37,10 +38,10 @@ end
 Create a new `Stem` object with data as the symbol of the morphological feature with `pos` as 
 the corresponding Part of Speech.
 """
-struct Stem <: AbstractFeature
+struct Stem <: AbstractQuranFeature
     data::Symbol
     pos::AbstractPartOfSpeech
-    feats::Array{AbstractFeature,1}
+    feats::Array{AbstractQuranFeature,1}
 end
 
 """
@@ -48,7 +49,7 @@ end
 
 Convert a string to a `Lemma` object.
 """
-struct Lemma <: AbstractFeature
+struct Lemma <: AbstractQuranFeature
     data::String
 end
 
@@ -57,7 +58,7 @@ end
 
 Convert a string to a `Root` object.
 """
-struct Root <: AbstractFeature
+struct Root <: AbstractQuranFeature
     data::String
 end
 
@@ -66,7 +67,7 @@ end
 
 Convert a string to a `Special` object.
 """
-struct Special <: AbstractFeature
+struct Special <: AbstractQuranFeature
     data::String
 end
 
@@ -80,14 +81,14 @@ function derivednoun(strs::Array{String,1})
     end
 end
 
-function accusative(s::String, strs::Array{String,1}, other_feats::Array{AbstractFeature,1})
+function accusative(s::String, strs::Array{String,1}, other_feats::Array{AbstractQuranFeature,1})
     isstate = in("DEF", strs) || in("INDEF", strs)
     return isstate ? 
         push!(other_feats, PARTOFSPEECH[Symbol(s * "C")]) : 
         push!(other_feats, PARTOFSPEECH[Symbol(s)])
 end
 
-function defaultverb(pos::AbstractPartOfSpeech, other_feats::Array{AbstractFeature,1})
+function defaultverb(pos::AbstractPartOfSpeech, other_feats::Array{AbstractQuranFeature,1})
     feats = vcat(pos, other_feats)
     out = findfirst(x -> x isa Verb, feats)
     if !isa(out, Nothing)
@@ -111,13 +112,13 @@ function defaultverb(pos::AbstractPartOfSpeech, other_feats::Array{AbstractFeatu
     end
 end
 
-function stem(feat::Features)
+function stem(feat::QuranFeatures)
     occursin("STEM", feat.data) || 
         throw(DomainError(feat, "Expected STEM feature, got " * string(split(feat.data, "|")[1]) * "."))
     strs = split(feat.data, "|")[2:end]
     
     pos = string(split(strs[1], ":")[2])
-    other_feats = AbstractFeature[]
+    other_feats = AbstractQuranFeature[]
     
     idx_lemma = findfirst(x -> occursin(r"^LEM", x), strs)
     idx_root = findfirst(x -> occursin(r"^ROOT", x), strs)
@@ -170,14 +171,14 @@ function stem(feat::Features)
     return Stem(Symbol(pos), PARTOFSPEECH[Symbol(pos)], other_feats)
 end
 
-function prefix(feat::Features)
+function prefix(feat::QuranFeatures)
     occursin("PREFIX", feat.data) || 
         throw(DomainError(feat, "Expected PREFIX feature, got " * string(split(feat.data, "|")[1]) * "."))
     strs = string(split(feat.data, "|")[2])
     return Prefix(Symbol(strs), PARTOFSPEECH[Symbol(strs)])
 end
 
-function suffix(feat::Features)
+function suffix(feat::QuranFeatures)
     occursin("SUFFIX", feat.data) || 
         throw(DomainError(feat, "Expected SUFFIX feature, got " * string(split(feat.data, "|")[1]) * "."))
     strs = string(split(feat.data, "|")[2])
@@ -204,12 +205,12 @@ function suffix(feat::Features)
         end
         return Suffix(Symbol(suff_feat[1]), PARTOFSPEECH[Symbol(suff_feat[1])], other_feats)
     else
-        return Suffix(Symbol(strs), PARTOFSPEECH[Symbol(strs)], AbstractFeature[])
+        return Suffix(Symbol(strs), PARTOFSPEECH[Symbol(strs)], AbstractQuranFeature[])
     end
 end
 
 """
-    parse(::Type{Features}, f::AbstractString)
+    parse(::Type{QuranFeatures}, f::AbstractString)
 
 Extract the features of a morphological `Feature` object.
 
@@ -219,24 +220,24 @@ julia> data = QuranData()
 julia> crps, tnzl = load(data)
 julia> crpsdata = table(crps)
 julia> tnzldata = table(tnzl)
-julia> parse(Features, select(crpsdata.data, :features)[53])
-Stem(:NEG, NEG, AbstractFeature[Lemma("laA"), Special("<in~")])
+julia> parse(QuranFeatures, select(crpsdata.data, :features)[53])
+Stem(:NEG, NEG, AbstractQuranFeature[Lemma("laA"), Special("<in~")])
 ```
 """
-function parse(::Type{Features}, f::AbstractString)
+function parse(::Type{QuranFeatures}, f::AbstractString)
     try
-        return prefix(Features(f))
+        return prefix(QuranFeatures(f))
     catch
         try
-            return stem(Features(f))
+            return stem(QuranFeatures(f))
         catch
-            return suffix(Features(f))
+            return suffix(QuranFeatures(f))
         end
     end
 end
 
 """
-    isfeature(feat::Features, pos::Type{<:AbstractFeature})
+    isfeat(feat::QuranFeatures, pos::Type{<:AbstractQuranFeature})
 
 Check if the morphological `Feature` object is a type of `pos`.
 
@@ -246,11 +247,11 @@ julia> data = QuranData()
 julia> crps, tnzl = load(data)
 julia> crpsdata = table(crps)
 julia> tnzldata = table(tnzl)
-julia> isfeature(parse(Features, select(crpsdata[1].data, :features)[2]), Stem)
+julia> isfeat(parse(QuranFeatures, select(crpsdata[1].data, :features)[2]), Stem)
 true
 ```
 """
-function isfeature(feat::AbstractFeature, pos::Type{<:AbstractFeature})
+function isfeat(feat::AbstractQuranFeature, pos::Type{<:AbstractQuranFeature})
     try        
         feats = vcat(feat, feat.pos, feat.feats)
         out = findfirst(x -> x isa pos, feats)
@@ -263,7 +264,7 @@ function isfeature(feat::AbstractFeature, pos::Type{<:AbstractFeature})
 end
 
 """
-    root(feat::AbstractFeature)
+    root(feat::AbstractQuranFeature)
 
 Extract the root of the feature.
 
@@ -273,11 +274,11 @@ julia> data = QuranData()
 julia> crps, tnzl = load(data)
 julia> crpsdata = table(crps)
 julia> tnzldata = table(tnzl)
-julia> root(parse(Features, select(crpsdata[112].data, :features)[1]))
+julia> root(parse(QuranFeatures, select(crpsdata[112].data, :features)[1]))
 "qwl"
 ```
 """
-function root(feat::AbstractFeature)
+function root(feat::AbstractQuranFeature)
     try
         idx = findfirst(x -> x isa Root, feat.feats)
         return idx isa Nothing ? missing : feat.feats[idx].data 
@@ -291,7 +292,7 @@ function parse(::Type{Lemma}, l::AbstractString)
     if idx isa Nothing
         return Lemma(l)
     else
-        out = AbstractFeature[]
+        out = AbstractQuranFeature[]
         push!(out, Lemma(l[1:idx.start-1]))
         push!(out, PARTOFSPEECH[Symbol(l[idx])])
         return out
@@ -299,7 +300,7 @@ function parse(::Type{Lemma}, l::AbstractString)
 end
 
 """
-    lemma(feat::AbstractFeature)
+    lemma(feat::AbstractQuranFeature)
 
 Extract the lemma of the feature.
 
@@ -309,11 +310,11 @@ julia> data = QuranData()
 julia> crps, tnzl = load(data)
 julia> crpsdata = table(crps)
 julia> tnzldata = table(tnzl)
-julia> lemma(parse(Features, select(crpsdata[112].data, :features)[1]))
+julia> lemma(parse(QuranFeatures, select(crpsdata[112].data, :features)[1]))
 "qaAla"
 ```
 """
-function lemma(feat::AbstractFeature)
+function lemma(feat::AbstractQuranFeature)
     try
         idx = findfirst(x -> x isa Lemma, feat.feats)
         if idx isa Nothing
@@ -332,7 +333,7 @@ function lemma(feat::AbstractFeature)
 end
 
 """
-    special(feat::AbstractFeature)
+    special(feat::AbstractQuranFeature)
     
 Extract the special feature of the token.
 
@@ -342,11 +343,11 @@ julia> data = QuranData()
 julia> crps, tnzl = load(data)
 julia> crpsdata = table(crps)
 julia> tnzldata = table(tnzl)
-julia> special(parse(Features, select(crpsdata.data, :features)[53]))
+julia> special(parse(QuranFeatures, select(crpsdata.data, :features)[53]))
 "<in~"
 ```
 """
-function special(feat::AbstractFeature)
+function special(feat::AbstractQuranFeature)
     try
         idx = findfirst(x -> x isa Special, feat.feats)
         return idx isa Nothing ? missing : feat.feats[idx].data 

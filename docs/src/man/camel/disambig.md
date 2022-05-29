@@ -4,8 +4,7 @@ In this section, we are going to apply a model, estimated from Maximum Likelihoo
 As always, load the data as follows:
 ```@setup abc
 using Pkg
-Pkg.add("JuliaDB")
-Pkg.add("PrettyTables")
+Pkg.add("DataFrames")
 ```
 ```@repl abc
 using QuranTree

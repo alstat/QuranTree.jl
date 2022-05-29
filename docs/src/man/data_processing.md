@@ -1,11 +1,17 @@
 Data Processing
 =====
-The goal of having a Quranic corpus is to study it computationally. As such, special utilities for further data preprocessing are necessary. QuranTree.jl offers functions for processing Arabic texts. These include, *character dediacritization* and *character normalization*.
+Special utilities for Arabic Natural Language Processing (ANLP) for data preprocessing are provided by [Yunir.jl](https://github.com/alstat/Yunir.jl), for example on tasks like *character dediacritization* and *character normalization*.
 
 ## Character Dediacritization
 `dediac` works for both Arabic, Buckwalter and custom transliterations.
+```@setup abc
+using Pkg
+Pkg.add("Yunir")
+```
+
 ```@repl abc
 using QuranTree
+using Yunir
 
 crps, tnzl = load(QuranData());
 crpsdata = table(crps);

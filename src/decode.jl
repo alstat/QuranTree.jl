@@ -1,6 +1,6 @@
-function decode(c::Union{Char,String}, encoder::AbstractEncoder)
-    return string(encoder.decode[Symbol(c)])
-end
+# function decode(c::Union{Char,String}, encoder::AbstractEncoder)
+#     return string(encoder.decode[Symbol(c)])
+# end
 
 """
     arabic(s::String[, encoder::AbstractEncoder])
@@ -18,22 +18,22 @@ julia> arabic(verses(crpsdata[114])[1])
 "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
 ```
 """
-function arabic(s::String)
-    trans = Transliterator()
-    return arabic(s, trans)
-end
+# function arabic(s::String)
+#     trans = Transliterator()
+#     return arabic(s, trans)
+# end
 
-function arabic(s::String, encoder::AbstractEncoder)
-    words = ""
-    for c in s
-        if c === ' '
-            words *= " "
-        else
-            words *= decode(c, encoder)
-        end
-    end
-    return words
-end
+# function arabic(s::String, encoder::AbstractEncoder)
+#     words = ""
+#     for c in s
+#         if c === ' '
+#             words *= " "
+#         else
+#             words *= decode(c, encoder)
+#         end
+#     end
+#     return words
+# end
 
 """
     verses(quran::AbstractQuran; number=false, start_end=true)
@@ -254,27 +254,28 @@ julia> chapter_name(crpsdata[13][2][1])
 "ٱلرَّعْد"
 ```
 """
-function chapter_name(quran::AbstractQuran, transliterate::Bool=false; lang::Symbol=:arabic)
+function chapter_name(quran::AbstractQuran; lang::Symbol=:arabic)
     chapterlabel = ChapterLabel()
     chapterlabel = getproperty(chapterlabel, lang)
     chapterindex = quran isa Chapter ? quran.numbers : quran.chapters
-    if transliterate && lang === :arabic
-        trans = Transliterator()
-        name = ""
-        for c in chapterlabel[chapterindex]
-            if c == ' '
-                name *= " "
-            else
-                name *= encode(c, trans)
-            end
-        end
-        return name
-    elseif transliterate && lang === :english
-        @warn "transliterate only applies for :arabic lang."
-        return chapterlabel[chapterindex]
-    elseif !transliterate && lang === :arabic
-        return chapterlabel[chapterindex]
-    else
-        return chapterlabel[chapterindex]
-    end
+    # if transliterate && lang === :arabic
+    #     trans = Transliterator()
+    #     name = ""
+    #     for c in chapterlabel[chapterindex]
+    #         if c == ' '
+    #             name *= " "
+    #         else
+    #             name *= encode(c, trans)
+    #         end
+    #     end
+    #     return name
+    # elseif transliterate && lang === :english
+    #     @warn "transliterate only applies for :arabic lang."
+    #     return chapterlabel[chapterindex]
+    # elseif !transliterate && lang === :arabic
+    #     return chapterlabel[chapterindex]
+    # else
+    #     return chapterlabel[chapterindex]
+    # end
+    return chapterlabel[chapterindex]
 end

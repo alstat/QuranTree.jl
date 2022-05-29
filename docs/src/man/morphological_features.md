@@ -2,30 +2,24 @@ Morphological Features
 =====
 QuranTree.jl provides complete types for all morphological features and part of speech of [The Quranic Arabic Corpus](https://corpus.quran.com/). 
 ## Parsing
-The features of each token are encoded as `String` in its raw form, and in order to parse this as morphological feature, the function `parse(Features, x)` is used, where `x` is the raw `String` input. For example, the following will parse the 2nd part of the 3rd word of 1st verse of Chapter 1:
+The features of each token are encoded as `String` in its raw form, and in order to parse this as morphological feature, the function `parse(QuranFeatures, x)` is used, where `x` is the raw `String` input. For example, the following will parse the 2nd part of the 3rd word of 1st verse of Chapter 1:
 ```@setup abc
 using Pkg
-Pkg.add("JuliaDB")
+Pkg.add("Yunir")
+Pkg.add("TextAnalysis")
 ```
 ```@repl abc
 using QuranTree
-using JuliaDB
+using Yunir
 
 crps, tnzl = load(QuranData());
 crpsdata = table(crps);
 tnzldata = table(tnzl);
 crpsdata[1][1][3][2]
-token = select(crpsdata[1][1][3][2].data, :features)
-mfeat = parse(Features, token[1])
+token = crpsdata[1][1][3][2].data[!, :features]
+mfeat = parse(QuranFeatures, token[1])
 typeof(mfeat)
 ```
-!!! info "Note"
-    You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) to successfully run the code. 
-    ```julia
-    using Pkg
-    Pkg.add("JuliaDB")
-    ```
-
 ## Extracting Detailed Description
 To see the detailed description of the features, `@desc` is used.
 ```@repl abc
@@ -39,31 +33,17 @@ dump(mfeat)
 mfeat.feats
 ```
 ## Checking Parts of Speech
-`isfeature(token, pos)` checks whether the `token`'s parsed feature is a particular part of speech (`pos`). For example, the following checks whether `mfeat` above, among others, is indeed `Masculine` and `Singular`.
+`isfeat(token, pos)` checks whether the `token`'s parsed feature is a particular part of speech (`pos`). For example, the following checks whether `mfeat` above, among others, is indeed `Masculine` and `Singular`.
 ```@repl abc
-isfeature(mfeat, Masculine)
-isfeature(mfeat, Feminine)
-isfeature(mfeat, Singular)
-isfeature(mfeat, Adjective) && isfeature(mfeat, Genetive)
+isfeat(mfeat, Masculine)
+isfeat(mfeat, Feminine)
+isfeat(mfeat, Singular)
+isfeat(mfeat, Adjective) && isfeat(mfeat, Genetive)
 ```
 Another example on checking whether the token has `Root` and `Lemma` features.
 ```@repl abc
-isfeature(mfeat, Root) && isfeature(mfeat, Lemma)
+isfeat(mfeat, Root) && isfeat(mfeat, Lemma)
 ```
-!!! tip "Tips"
-    `isfeature(...)` is useful when working with the JuliaDB.jl's filter function, instead of using regular expressions. For example,
-    ```julia
-    using Pkg
-    Pkg.add("PrettyTables")
-    ```
-    ```julia
-    using PrettyTables
-    @ptconf vcrop_mode=:middle tf=tf_compact
-
-    tbl = filter(t -> isfeature(parse(Features, t.features), ActiveParticle), crpsdata.data)
-
-    @pt select(tbl, Not(:word, :part, :tag))
-    ```
 ## Lemma, Root and Special
 `root`, `lemma` and `special` functions are used for extracting the Root, Lemma and Special morphological features, respectively. 
 ```@repl abc
@@ -75,25 +55,25 @@ arabic(lemma(mfeat))
 ```
 The following example shows token with `Special` feature:
 ```@repl abc
-token2 = select(crpsdata.data, :features)[53]
-mfeat2 = parse(Features, token2)
+token2 = crpsdata.data[!, :features][53]
+mfeat2 = parse(QuranFeatures, token2)
 special(mfeat2)
 arabic(special(mfeat2))
 ```
 ## Implied Verb Features
 Some features of Quranic Arabic Verbs are implied. For example, the *Voice* feature of the Verb is default to *Active voice*, the *Mood* feature is default to *Indicative mood*, and the *Verb form* feature is default to *First form*. 
 ```@repl abc
-token3 = select(crpsdata.data, :features)[27]
+token3 = crpsdata.data[!, :features][27]
 ```
 `token3` is a `Verb` with no *Mood* and *Verb form* features stated. However, parsing this will automatically add the default values of the said features as shown below:
 ```@repl abc
-mfeat3 = parse(Features, token3)
+mfeat3 = parse(QuranFeatures, token3)
 @desc mfeat3
 ```
 Another example where the *Voice* feature of the Verb is implied:
 ```@repl abc
-token4 = select(crpsdata.data, :features)[27]
-mfeat4 = parse(Features, token4)
+token4 = crpsdata.data[!, :features][27]
+mfeat4 = parse(QuranFeatures, token4)
 @desc mfeat4
 ```
 ## POS Abstract Types
@@ -101,19 +81,19 @@ The table below contains the complete list of the Part of Speech with its corres
 ```@repl abc
 # without using parent type
 function allpersons(t)
-    is1st = isfeature(parse(Features, t.features), FirstPerson)
-    is2nd = isfeature(parse(Features, t.features), SecondPerson)
-    is3rd = isfeature(parse(Features, t.features), ThirdPerson)
+    is1st = isfeat(parse(QuranFeatures, t.features), FirstPerson)
+    is2nd = isfeat(parse(QuranFeatures, t.features), SecondPerson)
+    is3rd = isfeat(parse(QuranFeatures, t.features), ThirdPerson)
     
     return is1st || is2nd || is3rd
 end
 tbl1 = filter(allpersons, crpsdata.data);
-select(tbl1, (:form, :features))
+tbl1[!, [:form, :features]]
 # using parent type
-tbl2 = filter(t -> isfeature(parse(Features, t.features), AbstractPerson), crpsdata.data);
-select(tbl2, (:form, :features))
+tbl2 = filter(t -> isfeat(parse(QuranFeatures, t.features), AbstractPerson), crpsdata.data);
+tbl2[!, [:form, :features]]
 
-sum(select(tbl1, :features) .!== select(tbl2, :features))
+sum(tbl1[!, :features] .!== tbl2[!, :features])
 ```
 ## Part of Speech Types
 ```@raw html

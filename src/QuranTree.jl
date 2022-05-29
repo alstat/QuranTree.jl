@@ -1,6 +1,4 @@
 module QuranTree
-using Base: parse
-# using JuliaDB: select, rows
 using DataFrames: DataFrame, Not, groupby, filter, nrow, combine
 
 include("partofspeech.jl")
@@ -10,20 +8,23 @@ include("transliterate.jl")
 include("qurantypes.jl")
 include("index.jl")
 include("decode.jl")
-include("dediac.jl")
+# include("dediac.jl")
 include("encode.jl")
 include("normalize.jl")
 include("load.jl")
 include("print.jl")
 
-export BW_ENCODING, AR_DIACS_REGEX, SP_REGEX_CHARS, _TF_COMPACT_
-export @data, load, table, arabic, verses, chapter_name, description,
-       dediac, normalize, encode, verses, feature, isfeature,
-       root, lemma, special, words
-export @desc, @transliterator, Transliterator, genproperties
-export CorpusRaw, TanzilRaw, CorpusData, TanzilData, QuranData, Suffix, Prefix, Stem, Features, 
-       SimpleEncoder, MetaData, Root, Lemma, Special
-export AbstractQuran, AbstractEncoder, AbstractFeature, AbstractPartOfSpeech,
+# export BW_ENCODING, AR_DIACS_REGEX, SP_REGEX_CHARS
+export @data, load, table, verses, chapter_name, lemma, root, words, special
+       # arabic, description,
+       # dediac, normalize, encode, verses, feature, isfeat,
+       # root, lemma, special, words
+export @desc
+       # @transliterator, Transliterator, genproperties
+export CorpusRaw, TanzilRaw, CorpusData, TanzilData, QuranData, Suffix, Prefix, Stem, QuranFeatures, MetaData, Root, Lemma, Special
+       # SimpleEncoder, 
+export AbstractQuran, #AbstractEncoder, 
+       AbstractQuranFeature, AbstractPartOfSpeech,
        AbstractNominal, AbstractState, AbstractCase,
        AbstractPreposition, AbstractParticle, AbstractDisLetters,
        AbstractConjunction, AbstractPerson, AbstractGender,

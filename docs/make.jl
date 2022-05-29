@@ -20,12 +20,12 @@ makedocs(
             "Text Summarization" => "man/nlp/text_summarization.md",
             "Topic Modeling" => "man/nlp/topic_modeling.md",
         ],
-        "CAMeL Tools" => [
-            "Getting Started" => "man/camel/external.md",
-            "Morphological Analysis" => "man/camel/analysis.md",
-            "POS Tagging" => "man/camel/tagger.md",
-            "Disambiguation" => "man/camel/disambig.md"
-        ],
+        # "CAMeL Tools" => [
+        #     "Getting Started" => "man/camel/external.md",
+        #     "Morphological Analysis" => "man/camel/analysis.md",
+        #     "POS Tagging" => "man/camel/tagger.md",
+        #     "Disambiguation" => "man/camel/disambig.md"
+        # ],
         "API" => "man/api.md"
     ]
 )

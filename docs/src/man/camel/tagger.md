@@ -3,8 +3,7 @@ Parts of Speech Tagger
 In this section, we are going to use CAMeL Tools for Parts of Speech tagging. To start with, load the data as follows:
 ```@setup abc
 using Pkg
-Pkg.add("JuliaDB")
-Pkg.add("PrettyTables")
+Pkg.add("DataFrames")
 ```
 ```@repl abc
 using QuranTree

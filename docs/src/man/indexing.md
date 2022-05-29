@@ -38,26 +38,17 @@ tnzldata = table(tnzl);
 crpsdata[2][9]
 tnzldata[2][9]
 ```
-As shown above, the output of the indexing contains label for the chapter name, both in Arabic and in English. Again, the output of the `crpsdata[2][9]` is not shown, since the width of the output is wider than the width of the output pane. So, [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) is used to view the table:
-```@setup abc
-using Pkg
-Pkg.add("PrettyTables")
-```
-```@repl abc
-using PrettyTables
-@ptconf vcrop_mode=:middle tf=tf_compact
-@pt crpsdata[2][9]
-```
+As shown above, the output of the indexing contains label for the chapter name, both in Arabic and in English. 
 ## Combinations of Indices
 Combinations of these indices are also supported. For example, the following will extract Chapter 111 to 114, each with verses 1 and 3:
 ```@repl abc
-@pt crpsdata[111:114][[1,3]]
-@pt tnzldata[111:114][[1,3]] 
+crpsdata[111:114][[1,3]]
+tnzldata[111:114][[1,3]] 
 ```
 !!! info "Note"
     Special indexing `end` is also applicable, for example `crpsdata[111:114][[1,3]]` is the same as `crpsdata[end-3:end][[1,3]]`, and `tnzldata[111:114][[1,3]]` is equivalent to `tnzldata[end-3:end][[1,3]]`.
 
 Another example, the following will extract Part 1 of Words 1 to 3 of the above `CorpusData` output:
 ```@repl abc
-@pt crpsdata[111:114][[1,3]][1:3][1] 
+crpsdata[111:114][[1,3]][1:3][1] 
 ```

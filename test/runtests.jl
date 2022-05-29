@@ -4,6 +4,7 @@ using Test
 # using PrettyTables: pretty_table
 using Suppressor: @capture_out
 using DataFrames
+using Yunir
 
 function capture_io(x)
     io = IOBuffer()
@@ -78,10 +79,11 @@ end
     @test verses(tnzldata[1][1])[1] === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
     @test verses(tnzldata[1][1:2])[2] === "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ"
     @test verses(tnzldata)[1] === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+    
     # arabic
-    @test arabic(verses(crpsdata[114])[1]) === "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
-    @test arabic(verses(crpsdata[1][7])[1]) === "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
-    # number
+    # @test arabic(verses(crpsdata[114])[1]) === "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
+    # @test arabic(verses(crpsdata[1][7])[1]) === "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
+    # # number
     @test verses(crpsdata[113:114], number=true)[1] === "113:(1,5)"
     @test verses(crpsdata[113:114], number=true, start_end=false)[1] == ([113], [1, 2, 3, 4, 5])
 
@@ -89,217 +91,215 @@ end
     @test words(tnzldata[1][7])[1] === "صِرَٰطَ"
 
     # encoding
-    @test encode(arabic(verses(crpsdata[1][7])[1])) === verses(crpsdata[1][7])[1]
+    # @test encode(arabic(verses(crpsdata[1][7])[1])) === verses(crpsdata[1][7])[1]
 
     # chapter_name
     @test chapter_name(crpsdata[13][2][1]) === "ٱلرَّعْد"
-    @test chapter_name(crpsdata[13][2][1], lang=:english) === "Thunder"
     @test chapter_name(tnzldata[13][2]) === "ٱلرَّعْد"
-    @test chapter_name(tnzldata[13][2], lang=:english) === "Thunder"
-    @test chapter_name(tnzldata[1], true) === "{lofaAtiHap"
-    @test chapter_name(tnzldata[1], true, lang=:english) === "The Opening"
+    # @test chapter_name(tnzldata[1], true) === "{lofaAtiHap"
+    @test chapter_name(tnzldata[1], lang=:english) === "The Opening"
 
-    # dediac
-    @test dediac(verses(crpsdata[1][1])[1]) === "bsm {llh {lrHm`n {lrHym"
-    @test dediac(arabic(verses(crpsdata[1][1])[1])) === "بسم ٱلله ٱلرحمٰن ٱلرحيم"
-    @test dediac(arabic(verses(crpsdata[1][1])[1])) === arabic(dediac(verses(crpsdata[1][1])[1]))
+    # # dediac
+    # @test dediac(verses(crpsdata[1][1])[1]) === "bsm {llh {lrHm`n {lrHym"
+    # @test dediac(arabic(verses(crpsdata[1][1])[1])) === "بسم ٱلله ٱلرحمٰن ٱلرحيم"
+    # @test dediac(arabic(verses(crpsdata[1][1])[1])) === arabic(dediac(verses(crpsdata[1][1])[1]))
 
-    # normalize
-    @test normalize(dediac(verses(crpsdata[1][1])[1])) === "bsm Allh AlrHmAn AlrHym"
-    @test normalize(dediac(verses(crpsdata[1][1])[1])) === dediac(normalize(verses(crpsdata[1][1])[1]))
-    @test normalize(arabic(verses(crpsdata[1][1])[1]), :alif_khanjareeya) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَانِ ٱلرَّحِيمِ"
-    @test normalize(arabic(verses(crpsdata[1][1])[1]), :hamzat_wasl) === "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
-    @test normalize(arabic(verses(crpsdata[2][4])[1]), :alif_maddah) === "وَٱلَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ"
-    @test normalize(arabic(verses(crpsdata[2][4])[1]), :alif_hamza_above) === "وَٱلَّذِينَ يُؤْمِنُونَ بِمَآ اُنزِلَ إِلَيْكَ وَمَآ اُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ"
-    @test normalize(arabic(verses(crpsdata[1][5])[1]), :alif_hamza_below) === "اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِينُ"
-    @test normalize(arabic(verses(crpsdata[2][3])[1]), :waw_hamza_above) === "ٱلَّذِينَ يُوْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ"
-    @test normalize(arabic(verses(crpsdata[2][15])[1]), :ya_hamza_above) === "ٱللَّهُ يَسْتَهْزِيُ بِهِمْ وَيَمُدُّهُمْ فِى طُغْيَٰنِهِمْ يَعْمَهُونَ"
-    @test normalize(arabic(verses(crpsdata[2][2])[1]), :alif_maksura) === "ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًي لِّلْمُتَّقِينَ"
-    @test normalize(arabic(verses(crpsdata[2][3])[1]), :ta_marbuta) === "ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰهَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ"
-    @test normalize(arabic(verses(crpsdata[1][1])[1]), [:alif_khanjareeya, :hamzat_wasl]) === "بِسْمِ اللَّهِ الرَّحْمَانِ الرَّحِيمِ"
+    # # normalize
+    # @test normalize(dediac(verses(crpsdata[1][1])[1])) === "bsm Allh AlrHmAn AlrHym"
+    # @test normalize(dediac(verses(crpsdata[1][1])[1])) === dediac(normalize(verses(crpsdata[1][1])[1]))
+    # @test normalize(arabic(verses(crpsdata[1][1])[1]), :alif_khanjareeya) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَانِ ٱلرَّحِيمِ"
+    # @test normalize(arabic(verses(crpsdata[1][1])[1]), :hamzat_wasl) === "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
+    # @test normalize(arabic(verses(crpsdata[2][4])[1]), :alif_maddah) === "وَٱلَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ"
+    # @test normalize(arabic(verses(crpsdata[2][4])[1]), :alif_hamza_above) === "وَٱلَّذِينَ يُؤْمِنُونَ بِمَآ اُنزِلَ إِلَيْكَ وَمَآ اُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ"
+    # @test normalize(arabic(verses(crpsdata[1][5])[1]), :alif_hamza_below) === "اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِينُ"
+    # @test normalize(arabic(verses(crpsdata[2][3])[1]), :waw_hamza_above) === "ٱلَّذِينَ يُوْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ"
+    # @test normalize(arabic(verses(crpsdata[2][15])[1]), :ya_hamza_above) === "ٱللَّهُ يَسْتَهْزِيُ بِهِمْ وَيَمُدُّهُمْ فِى طُغْيَٰنِهِمْ يَعْمَهُونَ"
+    # @test normalize(arabic(verses(crpsdata[2][2])[1]), :alif_maksura) === "ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًي لِّلْمُتَّقِينَ"
+    # @test normalize(arabic(verses(crpsdata[2][3])[1]), :ta_marbuta) === "ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰهَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ"
+    # @test normalize(arabic(verses(crpsdata[1][1])[1]), [:alif_khanjareeya, :hamzat_wasl]) === "بِسْمِ اللَّهِ الرَّحْمَانِ الرَّحِيمِ"
 
-    @test normalize(verses(tnzldata[1][1])[1], :alif_khanjareeya) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَانِ ٱلرَّحِيمِ"
-    @test normalize(verses(tnzldata[1][1])[1], :hamzat_wasl) === "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
-    @test normalize(verses(tnzldata[2][4])[1], :alif_maddah) === "وَٱلَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ"
-    @test normalize(verses(tnzldata[2][4])[1], :alif_hamza_above) === "وَٱلَّذِينَ يُؤْمِنُونَ بِمَآ اُنزِلَ إِلَيْكَ وَمَآ اُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ"
-    @test normalize(verses(tnzldata[1][5])[1], :alif_hamza_below) === "اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِينُ"
-    @test normalize(verses(tnzldata[2][3])[1], :waw_hamza_above) === "ٱلَّذِينَ يُوْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ"
-    @test normalize(verses(tnzldata[2][15])[1], :ya_hamza_above) === "ٱللَّهُ يَسْتَهْزِيُ بِهِمْ وَيَمُدُّهُمْ فِى طُغْيَٰنِهِمْ يَعْمَهُونَ"
-    @test normalize(verses(tnzldata[2][2])[1], :alif_maksura) === "ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًي لِّلْمُتَّقِينَ"
-    @test normalize(verses(tnzldata[2][3])[1], :ta_marbuta) === "ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰهَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ"
-    @test normalize(verses(tnzldata[1][1])[1], [:alif_khanjareeya, :hamzat_wasl]) === "بِسْمِ اللَّهِ الرَّحْمَانِ الرَّحِيمِ"
+    # @test normalize(verses(tnzldata[1][1])[1], :alif_khanjareeya) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَانِ ٱلرَّحِيمِ"
+    # @test normalize(verses(tnzldata[1][1])[1], :hamzat_wasl) === "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
+    # @test normalize(verses(tnzldata[2][4])[1], :alif_maddah) === "وَٱلَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ"
+    # @test normalize(verses(tnzldata[2][4])[1], :alif_hamza_above) === "وَٱلَّذِينَ يُؤْمِنُونَ بِمَآ اُنزِلَ إِلَيْكَ وَمَآ اُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ"
+    # @test normalize(verses(tnzldata[1][5])[1], :alif_hamza_below) === "اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِينُ"
+    # @test normalize(verses(tnzldata[2][3])[1], :waw_hamza_above) === "ٱلَّذِينَ يُوْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ"
+    # @test normalize(verses(tnzldata[2][15])[1], :ya_hamza_above) === "ٱللَّهُ يَسْتَهْزِيُ بِهِمْ وَيَمُدُّهُمْ فِى طُغْيَٰنِهِمْ يَعْمَهُونَ"
+    # @test normalize(verses(tnzldata[2][2])[1], :alif_maksura) === "ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًي لِّلْمُتَّقِينَ"
+    # @test normalize(verses(tnzldata[2][3])[1], :ta_marbuta) === "ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰهَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ"
+    # @test normalize(verses(tnzldata[1][1])[1], [:alif_khanjareeya, :hamzat_wasl]) === "بِسْمِ اللَّهِ الرَّحْمَانِ الرَّحِيمِ"
 
-    # setting new transliterator
-    my_encoder = Dict(
-        Symbol(Char(0x0621)) => Symbol('('),
-        Symbol(Char(0x0622)) => Symbol('\''),
-        Symbol(Char(0x0623)) => Symbol('&'),
-        Symbol(Char(0x0624)) => Symbol('>'),
-        Symbol(Char(0x0625)) => Symbol('}'),
-        Symbol(Char(0x0626)) => Symbol('<'),
-        Symbol(Char(0x0627)) => Symbol('b'),
-        Symbol(Char(0x0628)) => Symbol('A'),
-        Symbol(Char(0x0629)) => Symbol('t'),
-        Symbol(Char(0x062A)) => Symbol('p'),
-        Symbol(Char(0x062B)) => Symbol('j'),
-        Symbol(Char(0x062C)) => Symbol('v'),
-        Symbol(Char(0x062D)) => Symbol('x'),
-        Symbol(Char(0x062E)) => Symbol('H'),
-        Symbol(Char(0x062F)) => Symbol('*'),
-        Symbol(Char(0x0630)) => Symbol('d'),
-        Symbol(Char(0x0631)) => Symbol('z'),
-        Symbol(Char(0x0632)) => Symbol('r'),
-        Symbol(Char(0x0633)) => Symbol('$'),
-        Symbol(Char(0x0634)) => Symbol('s'),
-        Symbol(Char(0x0635)) => Symbol('D'),
-        Symbol(Char(0x0636)) => Symbol('S'),
-        Symbol(Char(0x0637)) => Symbol('Z'),
-        Symbol(Char(0x0638)) => Symbol('T'),
-        Symbol(Char(0x0639)) => Symbol('g'),
-        Symbol(Char(0x063A)) => Symbol('E'),
-        Symbol(Char(0x0640)) => Symbol('f'),
-        Symbol(Char(0x0641)) => Symbol('_'),
-        Symbol(Char(0x0642)) => Symbol('k'),
-        Symbol(Char(0x0643)) => Symbol('q'),
-        Symbol(Char(0x0644)) => Symbol('m'),
-        Symbol(Char(0x0645)) => Symbol('l'),
-        Symbol(Char(0x0646)) => Symbol('h'),
-        Symbol(Char(0x0647)) => Symbol('n'),
-        Symbol(Char(0x0648)) => Symbol('Y'),
-        Symbol(Char(0x0649)) => Symbol('w'),
-        Symbol(Char(0x064A)) => Symbol('F'),
-        Symbol(Char(0x064B)) => Symbol('y'),
-        Symbol(Char(0x064C)) => Symbol('K'),
-        Symbol(Char(0x064D)) => Symbol('N'),
-        Symbol(Char(0x064E)) => Symbol('u'),
-        Symbol(Char(0x064F)) => Symbol('a'),
-        Symbol(Char(0x0650)) => Symbol('~'),
-        Symbol(Char(0x0651)) => Symbol('i'),
-        Symbol(Char(0x0652)) => Symbol('^'),
-        Symbol(Char(0x0653)) => Symbol('o'),
-        Symbol(Char(0x0654)) => Symbol('`'),
-        Symbol(Char(0x0670)) => Symbol('#'),
-        Symbol(Char(0x0671)) => Symbol(':'),
-        Symbol(Char(0x06DC)) => Symbol('{'),
-        Symbol(Char(0x06DF)) => Symbol('\"'),
-        Symbol(Char(0x06E0)) => Symbol('@'),
-        Symbol(Char(0x06E2)) => Symbol(';'),
-        Symbol(Char(0x06E3)) => Symbol('['),
-        Symbol(Char(0x06E5)) => Symbol('.'),
-        Symbol(Char(0x06E6)) => Symbol(','),
-        Symbol(Char(0x06E8)) => Symbol('-'),
-        Symbol(Char(0x06EA)) => Symbol('!'),
-        Symbol(Char(0x06EB)) => Symbol('%'),
-        Symbol(Char(0x06EC)) => Symbol('+'),
-        Symbol(Char(0x06ED)) => Symbol(']')
-    );
+    # # setting new transliterator
+    # my_encoder = Dict(
+    #     Symbol(Char(0x0621)) => Symbol('('),
+    #     Symbol(Char(0x0622)) => Symbol('\''),
+    #     Symbol(Char(0x0623)) => Symbol('&'),
+    #     Symbol(Char(0x0624)) => Symbol('>'),
+    #     Symbol(Char(0x0625)) => Symbol('}'),
+    #     Symbol(Char(0x0626)) => Symbol('<'),
+    #     Symbol(Char(0x0627)) => Symbol('b'),
+    #     Symbol(Char(0x0628)) => Symbol('A'),
+    #     Symbol(Char(0x0629)) => Symbol('t'),
+    #     Symbol(Char(0x062A)) => Symbol('p'),
+    #     Symbol(Char(0x062B)) => Symbol('j'),
+    #     Symbol(Char(0x062C)) => Symbol('v'),
+    #     Symbol(Char(0x062D)) => Symbol('x'),
+    #     Symbol(Char(0x062E)) => Symbol('H'),
+    #     Symbol(Char(0x062F)) => Symbol('*'),
+    #     Symbol(Char(0x0630)) => Symbol('d'),
+    #     Symbol(Char(0x0631)) => Symbol('z'),
+    #     Symbol(Char(0x0632)) => Symbol('r'),
+    #     Symbol(Char(0x0633)) => Symbol('$'),
+    #     Symbol(Char(0x0634)) => Symbol('s'),
+    #     Symbol(Char(0x0635)) => Symbol('D'),
+    #     Symbol(Char(0x0636)) => Symbol('S'),
+    #     Symbol(Char(0x0637)) => Symbol('Z'),
+    #     Symbol(Char(0x0638)) => Symbol('T'),
+    #     Symbol(Char(0x0639)) => Symbol('g'),
+    #     Symbol(Char(0x063A)) => Symbol('E'),
+    #     Symbol(Char(0x0640)) => Symbol('f'),
+    #     Symbol(Char(0x0641)) => Symbol('_'),
+    #     Symbol(Char(0x0642)) => Symbol('k'),
+    #     Symbol(Char(0x0643)) => Symbol('q'),
+    #     Symbol(Char(0x0644)) => Symbol('m'),
+    #     Symbol(Char(0x0645)) => Symbol('l'),
+    #     Symbol(Char(0x0646)) => Symbol('h'),
+    #     Symbol(Char(0x0647)) => Symbol('n'),
+    #     Symbol(Char(0x0648)) => Symbol('Y'),
+    #     Symbol(Char(0x0649)) => Symbol('w'),
+    #     Symbol(Char(0x064A)) => Symbol('F'),
+    #     Symbol(Char(0x064B)) => Symbol('y'),
+    #     Symbol(Char(0x064C)) => Symbol('K'),
+    #     Symbol(Char(0x064D)) => Symbol('N'),
+    #     Symbol(Char(0x064E)) => Symbol('u'),
+    #     Symbol(Char(0x064F)) => Symbol('a'),
+    #     Symbol(Char(0x0650)) => Symbol('~'),
+    #     Symbol(Char(0x0651)) => Symbol('i'),
+    #     Symbol(Char(0x0652)) => Symbol('^'),
+    #     Symbol(Char(0x0653)) => Symbol('o'),
+    #     Symbol(Char(0x0654)) => Symbol('`'),
+    #     Symbol(Char(0x0670)) => Symbol('#'),
+    #     Symbol(Char(0x0671)) => Symbol(':'),
+    #     Symbol(Char(0x06DC)) => Symbol('{'),
+    #     Symbol(Char(0x06DF)) => Symbol('\"'),
+    #     Symbol(Char(0x06E0)) => Symbol('@'),
+    #     Symbol(Char(0x06E2)) => Symbol(';'),
+    #     Symbol(Char(0x06E3)) => Symbol('['),
+    #     Symbol(Char(0x06E5)) => Symbol('.'),
+    #     Symbol(Char(0x06E6)) => Symbol(','),
+    #     Symbol(Char(0x06E8)) => Symbol('-'),
+    #     Symbol(Char(0x06EA)) => Symbol('!'),
+    #     Symbol(Char(0x06EB)) => Symbol('%'),
+    #     Symbol(Char(0x06EC)) => Symbol('+'),
+    #     Symbol(Char(0x06ED)) => Symbol(']')
+    # );
 
-    basmala = arabic(verses(crpsdata[1][1])[1])
+    # basmala = arabic(verses(crpsdata[1][1])[1])
 
-    @transliterator my_encoder "MyEncoder"
-    @test encode(basmala) === "A~\$^l~ :mmiun~ :mziux^lu#h~ :mziux~Fl~"
-    @test arabic(encode(basmala)) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
-    @test dediac(encode(basmala)) === "A\$l :mmn :mzxl#h :mzxFl"
-    @test normalize(encode(basmala)) === "A~\$^l~ bmmiun~ bmziux^lubh~ bmziux~Fl~"
+    # @transliterator my_encoder "MyEncoder"
+    # @test encode(basmala) === "A~\$^l~ :mmiun~ :mziux^lu#h~ :mziux~Fl~"
+    # @test arabic(encode(basmala)) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+    # @test dediac(encode(basmala)) === "A\$l :mmn :mzxl#h :mzxFl"
+    # @test normalize(encode(basmala)) === "A~\$^l~ bmmiun~ bmziux^lubh~ bmziux~Fl~"
 
-    @transliterator :default
-    @test encode(basmala) === "bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi"
-    @test arabic(encode(basmala)) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
-    @test dediac(encode(basmala)) === "bsm {llh {lrHm`n {lrHym"
-    @test normalize(encode(basmala)) === "bisomi All~ahi Alr~aHomaAni Alr~aHiymi"
+    # @transliterator :default
+    # @test encode(basmala) === "bisomi {ll~ahi {lr~aHoma`ni {lr~aHiymi"
+    # @test arabic(encode(basmala)) === "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+    # @test dediac(encode(basmala)) === "bsm {llh {lrHm`n {lrHym"
+    # @test normalize(encode(basmala)) === "bisomi All~ahi Alr~aHomaAni Alr~aHiymi"
 
     # features
-    @test root(parse(Features, crpsdata[112].data[1, :features])) === "qwl"
-    @test lemma(parse(Features, crpsdata[112].data[1, :features])) === "qaAla"
-    @test special(parse(Features, crpsdata.data[53, :features])) === "<in~"
-    @test isfeature(parse(Features, crpsdata[1].data[2, :features]), Stem) === true
-    @test isfeature(parse(Features, crpsdata[1].data[end-4, :features]), Suffix) === true
-    @test isfeature(parse(Features, crpsdata[1].data[end-3, :features]), Prefix) === true
-    @test isfeature(parse(Features, crpsdata[1].data[2, :features]), Noun) === true
-    @test isfeature(parse(Features, crpsdata[1].data[3, :features]), ProperNoun) === true
-    @test isfeature(parse(Features, crpsdata[1].data[5, :features]), Adjective) === true
-    @test isfeature(parse(Features, crpsdata.data[68054, :features]), ImperativeVerbalNoun) === true
-    @test isfeature(parse(Features, crpsdata[1].data[23, :features]), Personal) === true
-    @test isfeature(parse(Features, crpsdata.data[50, :features]), Demonstrative) === true
-    @test isfeature(parse(Features, crpsdata.data[35, :features]), Relative) === true
-    @test isfeature(parse(Features, crpsdata.data[210, :features]), Time) === true
-    @test isfeature(parse(Features, crpsdata.data[291, :features]), Location) === true
-    @test isfeature(parse(Features, crpsdata.data[14, :features]), Plural) === true
-    @test isfeature(parse(Features, crpsdata.data[38, :features]), Preposition) === true
-    @test isfeature(parse(Features, crpsdata.data[419, :features]), EmphaticLam) === true
-    @test isfeature(parse(Features, crpsdata.data[5717, :features]), ImperativeLam) === true
-    @test isfeature(parse(Features, crpsdata.data[2131, :features]), PurposeLam) === true
-    @test isfeature(parse(Features, crpsdata.data[997, :features]), EmphaticNun) === true
-    @test isfeature(parse(Features, crpsdata.data[25, :features]), Coordinating) === true
-    @test isfeature(parse(Features, crpsdata.data[245, :features]), Subordinating) === true
-    @test isfeature(parse(Features, crpsdata.data[31, :features]), Accusative) === true
-    @test isfeature(parse(Features, crpsdata.data[233, :features]), Amendment) === true
-    @test isfeature(parse(Features, crpsdata.data[2252, :features]), Answer) === true
-    @test isfeature(parse(Features, crpsdata.data[66305, :features]), Aversion) === true
-    @test isfeature(parse(Features, crpsdata.data[926, :features]), Cause) === true
-    @test isfeature(parse(Features, crpsdata.data[1544, :features]), Certainty) === true
-    @test isfeature(parse(Features, crpsdata.data[166, :features]), Circumstantial) === true
-    @test isfeature(parse(Features, crpsdata.data[14139, :features]), Comitative) === true
-    @test isfeature(parse(Features, crpsdata.data[416, :features]), Conditional) === true
-    @test isfeature(parse(Features, crpsdata.data[120, :features]), Equalization) === true
-    @test isfeature(parse(Features, crpsdata.data[3532, :features]), Exhortation) === true
-    @test isfeature(parse(Features, crpsdata.data[618, :features]), Explanation) === true
-    @test isfeature(parse(Features, crpsdata.data[821, :features]), Exceptive) === true
-    @test isfeature(parse(Features, crpsdata.data[17319, :features]), Future) === true
-    @test isfeature(parse(Features, crpsdata.data[226, :features]), Inceptive) === true
-    @test isfeature(parse(Features, crpsdata.data[3758, :features]), Interpretation) === true
-    @test isfeature(parse(Features, crpsdata.data[640, :features]), Interogative) === true
-    @test isfeature(parse(Features, crpsdata.data[46, :features]), Negative) === true
-    @test isfeature(parse(Features, crpsdata.data[223, :features]), Preventive) === true
-    @test isfeature(parse(Features, crpsdata.data[214, :features]), Prohibition) === true
-    @test isfeature(parse(Features, crpsdata.data[72, :features]), Resumption) === true
-    @test isfeature(parse(Features, crpsdata.data[182, :features]), Restriction) === true
-    @test isfeature(parse(Features, crpsdata.data[2542, :features]), Retraction) === true
-    @test isfeature(parse(Features, crpsdata.data[504, :features]), Result) === true
-    @test isfeature(parse(Features, crpsdata.data[232, :features]), Supplemental) === true
-    @test isfeature(parse(Features, crpsdata.data[18810, :features]), Surprise) === true
-    @test isfeature(parse(Features, crpsdata.data[10975, :features]), Vocative) === true
-    @test isfeature(parse(Features, crpsdata.data[49, :features]), DisconnectedLetters) === true
-    @test isfeature(parse(Features, crpsdata.data[24, :features]), FirstPerson) === true
-    @test isfeature(parse(Features, crpsdata.data[23, :features]), SecondPerson) === true
-    @test isfeature(parse(Features, crpsdata.data[39, :features]), ThirdPerson) === true
-    @test isfeature(parse(Features, crpsdata.data[2, :features]), Masculine) === true
-    @test isfeature(parse(Features, crpsdata.data[71, :features]), Feminine) === true
-    @test isfeature(parse(Features, crpsdata.data[5, :features]), Singular) === true
-    @test isfeature(parse(Features, crpsdata.data[2303, :features]), Dual) === true
-    @test isfeature(parse(Features, crpsdata.data[14, :features]), Plural) === true
-    @test isfeature(parse(Features, crpsdata.data[24, :features]), Verb) === true
-    @test isfeature(parse(Features, crpsdata.data[36, :features]), Perfect) === true
-    @test isfeature(parse(Features, crpsdata.data[24, :features]), Imperfect) === true
-    @test isfeature(parse(Features, crpsdata.data[28, :features]), Imperative) === true
-    @test isfeature(parse(Features, crpsdata.data[531, :features]), Subjunctive) === true
-    @test isfeature(parse(Features, crpsdata.data[126, :features]), Jussive) === true
-    @test isfeature(parse(Features, crpsdata.data[86, :features]), Passive) === true
-    @test isfeature(parse(Features, crpsdata.data[499, :features]), VerbFormII) === true
-    @test isfeature(parse(Features, crpsdata.data[171, :features]), VerbFormIII) === true
-    @test isfeature(parse(Features, crpsdata.data[36, :features]), VerbFormIV) === true
-    @test isfeature(parse(Features, crpsdata.data[970, :features]), VerbFormV) === true
-    @test isfeature(parse(Features, crpsdata.data[591, :features]), VerbFormVI) === true
-    @test isfeature(parse(Features, crpsdata.data[1538, :features]), VerbFormVII) === true
-    @test isfeature(parse(Features, crpsdata.data[60, :features]), VerbFormVIII) === true
-    @test isfeature(parse(Features, crpsdata.data[13216, :features]), VerbFormIX) === true
-    @test isfeature(parse(Features, crpsdata.data[27, :features]), VerbFormX) === true
-    @test isfeature(parse(Features, crpsdata.data[114155, :features]), VerbFormXI) === true
-    @test isfeature(parse(Features, crpsdata.data[9063, :features]), VerbFormXII) === true
-    @test isfeature(parse(Features, crpsdata.data[19, :features]), ActiveParticle) === true
-    @test isfeature(parse(Features, crpsdata.data[42, :features]), PassiveParticle) === true
-    @test isfeature(parse(Features, crpsdata.data[305, :features]), VerbalNoun) === true
-    @test isfeature(parse(Features, crpsdata.data[57, :features]), Indefinite) === true # no verse with DEF feature
-    @test isfeature(parse(Features, crpsdata.data[9, :features]), Nominative) === true
-    @test isfeature(parse(Features, crpsdata.data[2, :features]), Genetive) === true
-    @test isfeature(parse(Features, crpsdata.data[24, :features]), VerbFormI) === true
-    @test isfeature(parse(Features, crpsdata.data[27, :features]), VerbFormI) === false
-    @test isfeature(parse(Features, crpsdata.data[27, :features]), Indicative) === true
-    @test isfeature(parse(Features, crpsdata.data[126, :features]), Indicative) === false
-    @test isfeature(parse(Features, crpsdata.data[86, :features]), Active) === false
-    @test isfeature(parse(Features, crpsdata.data[36, :features]), Active) === true
+    @test root(parse(QuranFeatures, crpsdata[112].data[1, :features])) === "qwl"
+    @test lemma(parse(QuranFeatures, crpsdata[112].data[1, :features])) === "qaAla"
+    @test special(parse(QuranFeatures, crpsdata.data[53, :features])) === "<in~"
+    @test isfeat(parse(QuranFeatures, crpsdata[1].data[2, :features]), Stem) === true
+    @test isfeat(parse(QuranFeatures, crpsdata[1].data[end-4, :features]), Suffix) === true
+    @test isfeat(parse(QuranFeatures, crpsdata[1].data[end-3, :features]), Prefix) === true
+    @test isfeat(parse(QuranFeatures, crpsdata[1].data[2, :features]), Noun) === true
+    @test isfeat(parse(QuranFeatures, crpsdata[1].data[3, :features]), ProperNoun) === true
+    @test isfeat(parse(QuranFeatures, crpsdata[1].data[5, :features]), Adjective) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[68054, :features]), ImperativeVerbalNoun) === true
+    @test isfeat(parse(QuranFeatures, crpsdata[1].data[23, :features]), Personal) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[50, :features]), Demonstrative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[35, :features]), Relative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[210, :features]), Time) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[291, :features]), Location) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[14, :features]), Plural) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[38, :features]), Preposition) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[419, :features]), EmphaticLam) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[5717, :features]), ImperativeLam) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[2131, :features]), PurposeLam) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[997, :features]), EmphaticNun) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[25, :features]), Coordinating) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[245, :features]), Subordinating) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[31, :features]), Accusative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[233, :features]), Amendment) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[2252, :features]), Answer) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[66305, :features]), Aversion) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[926, :features]), Cause) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[1544, :features]), Certainty) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[166, :features]), Circumstantial) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[14139, :features]), Comitative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[416, :features]), Conditional) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[120, :features]), Equalization) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[3532, :features]), Exhortation) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[618, :features]), Explanation) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[821, :features]), Exceptive) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[17319, :features]), Future) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[226, :features]), Inceptive) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[3758, :features]), Interpretation) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[640, :features]), Interogative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[46, :features]), Negative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[223, :features]), Preventive) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[214, :features]), Prohibition) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[72, :features]), Resumption) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[182, :features]), Restriction) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[2542, :features]), Retraction) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[504, :features]), Result) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[232, :features]), Supplemental) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[18810, :features]), Surprise) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[10975, :features]), Vocative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[49, :features]), DisconnectedLetters) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[24, :features]), FirstPerson) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[23, :features]), SecondPerson) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[39, :features]), ThirdPerson) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[2, :features]), Masculine) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[71, :features]), Feminine) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[5, :features]), Singular) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[2303, :features]), Dual) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[14, :features]), Plural) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[24, :features]), Verb) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[36, :features]), Perfect) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[24, :features]), Imperfect) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[28, :features]), Imperative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[531, :features]), Subjunctive) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[126, :features]), Jussive) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[86, :features]), Passive) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[499, :features]), VerbFormII) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[171, :features]), VerbFormIII) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[36, :features]), VerbFormIV) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[970, :features]), VerbFormV) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[591, :features]), VerbFormVI) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[1538, :features]), VerbFormVII) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[60, :features]), VerbFormVIII) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[13216, :features]), VerbFormIX) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[27, :features]), VerbFormX) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[114155, :features]), VerbFormXI) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[9063, :features]), VerbFormXII) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[19, :features]), ActiveParticle) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[42, :features]), PassiveParticle) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[305, :features]), VerbalNoun) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[57, :features]), Indefinite) === true # no verse with DEF feature
+    @test isfeat(parse(QuranFeatures, crpsdata.data[9, :features]), Nominative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[2, :features]), Genetive) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[24, :features]), VerbFormI) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[27, :features]), VerbFormI) === false
+    @test isfeat(parse(QuranFeatures, crpsdata.data[27, :features]), Indicative) === true
+    @test isfeat(parse(QuranFeatures, crpsdata.data[126, :features]), Indicative) === false
+    @test isfeat(parse(QuranFeatures, crpsdata.data[86, :features]), Active) === false
+    @test isfeat(parse(QuranFeatures, crpsdata.data[36, :features]), Active) === true
 
-    @test encode(SimpleEncoder, basmala) === "Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
+    # @test encode(SimpleEncoder, basmala) === "Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
 
     # printing
     # out = capture_io(crpsdata[1][1][1][1]);
@@ -376,7 +376,7 @@ end
     # @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1-2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
     # out = @capture_out begin
-    #     description(parse(Features, select(crpsdata[1].data, :features)[1]))
+    #     description(parse(QuranFeatures, select(crpsdata[1].data, :features)[1]))
     # end;
     # @test out === """Prefix
     # ──────
@@ -386,7 +386,7 @@ end
     #  └ ar_label: حرف جر\n"""
 
     # out = @capture_out begin
-    #     @desc parse(Features, select(crpsdata[1].data, :features)[end])
+    #     @desc parse(QuranFeatures, select(crpsdata[1].data, :features)[end])
     # end;
     # @test out === """Stem
     # ────
@@ -426,23 +426,23 @@ end
     # Table with 1 rows, 5 columns:
     # word  part  form  tag  features
     # ─────────────────────────────────────────────
-    # 1     1     "bi"  "P"  Features("PREFIX|bi+")\n""";
+    # 1     1     "bi"  "P"  QuranFeatures("PREFIX|bi+")\n""";
 
     # out = @desc(1)
     # @test out === missing;
     
     
     # # out = @capture_out(pretty_table(crpsdata));
-    # # @test out[1000:2000] === "────────────────────────────────────────────────────────\n        1       1       1       1                 bi        P                                                             Features(\"PREFIX|bi+\")\n        1       1       1       2               somi        N                                     Features(\"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\")\n        1       1       2       1            {ll~ahi       PN                                    Features(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n        1       1       3       1                 {l      DET                                                             Features(\"PREFIX|Al+\")\n        1       1       3       2         r~aHoma`ni      ADJ                             Features(\"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\")\n        1       1       4       1                 {l      DET                                              "
+    # # @test out[1000:2000] === "────────────────────────────────────────────────────────\n        1       1       1       1                 bi        P                                                             QuranFeatures(\"PREFIX|bi+\")\n        1       1       1       2               somi        N                                     QuranFeatures(\"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\")\n        1       1       2       1            {ll~ahi       PN                                    QuranFeatures(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n        1       1       3       1                 {l      DET                                                             QuranFeatures(\"PREFIX|Al+\")\n        1       1       3       2         r~aHoma`ni      ADJ                             QuranFeatures(\"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\")\n        1       1       4       1                 {l      DET                                              "
     
     # # out = @capture_out(pretty_table(crpsdata[1]));
-    # # @test out[1000:2000] === "                                                Features(\"PREFIX|bi+\")\n      1       1       2          somi        N                         Features(\"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\")\n      1       2       1       {ll~ahi       PN                        Features(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n      1       3       1            {l      DET                                                 Features(\"PREFIX|Al+\")\n      1       3       2    r~aHoma`ni      ADJ                 Features(\"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\")\n      1       4       1            {l      DET                                                 Features(\"PREFIX|Al+\")\n      1       4       2      r~aHiymi      ADJ                   Features(\"STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\")\n      2       1       1           {lo      DET                                                 Features(\"PREFIX|Al+\")\n      2       1       2        Hamodu        N                        Features(\"STEM|POS:N|LEM:Hamod|ROO"
+    # # @test out[1000:2000] === "                                                QuranFeatures(\"PREFIX|bi+\")\n      1       1       2          somi        N                         QuranFeatures(\"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\")\n      1       2       1       {ll~ahi       PN                        QuranFeatures(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n      1       3       1            {l      DET                                                 QuranFeatures(\"PREFIX|Al+\")\n      1       3       2    r~aHoma`ni      ADJ                 QuranFeatures(\"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\")\n      1       4       1            {l      DET                                                 QuranFeatures(\"PREFIX|Al+\")\n      1       4       2      r~aHiymi      ADJ                   QuranFeatures(\"STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\")\n      2       1       1           {lo      DET                                                 QuranFeatures(\"PREFIX|Al+\")\n      2       1       2        Hamodu        N                        QuranFeatures(\"STEM|POS:N|LEM:Hamod|ROO"
     
     # # out = @capture_out(pretty_table(crpsdata[1][1]))
-    # # @test out === "────────────────────────────────────────────────────────────────────────────────────────────────\n   word    part         form      tag                                                 features\n  Int64   Int64       String   String                                                 Features\n────────────────────────────────────────────────────────────────────────────────────────────────\n      1       1           bi        P                                   Features(\"PREFIX|bi+\")\n      1       2         somi        N           Features(\"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\")\n      2       1      {ll~ahi       PN          Features(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n      3       1           {l      DET                                   Features(\"PREFIX|Al+\")\n      3       2   r~aHoma`ni      ADJ   Features(\"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\")\n      4       1           {l      DET                                   Features(\"PREFIX|Al+\")\n      4       2     r~aHiymi      ADJ     Features(\"STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\")\n────────────────────────────────────────────────────────────────────────────────────────────────\n"
+    # # @test out === "────────────────────────────────────────────────────────────────────────────────────────────────\n   word    part         form      tag                                                 features\n  Int64   Int64       String   String                                                 QuranFeatures\n────────────────────────────────────────────────────────────────────────────────────────────────\n      1       1           bi        P                                   QuranFeatures(\"PREFIX|bi+\")\n      1       2         somi        N           QuranFeatures(\"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\")\n      2       1      {ll~ahi       PN          QuranFeatures(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n      3       1           {l      DET                                   QuranFeatures(\"PREFIX|Al+\")\n      3       2   r~aHoma`ni      ADJ   QuranFeatures(\"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\")\n      4       1           {l      DET                                   QuranFeatures(\"PREFIX|Al+\")\n      4       2     r~aHiymi      ADJ     QuranFeatures(\"STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\")\n────────────────────────────────────────────────────────────────────────────────────────────────\n"
     
     # # out = @capture_out(pretty_table(crpsdata[1][1:2]))
-    # # @test out[end-1000:end] === "{lo      DET                                   Features(\"PREFIX|Al+\")\n      2       1       2       Hamodu        N          Features(\"STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM\")\n      2       2       1           li        P                                  Features(\"PREFIX|l:P+\")\n      2       2       2        l~ahi       PN          Features(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n      2       3       1        rab~i        N           Features(\"STEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN\")\n      2       4       1          {lo      DET                                   Features(\"PREFIX|Al+\")\n      2       4       2   Ea`lamiyna        N     Features(\"STEM|POS:N|LEM:Ea`lamiyn|ROOT:Elm|MP|GEN\")\n────────────────────────────────────────────────────────────────────────────────────────────────────────\n"
+    # # @test out[end-1000:end] === "{lo      DET                                   QuranFeatures(\"PREFIX|Al+\")\n      2       1       2       Hamodu        N          QuranFeatures(\"STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM\")\n      2       2       1           li        P                                  QuranFeatures(\"PREFIX|l:P+\")\n      2       2       2        l~ahi       PN          QuranFeatures(\"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\")\n      2       3       1        rab~i        N           QuranFeatures(\"STEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN\")\n      2       4       1          {lo      DET                                   QuranFeatures(\"PREFIX|Al+\")\n      2       4       2   Ea`lamiyna        N     QuranFeatures(\"STEM|POS:N|LEM:Ea`lamiyn|ROOT:Elm|MP|GEN\")\n────────────────────────────────────────────────────────────────────────────────────────────────────────\n"
     
     # # remaining todo:
     # #   check pretty_table

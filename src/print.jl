@@ -127,7 +127,7 @@ end
 """
     @desc(expr)
 
-Extract the detailed description of a `AbstractFeature`.
+Extract the detailed description of a `AbstractQuranFeature`.
 
 # Examples
 ```julia-repl

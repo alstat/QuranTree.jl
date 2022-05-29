@@ -9,15 +9,15 @@ pip3 install camel-tools
 ```
 Then, download the necessary data as follows:
 ```bash
-camel_data light
+camel_data -i light
 ```
 For this tutorial, we are going to use only the light version of the CAMeL data which is around 19mb.
 ## Julia PyCall.jl
 Julia can interoperate with Python through the library [PyCall.jl](https://github.com/JuliaPy/PyCall.jl). To install, run the following:
 ```@setup abc
 using Pkg
-Pkg.add("JuliaDB")
-Pkg.add("PrettyTables")
+Pkg.add("DataFrames")
+Pkg.add("Yunir")
 ```
 ```@repl abc
 using Pkg
@@ -47,6 +47,7 @@ using PyCall
 Let's use this and compare the results with QuranTree.jl's built in `dediac` function.
 ```@repl abc
 using QuranTree
+using Yunir
 crps, tnzl = load(QuranData());
 crpsdata = table(crps);
 tnzldata = table(tnzl);
