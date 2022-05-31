@@ -265,20 +265,20 @@ Pkg.add(&quot;TextAnalysis&quot;)</code></pre></div></div><h2 id="Data-Preproces
 
 Corpus&#39;s lexicon contains 0 tokens
 Corpus&#39;s index contains 0 tokens</code></pre><p>We then update the lexicon and inverse index for efficient indexing of the corpus.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; update_lexicon!(crps1)</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; update_inverse_index!(crps1)</code><code class="nohighlight hljs ansi" style="display:block;"></code></pre><p>Next, we create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; m1 = DocumentTermMatrix(crps1)</code><code class="nohighlight hljs ansi" style="display:block;">A 109 X 360 DocumentTermMatrix</code></pre><h2 id="Latent-Dirichlet-Allocation"><a class="docs-heading-anchor" href="#Latent-Dirichlet-Allocation">Latent Dirichlet Allocation</a><a id="Latent-Dirichlet-Allocation-1"></a><a class="docs-heading-anchor-permalink" href="#Latent-Dirichlet-Allocation" title="Permalink"></a></h2><p>Finally, run LDA as follows:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; k = 3          # number of topics</code><code class="nohighlight hljs ansi" style="display:block;">3</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; iter = 1000    # number of gibbs sampling iterations</code><code class="nohighlight hljs ansi" style="display:block;">1000</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; alpha = 0.1    # hyperparameter</code><code class="nohighlight hljs ansi" style="display:block;">0.1</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; beta = 0.1     # hyperparameter</code><code class="nohighlight hljs ansi" style="display:block;">0.1</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; ϕ, θ = lda(m1, k, iter, alpha, beta)</code><code class="nohighlight hljs ansi" style="display:block;">(
-⠙⠛⠓⠛⠛⠛⠛⠚⠛⠛⠛⠛⠛⠒⠛⠛⠛⠛⠛⠛⠛⠛⠓⠓⠓⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠓⠚⠙⠓, [1.0 0.5 … 0.0 0.0; 0.0 0.0 … 0.0 0.26666666666666666; 0.0 0.5 … 1.0 0.7333333333333333])</code></pre><p>Extract the topic for first cluster:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; ntopics = 10</code><code class="nohighlight hljs ansi" style="display:block;">10</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; cluster_topics = Matrix(undef, ntopics, k);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; for i = 1:k
+⠙⠛⠓⠛⠛⠛⠛⠚⠛⠛⠛⠛⠛⠒⠛⠛⠛⠛⠛⠛⠛⠛⠓⠓⠛⠛⠛⠒⠛⠙⠛⠛⠛⠛⠛⠛⠛⠛⠙⠓, [0.0 0.5 … 0.23076923076923078 0.0; 0.0 0.0 … 0.0 1.0; 1.0 0.5 … 0.7692307692307693 0.0])</code></pre><p>Extract the topic for first cluster:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; ntopics = 10</code><code class="nohighlight hljs ansi" style="display:block;">10</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; cluster_topics = Matrix(undef, ntopics, k);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; for i = 1:k
            topics_idcs = sortperm(ϕ[i, :], rev=true)
            cluster_topics[:, i] = arabic.(m1.terms[topics_idcs][1:ntopics])
        end</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; cluster_topics</code><code class="nohighlight hljs ansi" style="display:block;">10×3 Matrix{Any}:
  &quot;ذ&quot;     &quot;قال&quot;     &quot;ء&quot;
- &quot;ء&quot;     &quot;استطاع&quot;  &quot;كان&quot;
- &quot;الله&quot;  &quot;اتبع&quot;    &quot;رب&quot;
- &quot;قال&quot;   &quot;لبث&quot;     &quot;قال&quot;
- &quot;وجد&quot;   &quot;علم&quot;     &quot;جعل&quot;
- &quot;دون&quot;   &quot;اشرك&quot;    &quot;ل&quot;
- &quot;اتخ&quot;   &quot;اعلم&quot;    &quot;امن&quot;
- &quot;ر&quot;     &quot;كلب&quot;     &quot;ارض&quot;
- &quot;ا&quot;     &quot;رب&quot;      &quot;اراد&quot;
- &quot;رب&quot;    &quot;ء&quot;       &quot;اتي&quot;</code></pre><p>Tabulating this properly would give us the following</p><pre><code class="language-julia hljs">Pkg.add(&quot;DataFrames&quot;)
+ &quot;ء&quot;     &quot;كان&quot;     &quot;جعل&quot;
+ &quot;قال&quot;   &quot;رب&quot;      &quot;قال&quot;
+ &quot;وجد&quot;   &quot;استطاع&quot;  &quot;رب&quot;
+ &quot;رب&quot;    &quot;اتبع&quot;    &quot;اتي&quot;
+ &quot;الله&quot;  &quot;لبث&quot;     &quot;كان&quot;
+ &quot;اتخ&quot;   &quot;خير&quot;     &quot;ل&quot;
+ &quot;دون&quot;   &quot;اشرك&quot;    &quot;امن&quot;
+ &quot;ر&quot;     &quot;اعلم&quot;    &quot;ارض&quot;
+ &quot;ا&quot;     &quot;احاط&quot;    &quot;ذ&quot;</code></pre><p>Tabulating this properly would give us the following</p><pre><code class="language-julia hljs">Pkg.add(&quot;DataFrames&quot;)
 Pkg.add(&quot;Latexify&quot;)
 using DataFrames: DataFrame
 using Latexify
@@ -287,14 +287,14 @@ mdtable(DataFrame(
     topic1 = cluster_topics[:, 1],
     topic2 = cluster_topics[:, 2],
     topic3 = cluster_topics[:, 3]
-    ), latex=false)</code></pre><div class="markdown"><table><tr><th align="right">topic1</th><th align="right">topic2</th><th align="right">topic3</th></tr><tr><td align="right">ذ</td><td align="right">قال</td><td align="right">ء</td></tr><tr><td align="right">ء</td><td align="right">استطاع</td><td align="right">كان</td></tr><tr><td align="right">الله</td><td align="right">اتبع</td><td align="right">رب</td></tr><tr><td align="right">قال</td><td align="right">لبث</td><td align="right">قال</td></tr><tr><td align="right">وجد</td><td align="right">علم</td><td align="right">جعل</td></tr><tr><td align="right">دون</td><td align="right">اشرك</td><td align="right">ل</td></tr><tr><td align="right">اتخ</td><td align="right">اعلم</td><td align="right">امن</td></tr><tr><td align="right">ر</td><td align="right">كلب</td><td align="right">ارض</td></tr><tr><td align="right">ا</td><td align="right">رب</td><td align="right">اراد</td></tr><tr><td align="right">رب</td><td align="right">ء</td><td align="right">اتي</td></tr></table>
+    ), latex=false)</code></pre><div class="markdown"><table><tr><th align="right">topic1</th><th align="right">topic2</th><th align="right">topic3</th></tr><tr><td align="right">ذ</td><td align="right">قال</td><td align="right">ء</td></tr><tr><td align="right">ء</td><td align="right">كان</td><td align="right">جعل</td></tr><tr><td align="right">قال</td><td align="right">رب</td><td align="right">قال</td></tr><tr><td align="right">وجد</td><td align="right">استطاع</td><td align="right">رب</td></tr><tr><td align="right">رب</td><td align="right">اتبع</td><td align="right">اتي</td></tr><tr><td align="right">الله</td><td align="right">لبث</td><td align="right">كان</td></tr><tr><td align="right">اتخ</td><td align="right">خير</td><td align="right">ل</td></tr><tr><td align="right">دون</td><td align="right">اشرك</td><td align="right">امن</td></tr><tr><td align="right">ر</td><td align="right">اعلم</td><td align="right">ارض</td></tr><tr><td align="right">ا</td><td align="right">احاط</td><td align="right">ذ</td></tr></table>
 </div><p>As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their use case. This section simply demonstrated how <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>&#39;s LDA can be used for Topic Modeling of the QuranTree.jl&#39;s corpus.</p><p>Finally, the following will extract the topic for each verse:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; vrs_topics = []</code><code class="nohighlight hljs ansi" style="display:block;">Any[]</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; for i = 1:dtm(m1).m
            push!(vrs_topics, sortperm(θ[:, i], rev=true)[1])
        end</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; vrs_topics</code><code class="nohighlight hljs ansi" style="display:block;">109-element Vector{Any}:
+ 3
  1
  1
  1
- 2
  3
  3
  2
@@ -305,9 +305,9 @@ mdtable(DataFrame(
  1
  2
  3
- 3
+ 1
  1
  3
- 1
  3
- 3</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../text_summarization/">« Text Summarization</a><a class="docs-footer-nextpage" href="../../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.18 on <span class="colophon-date" title="Tuesday 31 May 2022 08:35">Tuesday 31 May 2022</span>. Using Julia version 1.6.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ 3
+ 2</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../text_summarization/">« Text Summarization</a><a class="docs-footer-nextpage" href="../../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.18 on <span class="colophon-date" title="Tuesday 31 May 2022 10:32">Tuesday 31 May 2022</span>. Using Julia version 1.6.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
