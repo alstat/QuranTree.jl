@@ -1,94 +1,3 @@
-# using DataFrames: Not
-# import PrettyTables: pretty_table, tf_html_simple, TextFormat, tf_mysql
-# const _TF_COMPACT_ = TextFormat(up_right_corner = '─',
-#                    up_left_corner      = '─',
-#                    bottom_left_corner  = '─',
-#                    bottom_right_corner = '─',
-#                    up_intersection     = '─',
-#                    left_intersection   = '─',
-#                    right_intersection  = '─',
-#                    middle_intersection = '─',
-#                    bottom_intersection = '─',
-#                    column              = ' ',
-#                    row                 = '─',
-#                    hlines              = [:begin,:header,:end],
-#                    vlines              = :all);
-
-# function pretty_table(quran::AbstractQuran; kwargs...)
-#     if quran isa Chapter
-#         if quran.numbers isa Int64
-#             tbl = select(quran.data, Not(:chapter))
-#         else
-#             tbl = quran.data
-#         end
-#     elseif quran isa Verse
-#         if quran.chapters isa Int64 && quran.numbers isa Int64
-#             tbl = select(quran.data, Not(:chapter, :verse))
-#         elseif quran.chapters isa Int64 && quran.numbers isa UnitRange{Int64}
-#             tbl = select(quran.data, Not(:chapter))
-#         elseif quran.chapters isa UnitRange{Int64} && quran.numbers isa Int64
-#             tbl = quran.data
-#         else
-#             tbl = quran.data
-#         end
-#     elseif quran isa Word
-#         if quran.chapters isa Int64 && quran.verses isa Int64 && quran.numbers isa Int64
-#             tbl = select(quran.data, Not(:chapter, :verse, :word))
-#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.numbers isa UnitRange{Int64}
-#             tbl = select(quran.data, Not(:chapter, :verse))
-#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.numbers isa Int64
-#             tbl = select(quran.data, Not(:chapter))
-#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-#             tbl = select(quran.data, Not(:chapter))
-#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.numbers isa Int64
-#             tbl = quran.data
-#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.numbers isa UnitRange{Int64}
-#             tbl = quran.data
-#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.numbers isa Int64
-#             tbl = quran.data
-#         else
-#             tbl = quran.data
-#         end
-#     elseif quran isa Part
-#         if quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa Int64 && quran.numbers isa Int64
-#             tbl = select(quran.data, Not(:chapter, :verse, :word, :part))
-#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
-#             tbl = select(quran.data, Not(:chapter, :verse, :word))
-#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-#             tbl = select(quran.data, Not(:chapter, :verse))
-#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
-#             tbl = select(quran.data, Not(:chapter, :verse))
-#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-#             tbl = select(quran.data, Not(:chapter, :verse))
-#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
-#             tbl = select(quran.data, Not(:chapter, :verse))
-#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
-#             tbl = select(quran.data, Not(:chapter))
-#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-#             tbl = quran.data
-#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
-#             tbl = quran.data
-#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
-#             tbl = quran.data
-#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-#             tbl = quran.data
-#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa UnitRange{Int64} && quran.words isa Int64 && quran.numbers isa Int64
-#             tbl = quran.data
-#         elseif quran.chapters isa Int64 && quran.verses isa Int64 && quran.words isa UnitRange{Int64} && quran.numbers isa UnitRange{Int64}
-#             tbl = select(quran.data, Not(:chapter, :verse))
-#         elseif quran.chapters isa Int64 && quran.verses isa UnitRange{Int64} && quran.words isa UnitRange{Int64} && quran.numbers isa Int64
-#             tbl = select(quran.data, Not(:chapter))
-#         elseif quran.chapters isa UnitRange{Int64} && quran.verses isa Int64 && quran.words isa Int64 && quran.numbers isa UnitRange{Int64}
-#             tbl = quran.data
-#         else
-#             tbl = quran.data
-#         end
-#     else 
-#         tbl = quran.data
-#     end
-#     pretty_table(tbl; kwargs...)
-# end
-
 function description(feat::Union{Lemma,Root,Special})
     println(typeof(feat), ":")
     println(" └ data: ", feat.data)
@@ -152,7 +61,7 @@ Special:
 macro desc(expr)
     esc(quote
         try
-            return description(eval($expr))
+            return QuranTree.description(eval($expr))
         catch
             return missing
         end
