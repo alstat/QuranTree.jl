@@ -33,7 +33,7 @@ The `verses` function above is used to extract the corresponding verse from the 
 
 The function `verses` always returns an Array, and hence encoding multiple verses is possible using Julia's `.` (dot) broadcasting operation. For example, the following will transliterate all verses of Chapter 114:
 ```@repl abc
-vrs = verses.(tnzldata[114])
+vrs = verses(tnzldata[114])
 encode.(vrs)
 ```
 ## Decoding

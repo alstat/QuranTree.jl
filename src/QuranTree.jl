@@ -4,12 +4,9 @@ using DataFrames: DataFrame, Not, groupby, filter, nrow, combine
 include("partofspeech.jl")
 include("constants.jl")
 include("features.jl")
-include("transliterate.jl")
 include("qurantypes.jl")
 include("index.jl")
 include("decode.jl")
-include("encode.jl")
-include("normalize.jl")
 include("load.jl")
 include("print.jl")
 

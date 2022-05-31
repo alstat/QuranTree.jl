@@ -297,8 +297,7 @@ end
     @test isfeat(parse(QuranFeatures, crpsdata.data[86, :features]), Active) === false
     @test isfeat(parse(QuranFeatures, crpsdata.data[36, :features]), Active) === true
 
-    # @test encode(SimpleEncoder, basmala) === "Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | HamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha | AlifKhanjareeya | Noon+Kasra | <space> | HamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
-
+    @test parse(SimpleEncoding, verses(tnzldata)[1]) === "Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | AlifHamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | AlifHamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha+AlifKhanjareeya | Noon+Kasra | <space> | AlifHamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
     # printing
     # out = capture_io(crpsdata[1][1][1][1]);
     # @test out === """
@@ -383,39 +382,39 @@ end
     #  ├ desc: Preposition prefix ('by', 'with', 'in')
     #  └ ar_label: حرف جر\n"""
 
-    # out = @capture_out begin
-    #     @desc parse(QuranFeatures, select(crpsdata[1].data, :features)[end])
-    # end;
-    # @test out === """Stem
-    # ────
-    # Noun:
-    #  ├ data: N
-    #  ├ desc: Noun
-    #  └ ar_label: اسم
-    # QuranTree.Lemma:
-    #  └ data: DaA^l~
-    # QuranTree.Root:
-    #  └ data: Dll
-    # ActiveParticle:
-    #  ├ data: ACT PCPL
-    #  ├ desc: Active particle
-    #  └ ar_label: اسم فاعل
-    # Active:
-    #  ├ data: ACT
-    #  ├ desc: Active voice (default)
-    #  └ ar_label: مبني للمعلوم
-    # Masculine:
-    #  ├ data: M
-    #  ├ desc: Masculine
-    #  └ ar_label: الجنس
-    # Plural:
-    #  ├ data: P
-    #  ├ desc: Plural
-    #  └ ar_label: العدد
-    # Genetive:
-    #  ├ data: GEN
-    #  ├ desc: Genetive case
-    #  └ ar_label: مجرور\n"""
+    out = @capture_out begin
+        @desc parse(QuranFeatures, select(crpsdata[1].data, :features)[end])
+    end;
+    @test out === """Stem
+    ────
+    Noun:
+     ├ data: N
+     ├ desc: Noun
+     └ ar_label: اسم
+    QuranTree.Lemma:
+     └ data: DaA^l~
+    QuranTree.Root:
+     └ data: Dll
+    ActiveParticle:
+     ├ data: ACT PCPL
+     ├ desc: Active particle
+     └ ar_label: اسم فاعل
+    Active:
+     ├ data: ACT
+     ├ desc: Active voice (default)
+     └ ar_label: مبني للمعلوم
+    Masculine:
+     ├ data: M
+     ├ desc: Masculine
+     └ ar_label: الجنس
+    Plural:
+     ├ data: P
+     ├ desc: Plural
+     └ ar_label: العدد
+    Genetive:
+     ├ data: GEN
+     ├ desc: Genetive case
+     └ ar_label: مجرور\n"""
     
     # out = @capture_out begin crpsdata[1][1][1][1] end;
     # out === """Chapter 1 ٱلْفَاتِحَة (The Opening)
