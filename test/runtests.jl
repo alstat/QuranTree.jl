@@ -297,29 +297,20 @@ end
 
     @test parse(SimpleEncoding, verses(tnzldata)[1]) === "Ba+Kasra | Seen+Sukun | Meem+Kasra | <space> | AlifHamzatWasl | Lam | Lam+Shadda+Fatha | Ha+Kasra | <space> | AlifHamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Sukun | Meem+Fatha+AlifKhanjareeya | Noon+Kasra | <space> | AlifHamzatWasl | Lam | Ra+Shadda+Fatha | HHa+Kasra | Ya | Meem+Kasra"
     # printing
-    # out = capture_io(crpsdata[1][1][1][1]);
-    # @test out === """
-    # Chapter 1 ٱلْفَاتِحَة (The Opening)
-    # Verse 1
-    
-    # 1×5 DataFrame
-    # │ Row │ word  │ part  │ form   │ tag    │ features   │
-    # │     │ Int64 │ Int64 │ String │ String │ String     │
-    # ├─────┼───────┼───────┼────────┼────────┼────────────┤
-    # │ 1   │ 1     │ 1     │ bi     │ P      │ PREFIX|bi+ │
-    # """
+    out = capture_io(crpsdata[1][1][1][1]);
+    @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerse 1\n\n1×5 DataFrame\n Row │ word   part   form    tag     features\n     │ Int64  Int64  String  String  String\n─────┼──────────────────────────────────────────\n   1 │     1      1  bi      P       PREFIX|bi+\n\n"
 
-    # out = capture_io(tnzldata);
-    # @test out === "Tanzil Quran Text (Uthmani)\n(C) 2008-2010 Tanzil.net\n\nTable with 6236 rows, 3 columns:\nchapter  verse  form\n─────────────────────────────────────────────────────────────────────\n1        1      \"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\"\n1        2      \"ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ\"\n1        3      \"ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\"\n1        4      \"مَٰلِكِ يَوْمِ ٱلدِّينِ\"\n1        5      \"إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\"\n1        6      \"ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ\"\n1        7      \"صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ\"\n2        1      \"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ\"\n2        2      \"ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًى لِّلْمُتَّقِينَ\"\n⋮\n113      4      \"وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ\"\n113      5      \"وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ\"\n114      1      \"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ\"\n114      2      \"مَلِكِ ٱلنَّاسِ\"\n114      3      \"إِلَٰهِ ٱلنَّاسِ\"\n114      4      \"مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ\"\n114      5      \"ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ\"\n114      6      \"مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ\"\n\n"
+    out = capture_io(tnzldata[1][1]);
+    @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerse 1\n\n1×1 DataFrame\n Row │ form\n     │ String\n─────┼────────────────────────\n   1 │ بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\n\n"
 
-    # out = capture_io(Noun());
-    # @test out === "N\n"
+    out = capture_io(Noun());
+    @test out === "N\n"
 
-    # out = capture_io(crps);
-    # @test out[5000:6000] === "ka\\tDEM\\tSTEM|POS:DEM|LEM:*a`lik|MS\", \"(2:2:2:1)\\t{lo\\tDET\\tPREFIX|Al+\", \"(2:2:2:2)\\tkita`bu\\tN\\tSTEM|POS:N|LEM:kita`b|ROOT:ktb|M|NOM\", \"(2:2:3:1)\\tlaA\\tNEG\\tSTEM|POS:NEG|LEM:laA|SP:<in~\", \"(2:2:4:1)\\trayoba\\tN\\tSTEM|POS:N|LEM:rayob|ROOT:ryb|M|ACC\", \"(2:2:5:1)\\tfiy\\tP\\tSTEM|POS:P|LEM:fiY\", \"(2:2:5:2)\\thi\\tPRON\\tSUFFIX|PRON:3MS\", \"(2:2:6:1)\\thudFY\\tN\\tSTEM|POS:N|LEM:hudFY|ROOT:hdy|M|INDEF|NOM\", \"(2:2:7:1)\\tl~i\\tP\\tPREFIX|l:P+\", \"(2:2:7:2)\\tlo\\tDET\\tPREFIX|Al+\", \"(2:2:7:3)\\tmut~aqiyna\\tN\\tSTEM|POS:N|ACT|PCPL|(VIII)|LEM:mut~aqiyn|ROOT:wqy|MP|GEN\", \"(2:3:1:1)\\t{l~a*iyna\\tREL\\tSTEM|POS:REL|LEM:{l~a*iY|MP\", \"(2:3:2:1)\\tyu&ominu\\tV\\tSTEM|POS:V|IMPF|(IV)|LEM:'aAmana|ROOT:Amn|3MP\", \"(2:3:2:2)\\twna\\tPRON\\tSUFFIX|PRON:3MP\", \"(2:3:3:1)\\tbi\\tP\\tPREFIX|bi+\", \"(2:3:3:2)\\t{lo\\tDET\\tPREFIX|Al+\", \"(2:3:3:3)\\tgayobi\\tN\\tSTEM|POS:N|LEM:gayob|ROOT:gyb|M|GEN\", \"(2:3:4:1)\\twa\\tCONJ\\tPREFIX|w:CONJ+\", \"(2:3:4:2)\\tyuqiymu\\tV\\tSTEM|POS:V|IMPF|(IV)|LEM:>aqaAma|ROOT:qwm|3MP\", \"(2:3:4:3)\\twna\\tPRON\\tSUFFIX|PRON:3MP\""
+    out = capture_io(crps);
+    @test out[5000:6000] === "ka\\tDEM\\tSTEM|POS:DEM|LEM:*a`lik|MS\", \"(2:2:2:1)\\t{lo\\tDET\\tPREFIX|Al+\", \"(2:2:2:2)\\tkita`bu\\tN\\tSTEM|POS:N|LEM:kita`b|ROOT:ktb|M|NOM\", \"(2:2:3:1)\\tlaA\\tNEG\\tSTEM|POS:NEG|LEM:laA|SP:<in~\", \"(2:2:4:1)\\trayoba\\tN\\tSTEM|POS:N|LEM:rayob|ROOT:ryb|M|ACC\", \"(2:2:5:1)\\tfiy\\tP\\tSTEM|POS:P|LEM:fiY\", \"(2:2:5:2)\\thi\\tPRON\\tSUFFIX|PRON:3MS\", \"(2:2:6:1)\\thudFY\\tN\\tSTEM|POS:N|LEM:hudFY|ROOT:hdy|M|INDEF|NOM\", \"(2:2:7:1)\\tl~i\\tP\\tPREFIX|l:P+\", \"(2:2:7:2)\\tlo\\tDET\\tPREFIX|Al+\", \"(2:2:7:3)\\tmut~aqiyna\\tN\\tSTEM|POS:N|ACT|PCPL|(VIII)|LEM:mut~aqiyn|ROOT:wqy|MP|GEN\", \"(2:3:1:1)\\t{l~a*iyna\\tREL\\tSTEM|POS:REL|LEM:{l~a*iY|MP\", \"(2:3:2:1)\\tyu&ominu\\tV\\tSTEM|POS:V|IMPF|(IV)|LEM:'aAmana|ROOT:Amn|3MP\", \"(2:3:2:2)\\twna\\tPRON\\tSUFFIX|PRON:3MP\", \"(2:3:3:1)\\tbi\\tP\\tPREFIX|bi+\", \"(2:3:3:2)\\t{lo\\tDET\\tPREFIX|Al+\", \"(2:3:3:3)\\tgayobi\\tN\\tSTEM|POS:N|LEM:gayob|ROOT:gyb|M|GEN\", \"(2:3:4:1)\\twa\\tCONJ\\tPREFIX|w:CONJ+\", \"(2:3:4:2)\\tyuqiymu\\tV\\tSTEM|POS:V|IMPF|(IV)|LEM:>aqaAma|ROOT:qwm|3MP\", \"(2:3:4:3)\\twna\\tPRON\\tSUFFIX|PRON:3MP\""
 
-    # out = capture_io(tnzl);
-    # @test out[5000:5110] === "ن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ\", \"2|22|ٱلَّذِى جَعَلَ لَكُ"
+    out = capture_io(tnzl);
+    @test out[5000:5110] === "ن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ\", \"2|22|ٱلَّذِى جَعَلَ لَكُ"
 
     # out = capture_io(crpsdata[1]);
     # @test out === "Chapter 1: ٱلْفَاتِحَة (The Opening)\n\nTable with 48 rows, 6 columns:\nColumns:\n#  colname   type\n───────────────────\n1  verse     Int64\n2  word      Int64\n3  part      Int64\n4  form      String\n5  tag       String\n6  features  String\n\n"
@@ -333,8 +324,8 @@ end
     # out = capture_io(crpsdata[1][1]);
     # @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerse 1\n\nTable with 7 rows, 5 columns:\nword  part  form          tag    features\n─────────────────────────────────────────────────────────────────────────────\n1     1     \"bi\"          \"P\"    \"PREFIX|bi+\"\n1     2     \"somi\"        \"N\"    \"STEM|POS:N|LEM:{som|ROOT:smw|M|GEN\"\n2     1     \"{ll~ahi\"     \"PN\"   \"STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\"\n3     1     \"{l\"          \"DET\"  \"PREFIX|Al+\"\n3     2     \"r~aHoma`ni\"  \"ADJ\"  \"STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\"\n4     1     \"{l\"          \"DET\"  \"PREFIX|Al+\"\n4     2     \"r~aHiymi\"    \"ADJ\"  \"STEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\"\n\n"
 
-    # out = capture_io(crpsdata[1][1:2]);
-    # @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerses 1-2\n\nTable with 14 rows, 6 columns:\nColumns:\n#  colname   type\n───────────────────\n1  verse     Int64\n2  word      Int64\n3  part      Int64\n4  form      String\n5  tag       String\n6  features  String\n\n"
+    out = capture_io(crpsdata[1][1:2]);
+    @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerses 1-2\n\n14×6 DataFrame\n Row │ verse  word   part   form        tag     features\n     │ Int64  Int64  Int64  String      String  String\n─────┼────────────────────────────────────────────────────────────────────────────\n   1 │     1      1      1  bi          P       PREFIX|bi+\n   2 │     1      1      2  somi        N       STEM|POS:N|LEM:{som|ROOT:smw|M|G…\n   3 │     1      2      1  {ll~ahi     PN      STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|…\n   4 │     1      3      1  {l          DET     PREFIX|Al+\n   5 │     1      3      2  r~aHoma`ni  ADJ     STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:…\n   6 │     1      4      1  {l          DET     PREFIX|Al+\n   7 │     1      4      2  r~aHiymi    ADJ     STEM|POS:ADJ|LEM:r~aHiym|ROOT:rH…\n   8 │     2      1      1  {lo         DET     PREFIX|Al+\n   9 │     2      1      2  Hamodu      N       STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|…\n  10 │     2      2      1  li          P       PREFIX|l:P+\n  11 │     2      2      2  l~ahi       PN      STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|…\n  12 │     2      3      1  rab~i       N       STEM|POS:N|LEM:rab~|ROOT:rbb|M|G…\n  13 │     2      4      1  {lo         DET     PREFIX|Al+\n  14 │     2      4      2  Ea`lamiyna  N       STEM|POS:N|LEM:Ea`lamiyn|ROOT:El…\n\n"
 
     # out = capture_io(crpsdata[1][[1,2]]);
     # @test out === "Chapter 1 ٱلْفَاتِحَة (The Opening)\nVerses 1, 2\n\nTable with 14 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
@@ -354,34 +345,29 @@ end
     # out = capture_io(crpsdata[[112,113]][[1,2]]);
     # @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1, 2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
-    # meta = MetaData(
-    #     "Quranic Arabic Corpus (morphology)",
-    #     "Kais Dukes",
-    #     "The Quranic Arabic Corpus includes syntactic and morphological\nannotation of the Qur'an, and builds on the verified Arabic text\ndistributed by the Tanzil project.",
-    #     "http://corpus.quran.com/",
-    #     "English",
-    #     "2011",
-    #     "GNU General Public License",
-    #     "0.4"
-    # )
-    # out = capture_io(meta);
-    # @test out === "Quranic Arabic Corpus (morphology) v0.4\nCopyright (C) 2011 Kais Dukes\nGNU General Public License\nhttp://corpus.quran.com/\n\nThe Quranic Arabic Corpus includes syntactic and morphological\nannotation of the Qur'an, and builds on the verified Arabic text\ndistributed by the Tanzil project.\n\n"
+    meta = MetaData(
+        "Quranic Arabic Corpus (morphology)",
+        "Kais Dukes",
+        "The Quranic Arabic Corpus includes syntactic and morphological\nannotation of the Qur'an, and builds on the verified Arabic text\ndistributed by the Tanzil project.",
+        "http://corpus.quran.com/",
+        "English",
+        "2011",
+        "GNU General Public License",
+        "0.4"
+    )
+    out = capture_io(meta);
+    @test out === "Quranic Arabic Corpus (morphology) v0.4\nCopyright (C) 2011 Kais Dukes\nGNU General Public License\nhttp://corpus.quran.com/\n\nThe Quranic Arabic Corpus includes syntactic and morphological\nannotation of the Qur'an, and builds on the verified Arabic text\ndistributed by the Tanzil project.\n\n"
 
     # out = capture_io(crpsdata[[112,113]][1:2]);
     # @test out === "Chapters: \n ├112 (ٱلْإِخْلَاص-Purity of Faith) \n └113 (ٱلْفَلَق-Daybreak)\nVerses 1-2\n\nTable with 17 rows, 7 columns:\nColumns:\n#  colname   type\n───────────────────\n1  chapter   Int64\n2  verse     Int64\n3  word      Int64\n4  part      Int64\n5  form      String\n6  tag       String\n7  features  String\n\n"
 
-    # out = @capture_out begin
-    #     description(parse(QuranFeatures, select(crpsdata[1].data, :features)[1]))
-    # end;
-    # @test out === """Prefix
-    # ──────
-    # Preposition:
-    #  ├ data: P
-    #  ├ desc: Preposition prefix ('by', 'with', 'in')
-    #  └ ar_label: حرف جر\n"""
+    out = @capture_out begin
+        QuranTree.description(parse(QuranFeatures, crpsdata[1].data[1, :features]))
+    end;
+    @test out === "Prefix\n──────\nPreposition:\n ├ data: P\n ├ desc: Preposition prefix ('by', 'with', 'in')\n └ ar_label: حرف جر\n"
 
     out = @capture_out begin
-        @desc parse(QuranFeatures, select(crpsdata[1].data, :features)[end])
+        @desc parse(QuranFeatures, crpsdata[1].data[end, :features])
     end;
     @test out === """Stem
     ────
@@ -423,8 +409,8 @@ end
     # ─────────────────────────────────────────────
     # 1     1     "bi"  "P"  QuranFeatures("PREFIX|bi+")\n""";
 
-    # out = @desc(1)
-    # @test out === missing;
+    out = @desc(1)
+    @test out === missing;
     
     
     # # out = @capture_out(pretty_table(crpsdata));
