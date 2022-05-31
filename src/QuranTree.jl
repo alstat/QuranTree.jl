@@ -8,23 +8,14 @@ include("transliterate.jl")
 include("qurantypes.jl")
 include("index.jl")
 include("decode.jl")
-# include("dediac.jl")
 include("encode.jl")
 include("normalize.jl")
 include("load.jl")
 include("print.jl")
 
-# export BW_ENCODING, AR_DIACS_REGEX, SP_REGEX_CHARS
-export @data, load, table, verses, chapter_name, lemma, root, words, special
-       # arabic, description,
-       # dediac, normalize, encode, verses, feature, isfeat,
-       # root, lemma, special, words
-export @desc
-       # @transliterator, Transliterator, genproperties
+export @data, @desc, load, table, verses, chapter_name, lemma, root, words, special
 export CorpusRaw, TanzilRaw, CorpusData, TanzilData, QuranData, Suffix, Prefix, Stem, QuranFeatures, MetaData, Root, Lemma, Special
-       # SimpleEncoder, 
-export AbstractQuran, #AbstractEncoder, 
-       AbstractQuranFeature, AbstractPartOfSpeech,
+export AbstractQuran, AbstractQuranFeature, AbstractPartOfSpeech,
        AbstractNominal, AbstractState, AbstractCase,
        AbstractPreposition, AbstractParticle, AbstractDisLetters,
        AbstractConjunction, AbstractPerson, AbstractGender,
