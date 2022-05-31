@@ -1,7 +1,5 @@
 using QuranTree
 using Test
-# using JuliaDB: select
-# using PrettyTables: pretty_table
 using Suppressor: @capture_out
 using DataFrames
 using Yunir
