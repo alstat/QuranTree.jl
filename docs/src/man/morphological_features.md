@@ -80,17 +80,17 @@ mfeat4 = parse(QuranFeatures, token4)
 The table below contains the complete list of the Part of Speech with its corresponding types. As shown in the table below, each part of speech has a corresponding parent type, which is a superset type in the Type Hierarchy. This is useful for grouping. For example, instead of using `||` (or) in checking for all tokens that are either `FirstPerson`, `SecondPerson`, or `ThirdPerson`, the parent type `AbstractPerson` can be used.
 ```@repl abc
 # without using parent type
-function allpersons(t)
-    is1st = isfeat(parse(QuranFeatures, t.features), FirstPerson)
-    is2nd = isfeat(parse(QuranFeatures, t.features), SecondPerson)
-    is3rd = isfeat(parse(QuranFeatures, t.features), ThirdPerson)
+function allpersons(row)
+    is1st = isfeat(parse(QuranFeatures, row.features), FirstPerson)
+    is2nd = isfeat(parse(QuranFeatures, row.features), SecondPerson)
+    is3rd = isfeat(parse(QuranFeatures, row.features), ThirdPerson)
     
     return is1st || is2nd || is3rd
 end
 tbl1 = filter(allpersons, crpsdata.data);
 tbl1[!, [:form, :features]]
 # using parent type
-tbl2 = filter(t -> isfeat(parse(QuranFeatures, t.features), AbstractPerson), crpsdata.data);
+tbl2 = filter(row -> isfeat(parse(QuranFeatures, row.features), AbstractPerson), crpsdata.data);
 tbl2[!, [:form, :features]]
 
 sum(tbl1[!, :features] .!== tbl2[!, :features])
