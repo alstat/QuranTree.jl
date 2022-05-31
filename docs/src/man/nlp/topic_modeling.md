@@ -1,6 +1,6 @@
 Topic Modeling
 ============
-Another application of Natural Language Processing is Topic Modeling, and in this section, we are going to extract the topics for Chapter 18 (The Cave). To do this, again [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/) (Julia's leading NLP library) is used. The model for this task will be Latent Dirichlet Allocation (LDA), but Latent Semantic Analysis (LSA) is also available in [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/). To start with, load the data as follows:
+Another application of Natural Language Processing is the Topic Modeling, which aims to extract the topics from a given document. In this section, we are going to apply this to Chapter 18 (the Cave) of the Qur'an. To do this, we are going to use the [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/) library. The model for this task will be the Latent Dirichlet Allocation (LDA). To start with, load the data as follows:
 ```@setup abc
 using Pkg
 Pkg.add("TextAnalysis")
@@ -23,7 +23,7 @@ crpsdata = table(crps)
     ```
 
 ## Data Preprocessing
-The first data processing will be the removal of all Disconnected Letters like الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:
+The first data processing will be the removal of all Disconnected Letters (like الٓمٓ ,الٓمٓصٓ, among others), Prepositions, Particles, Conjunctions, Pronouns, and Adverbs. This is done as follows:
 ```@repl abc
 function preprocess(s::String)
     feat = parse(QuranFeatures, s)
@@ -46,7 +46,7 @@ feats = crpsnew[!, :features]
 feats = parse.(QuranFeatures, feats)
 ```
 ## Lemmatization
-Using the above parsed features, we then convert the `form` of the tokens into its lemma. This is useful for addressing minimal variations due to inflection.
+Using the above parsed features, we then convert the `form` of the tokens into its lemma. This is useful for addressing inflections.
 ```@repl abc
 lemmas = lemma.(feats)
 forms1 = crpsnew[!, :form]
@@ -99,16 +99,20 @@ for i = 1:k
 end
 cluster_topics
 ```
-Tabulating this propery would give us the following
+Tabulating this properly would give us the following
 ```@example abc
 Pkg.add("DataFrames")
 Pkg.add("Latexify")
 using DataFrames: DataFrame
 using Latexify
 
-mdtable(convert(DataFrame, cluster_topics), latex=false)
+mdtable(DataFrame(
+    topic1 = cluster_topics[:, 1], 
+    topic2 = cluster_topics[:, 2], 
+    topic3 = cluster_topics[:, 3]
+    ), latex=false)
 ```
-As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their own use. This section, however, demonstrated how [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/)'s LDA can be used for Topic Modeling of the QuranTree.jl's corpus.
+As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their use case. This section simply demonstrated how [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/)'s LDA can be used for Topic Modeling of the QuranTree.jl's corpus.
 
 Finally, the following will extract the topic for each verse:
 ```@repl abc

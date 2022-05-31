@@ -1,6 +1,6 @@
 Text Summarization
 =====
-This section will demonstrate how to use [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/) (Julia's leading NLP library) for QuranTree.jl. In particular, in summarizing the Qur'an, specifically Chapter 18 (The Cave) which most Muslims are aware of the story, since it is the chapter recommended to be read every Friday. The algorithm used for summarization is called TextRank, an application of PageRank algorithm to text datasets.
+This section will demonstrate how to use [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/) (Julia's leading NLP library) for QuranTree.jl. In particular, in summarizing the Qur'an, specifically Chapter 18 (The Cave) which most Muslims are familiar with (this is the chapter recommended to be read every Friday). The algorithm used for summarization is called TextRank, an application of PageRank algorithm to text datasets.
 ```@setup abc
 using Pkg
 Pkg.add("Yunir")
@@ -22,7 +22,7 @@ crpsdata = table(crps)
     Pkg.add("TextAnalysis")
     ```
 ## Data Preprocessing
-The first data processing will be the removal of all Disconnected Letters like الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:
+The first data processing will be the removal of all Disconnected Letters (like الٓمٓ ,الٓمٓصٓ, among others), Prepositions, Particles, Conjunctions, Pronouns, and Adverbs. This is done as follows:
 ```@repl abc
 function preprocess(s::String)
     feat = parse(QuranFeatures, s)
@@ -38,14 +38,14 @@ end
 
 crpstbl = filter(t -> preprocess(t.features), crpsdata[18].data)
 ```
-Next, we create a copy of the above data so we have the original state, and use the copy to do further data processing.
+Next, we create a copy of the above data (so we have the original state), and use the copy to do further data processing.
 ```@repl abc
 crpsnew = deepcopy(crpstbl)
 feats = crpsnew[!, :features]
 feats = parse.(QuranFeatures, feats)
 ```
 ## Lemmatization
-Using the above parsed features, we then convert the `form` of the tokens into its lemma. This is useful for addressing minimal variations due to inflection.
+Using the above parsed features, we then convert the `form` of the tokens into its lemma. This is useful for addressing variations due to inflection.
 ```@repl abc
 lemmas = lemma.(feats)
 forms1 = crpsnew[!, :form]
@@ -109,7 +109,7 @@ function pagerank(A; Niter=20, damping=.15)
     return r
 end
 ```
-Using this function, we apply it to the above similarity matrix (`sim_mat`) and extract the PageRank scores for all verses. This score will serve as the weights, and so higher scores suggest that the verse has a lot of connections to other verses in the corpus, which means it represents *per se* the corpus.
+Using this function, we apply it to the above similarity matrix (`sim_mat`) and extract the PageRank scores for all verses. These scores will serve as the weights, and so higher scores suggest that the verse has a lot of connections to other verses in the corpus, which means it represents *per se* the corpus.
 ```@repl abc
 p = pagerank(sim_mat)
 ```
