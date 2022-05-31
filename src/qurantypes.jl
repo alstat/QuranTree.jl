@@ -1,4 +1,4 @@
-import JuliaDB: IndexedTable
+# using DataFrames: DataFrame
 import ReadOnlyArrays: ReadOnlyArray
 
 struct FilePaths
@@ -68,13 +68,13 @@ MetaData(::Type{TanzilRaw}) = MetaData(
 abstract type AbstractQuran end
 
 struct CorpusData <: AbstractQuran
-    data::IndexedTable
+    data::DataFrame
     meta::MetaData
 end
 CorpusData(data) = CorpusData(data, MetaData(CorpusRaw))
 
 struct TanzilData <: AbstractQuran
-    data::IndexedTable
+    data::DataFrame
     meta::MetaData
 end
 TanzilData(data) = TanzilData(data, MetaData(CorpusRaw))
@@ -85,7 +85,7 @@ struct Quran
 end
 
 struct Chapter <: AbstractQuran
-    data::IndexedTable
+    data::DataFrame
     numbers::Union{Int64,Array{Int64,1},UnitRange{Int64}}
     verses::Array{Int64,1}
     istanzil::Bool
@@ -93,7 +93,7 @@ end
 Chapter(data, number, verses) = Chapter(data, number, verses, false)
 
 struct Verse <: AbstractQuran
-    data::IndexedTable
+    data::DataFrame
     numbers::Union{Int64,Array{Int64,1},UnitRange{Int64}}
     chapters::Union{Int64,Array{Int64,1},UnitRange{Int64}}
     words::Union{Int64,Array{Int64,1},UnitRange{Int64},Missing}
@@ -101,7 +101,7 @@ struct Verse <: AbstractQuran
 end
 
 struct Word <: AbstractQuran
-    data::IndexedTable
+    data::DataFrame
     numbers::Union{Int64,Array{Int64,1},UnitRange{Int64}}
     chapters::Union{Int64,Array{Int64,1},UnitRange{Int64}}
     verses::Union{Int64,Array{Int64,1},UnitRange{Int64}}
@@ -109,7 +109,7 @@ struct Word <: AbstractQuran
 end
 
 struct Part <: AbstractQuran
-    data::IndexedTable
+    data::DataFrame
     numbers::Union{Int64,Array{Int64,1},UnitRange{Int64}}
     chapters::Union{Int64,Array{Int64,1},UnitRange{Int64}}
     verses::Union{Int64,Array{Int64,1},UnitRange{Int64}}

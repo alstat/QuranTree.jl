@@ -1,6 +1,6 @@
-function decode(c::Union{Char,String}, encoder::AbstractEncoder)
-    return string(encoder.decode[Symbol(c)])
-end
+# function decode(c::Union{Char,String}, encoder::AbstractEncoder)
+#     return string(encoder.decode[Symbol(c)])
+# end
 
 """
     arabic(s::String[, encoder::AbstractEncoder])
@@ -18,22 +18,22 @@ julia> arabic(verses(crpsdata[114])[1])
 "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
 ```
 """
-function arabic(s::String)
-    trans = Transliterator()
-    return arabic(s, trans)
-end
+# function arabic(s::String)
+#     trans = Transliterator()
+#     return arabic(s, trans)
+# end
 
-function arabic(s::String, encoder::AbstractEncoder)
-    words = ""
-    for c in s
-        if c === ' '
-            words *= " "
-        else
-            words *= decode(c, encoder)
-        end
-    end
-    return words
-end
+# function arabic(s::String, encoder::AbstractEncoder)
+#     words = ""
+#     for c in s
+#         if c === ' '
+#             words *= " "
+#         else
+#             words *= decode(c, encoder)
+#         end
+#     end
+#     return words
+# end
 
 """
     verses(quran::AbstractQuran; number=false, start_end=true)
@@ -56,10 +56,10 @@ julia> verses(crpsdata[113:114], number=true, start_end=false)[1]
 """
 function verses(quran::AbstractQuran; number::Bool=false, start_end::Bool=true)
     try
-        endidx = length(rows(quran.data))
+        endidx = nrow(quran.data)
         return verses(quran.data, 1, endidx; number=number, start_end=start_end)
     catch
-        return select(quran.data, :form)
+        return quran.data[!, :form]
     end
 end
 
@@ -79,15 +79,15 @@ julia> verses(tnzldata)[1]
 ```
 """
 function verses(quran::TanzilData)
-    return select(quran.data, :form)
+    return quran.data[!, :form]
 end
 
 """
-    verses(data::IndexedTable[, a::Int64[, b::Int64]]; number=false, start_end=true)
+    verses(data::DataFrame[, a::Int64[, b::Int64]]; number=false, start_end=true)
 
-Extract the verses of a `IndexedTable` object from row `a` to row `b`.
+Extract the verses of a `DataFrame` object from row `a` to row `b`.
 """
-function verses(data::IndexedTable, a::Int64, b::Int64; number::Bool=false, start_end::Bool=true)
+function verses(data::DataFrame, a::Int64, b::Int64; number::Bool=false, start_end::Bool=true)
     if number
         if start_end
             verse_out = String[]
@@ -102,14 +102,14 @@ function verses(data::IndexedTable, a::Int64, b::Int64; number::Bool=false, star
     end
 
     j = 1
-    for i in select(data, :form)[a:b]
+    for i in data[!, :form][a:b]
         if j > 1
-            prev_word  = select(data, :word)[j-1]
-            next_word  = select(data, :word)[j]
-            prev_verse = select(data, :verse)[j-1]
-            next_verse = select(data, :verse)[j]
-            prev_chapter = select(data, :chapter)[j-1]
-            next_chapter = select(data, :chapter)[j]
+            prev_word  = data[j-1, :word]
+            next_word  = data[j, :word]
+            prev_verse = data[j-1, :verse]
+            next_verse = data[j, :verse]
+            prev_chapter = data[j-1, :chapter]
+            next_chapter = data[j, :chapter]
             
             if prev_word !== next_word && prev_verse !== next_verse
                 if number
@@ -193,10 +193,10 @@ function verses(data::IndexedTable, a::Int64, b::Int64; number::Bool=false, star
         else 
             if number
                 if start_end
-                    verse_nos = string(select(data, :chapter)[j]) * ":(" * string(select(data, :verse)[j])
+                    verse_nos = string(data[j, :chapter]) * ":(" * string(data[j, :verse])
                 else
-                    push!(chapter_nos, select(data, :chapter)[j])
-                    push!(verse_nos, select(data, :verse)[j])
+                    push!(chapter_nos, data[j, :chapter])
+                    push!(verse_nos, data[j, :verse])
                 end
             else
                 words *= i
@@ -254,27 +254,28 @@ julia> chapter_name(crpsdata[13][2][1])
 "ٱلرَّعْد"
 ```
 """
-function chapter_name(quran::AbstractQuran, transliterate::Bool=false; lang::Symbol=:arabic)
+function chapter_name(quran::AbstractQuran; lang::Symbol=:arabic)
     chapterlabel = ChapterLabel()
     chapterlabel = getproperty(chapterlabel, lang)
     chapterindex = quran isa Chapter ? quran.numbers : quran.chapters
-    if transliterate && lang === :arabic
-        trans = Transliterator()
-        name = ""
-        for c in chapterlabel[chapterindex]
-            if c == ' '
-                name *= " "
-            else
-                name *= encode(c, trans)
-            end
-        end
-        return name
-    elseif transliterate && lang === :english
-        @warn "transliterate only applies for :arabic lang."
-        return chapterlabel[chapterindex]
-    elseif !transliterate && lang === :arabic
-        return chapterlabel[chapterindex]
-    else
-        return chapterlabel[chapterindex]
-    end
+    # if transliterate && lang === :arabic
+    #     trans = Transliterator()
+    #     name = ""
+    #     for c in chapterlabel[chapterindex]
+    #         if c == ' '
+    #             name *= " "
+    #         else
+    #             name *= encode(c, trans)
+    #         end
+    #     end
+    #     return name
+    # elseif transliterate && lang === :english
+    #     @warn "transliterate only applies for :arabic lang."
+    #     return chapterlabel[chapterindex]
+    # elseif !transliterate && lang === :arabic
+    #     return chapterlabel[chapterindex]
+    # else
+    #     return chapterlabel[chapterindex]
+    # end
+    return chapterlabel[chapterindex]
 end

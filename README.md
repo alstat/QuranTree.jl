@@ -2,34 +2,35 @@
 [![Build status](https://github.com/alstat/QuranTree.jl/workflows/CI/badge.svg)](https://github.com/alstat/QuranTree.jl/actions)
 [![Coverage](https://codecov.io/gh/alstat/QuranTree.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/alstat/QuranTree.jl)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://alstat.github.io/QuranTree.jl/dev/)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://alstat.github.io/QuranTree.jl/stable/)
 [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/alstat/QuranTree.jl/blob/master/LICENSE)
 
 A Julia package for working with the Qur'an (Islam's Holy Book), computationally. QuranTree.jl is based on [The Quranic Arabic Corpus](https://corpus.quran.com/) by Kais Dukes of University of Leeds, and is aimed at offerring a high-level API alternative to the Java package, [JQuranTree](https://corpus.quran.com/java/overview.jsp). 
+
 ## Features
 The following are the features of the package:
 
  * Indexing
     * Intuitive indexing for Chapters, Verses, Words and Parts
+ * Complete type for all Morphological Features and Part of Speech
+ * Others
+    * Supports Tanzil data
+    * Read-only array for raw datasets (Corpus and Tanzil)
+
+## Yunir.jl support
+[Yunir.jl](https://github.com/alstat/Yunir.jl) is a lightweight Arabic NLP toolkit that well supports QuranTree.jl for the following functionalities:
+
  * Transliteration
     * Buckwalter as default
     * Functionality for creating custom transliterator
     * Update transliteration in 1 line of code
- * Complete type for all Morphological Features and Part of Speech
  * Seemless transition between Arabic and Buckwalter (or custom transliteration)
  * Simple Encoding (refer [here](https://corpus.quran.com/java/simpleencoding.jsp))
  * Character Normalization
     * For both Arabic and Buckwalter (or custom transliteration)
  * Character Dediacritization
     * For both Arabic and Buckwalter (or custom transliteration)
- * Utilities
-    * Function for detailed description of the Morphological Features.
- * Modularity and Type-Safe
-    * Can easily integrate with other Julia packages, thanks to Julia's Multiple Dispatch
-    * Can easily integrate with Python (using PyCall.jl) and R (Using RCall.jl) for packages that are not yet in Julia
-    * Like JQuranTree, QuranTree.jl is type-safe
- * Others
-    * Supports Tanzil data
-    * Read-only array for raw datasets (Corpus and Tanzil)
+ * Orthographical Analysis
 
 ## Installation
 To install the package, run the following:
@@ -54,9 +55,7 @@ julia> Pkg.add("QuranTree")
 ```
 
 ## Requirements
- * [Julia](https://julialang.org/) >= 1.0
- * [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) >= 0.13.0
- * [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) >= 0.10.1
-
+ * [Julia](https://julialang.org/) >= 1.6.0
+ 
 ## Usage
-See the [documentation](https://alstat.github.io/QuranTree.jl/dev/).
+See the [documentation](https://alstat.github.io/QuranTree.jl/stable/).

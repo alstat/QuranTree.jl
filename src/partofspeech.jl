@@ -1,5 +1,5 @@
-abstract type AbstractFeature end
-abstract type AbstractPartOfSpeech <: AbstractFeature end
+abstract type AbstractQuranFeature end
+abstract type AbstractPartOfSpeech <: AbstractQuranFeature end
 abstract type AbstractNominal <: AbstractPartOfSpeech end
 abstract type AbstractState <: AbstractNominal end
 abstract type AbstractCase <: AbstractNominal end

@@ -1,57 +1,54 @@
 Text Summarization
 =====
-This section will demonstrate how to use [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/) (Julia's leading NLP library) for QuranTree.jl. In particular, in summarizing the Qur'an, specifically Chapter 18 (The Cave) which most Muslims are aware of the story, since it is the chapter recommended to be read every Friday. The algorithm used for summarization is called TextRank, an application of PageRank algorithm to text datasets.
+This section will demonstrate how to use [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/) (Julia's leading NLP library) for QuranTree.jl. In particular, in summarizing the Qur'an, specifically Chapter 18 (The Cave) which most Muslims are familiar with (this is the chapter recommended to be read every Friday). The algorithm used for summarization is called TextRank, an application of PageRank algorithm to text datasets.
 ```@setup abc
 using Pkg
-Pkg.add("JuliaDB")
-Pkg.add("PrettyTables")
+Pkg.add("Yunir")
 Pkg.add("TextAnalysis")
 ```
 ```@repl abc
-using JuliaDB
-using PrettyTables
 using QuranTree
 using TextAnalysis
-@ptconf tf=tf_compact vcrop_mode=:backend
+using Yunir
 
 crps, tnzl = QuranData() |> load;
 crpsdata = table(crps)
 ```
 !!! info "Note"
-    You need to install [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) and [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) to successfully run the code. 
+    You need to install [Yunir.jl](https://github.com/alstat/Yunir.jl) to successfully run the code. 
     ```julia
     using Pkg
-    Pkg.add("JuliaDB")
-    Pkg.add("PrettyTables")
+    Pkg.add("Yunir")
+    Pkg.add("TextAnalysis")
     ```
 ## Data Preprocessing
-The first data processing will be the removal of all Disconnected Letters like الٓمٓ ,الٓمٓصٓ, among others. This is done as follows:
+The first data processing will be the removal of all Disconnected Letters (like الٓمٓ ,الٓمٓصٓ, among others), Prepositions, Particles, Conjunctions, Pronouns, and Adverbs. This is done as follows:
 ```@repl abc
 function preprocess(s::String)
-    feat = parse(Features, s)
-    disletters = isfeature(feat, AbstractDisLetters)
-    prepositions = isfeature(feat, AbstractPreposition)
-    particles = isfeature(feat, AbstractParticle)
-    conjunctions = isfeature(feat, AbstractConjunction)
-    pronouns = isfeature(feat, AbstractPronoun)
-    adverbs = isfeature(feat, AbstractAdverb)
+    feat = parse(QuranFeatures, s)
+    disletters = isfeat(feat, AbstractDisLetters)
+    prepositions = isfeat(feat, AbstractPreposition)
+    particles = isfeat(feat, AbstractParticle)
+    conjunctions = isfeat(feat, AbstractConjunction)
+    pronouns = isfeat(feat, AbstractPronoun)
+    adverbs = isfeat(feat, AbstractAdverb)
 
     return !disletters && !prepositions && !particles && !conjunctions && !pronouns && !adverbs
 end
 
 crpstbl = filter(t -> preprocess(t.features), crpsdata[18].data)
 ```
-Next, we create a copy of the above data so we have the original state, and use the copy to do further data processing.
+Next, we create a copy of the above data (so we have the original state), and use the copy to do further data processing.
 ```@repl abc
 crpsnew = deepcopy(crpstbl)
-feats = select(crpsnew, :features)
-feats = parse.(Features, feats)
+feats = crpsnew[!, :features]
+feats = parse.(QuranFeatures, feats)
 ```
 ## Lemmatization
-Using the above parsed features, we then convert the `form` of the tokens into its lemma. This is useful for addressing minimal variations due to inflection.
+Using the above parsed features, we then convert the `form` of the tokens into its lemma. This is useful for addressing variations due to inflection.
 ```@repl abc
 lemmas = lemma.(feats)
-forms1 = select(crpsnew, :form)
+forms1 = crpsnew[!, :form]
 forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]
 ```
 !!! tip "Tips"
@@ -59,14 +56,14 @@ forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]
 
 We now put back the new form to the corpus:
 ```@repl abc
-crpsnew = transform(crpsnew, :form => forms1)
+crpsnew[!, :form] = forms1
 crpsnew = CorpusData(crpsnew)
 ```
 ## Tokenization
 We want to summarize the Qur'an at the verse level. Thus, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:
 ```@repl abc
 lem_vrs = verses(crpsnew)
-vrs = QuranTree.normalize.(dediac.(lem_vrs))
+vrs = normalize.(dediac.(lem_vrs))
 ```
 ## Creating a TextAnalysis Corpus
 To make use of the [TextAnalysis.jl's APIs](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/APIReference/), we need to encode the processed Quranic Corpus to [TextAnalysis.jl](https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/)'s Corpus. In this case, we will create a `StringDocument` of the verses.
@@ -112,7 +109,7 @@ function pagerank(A; Niter=20, damping=.15)
     return r
 end
 ```
-Using this function, we apply it to the above similarity matrix (`sim_mat`) and extract the PageRank scores for all verses. This score will serve as the weights, and so higher scores suggest that the verse has a lot of connections to other verses in the corpus, which means it represents *per se* the corpus.
+Using this function, we apply it to the above similarity matrix (`sim_mat`) and extract the PageRank scores for all verses. These scores will serve as the weights, and so higher scores suggest that the verse has a lot of connections to other verses in the corpus, which means it represents *per se* the corpus.
 ```@repl abc
 p = pagerank(sim_mat)
 ```
@@ -133,21 +130,18 @@ for v in verse_nos
     verse = vcat(verse, v[2])
 end
 
-tbl = table((
+using DataFrames
+tbl = DataFrame(
     chapter=chapter[idx], 
     verse=verse[idx], 
     verse_text=arabic.(verse_out[idx])
-));
+);
 
-@pt tbl
+tbl
 ```
 The following is the table of the above output properly formatted in HTML.
 ```@example abc
-Pkg.add("DataFrames")
-Pkg.add("IterableTables")
 Pkg.add("Latexify")
-using DataFrames: DataFrame
-using IterableTables
 using Latexify
 
 mdtable(DataFrame(tbl), latex=false)
@@ -163,7 +157,7 @@ The following are the translations of the above verses:
     <tr><td>18</td><td>66</td><td>Moses said to him, “May I follow you, provided that you teach me some of the right guidance you have been taught?”</td></tr>
     <tr><td>18</td><td>70</td><td>He responded, “Then if you follow me, do not question me about anything until I ˹myself˺ clarify it for you.”</td></tr>
     <tr><td>18</td><td>8</td><td>And We will certainly reduce whatever is on it to barren ground.</td></tr>
-    <tr><td>18</td><td>28</td><td>And patiently stick with those who call upon their Lord morning and evening, seeking His pleasure.1 Do not let your eyes look beyond them, desiring the luxuries of this worldly life. And do not obey those whose hearts We have made heedless of Our remembrance, who follow ˹only˺ their desires and whose state is ˹total˺ loss.</td></tr>
+    <tr><td>18</td><td>28</td><td>And patiently stick with those who call upon their Lord morning and evening, seeking His pleasure. Do not let your eyes look beyond them, desiring the luxuries of this worldly life. And do not obey those whose hearts We have made heedless of Our remembrance, who follow ˹only˺ their desires and whose state is ˹total˺ loss.</td></tr>
     <tr><td>18</td><td>108</td><td>where they will be forever, never desiring anywhere else.</td></tr>
     <tr><td>18</td><td>91</td><td>So it was. And We truly had full knowledge of him.</td></tr>
     <tr><td>18</td><td>68</td><td>And how can you be patient with what is beyond your ˹realm of˺ knowledge?”</td></tr>
