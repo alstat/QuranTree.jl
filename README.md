@@ -5,7 +5,7 @@
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://alstat.github.io/QuranTree.jl/stable/)
 [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/alstat/QuranTree.jl/blob/master/LICENSE)
 
-A Julia package for working with the Qur'an (Islam's Holy Book), computationally. QuranTree.jl is based on [The Quranic Arabic Corpus](https://corpus.quran.com/) by Kais Dukes of University of Leeds, and is aimed at offerring a high-level API alternative to the Java package, [JQuranTree](https://corpus.quran.com/java/overview.jsp). 
+A Julia package for working with the Qur'an (Islam's Holy Book), computationally. QuranTree.jl is based on [The Quranic Arabic Corpus](https://corpus.quran.com/) by Kais Dukes of University of Leeds, and is aimed at offerring a high-level API alternative to the Java package, [JQuranTree](https://corpus.quran.com/java/overview.jsp).  
 
 ## Features
 The following are the features of the package:
@@ -34,6 +34,7 @@ The following are the features of the package:
 
 ## Installation
 To install the package, run the following:
+
 ```julia
 julia> using Pkg
 julia> Pkg.add("QuranTree")
