@@ -54,9 +54,7 @@ julia> Pkg.add("QuranTree")
 ```
 
 ## Requirements
- * [Julia](https://julialang.org/) >= 1.0
- * [JuliaDB.jl](https://github.com/JuliaData/JuliaDB.jl) >= 0.13.0
- * [PrettyTables.jl](https://github.com/ronisbr/PrettyTables.jl) >= 0.10.1
-
+ * [Julia](https://julialang.org/) >= 1.6.0
+ 
 ## Usage
-See the [documentation](https://alstat.github.io/QuranTree.jl/dev/).
+See the [documentation](https://alstat.github.io/QuranTree.jl/stable/).
