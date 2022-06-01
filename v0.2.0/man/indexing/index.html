@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Indexing · QuranTree.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.044/juliamono.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/logo.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img class="docs-light-only" src="../../assets/logo.png" alt="QuranTree.jl logo"/><img class="docs-dark-only" src="../../assets/logo-dark.png" alt="QuranTree.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">QuranTree.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../getting_started/">Getting Started</a></li><li class="is-active"><a class="tocitem" href>Indexing</a><ul class="internal"><li><a class="tocitem" href="#Combinations-of-Indices"><span>Combinations of Indices</span></a></li></ul></li><li><a class="tocitem" href="../transliteration/">Transliteration</a></li><li><a class="tocitem" href="../morphological_features/">Morphological Features</a></li><li><a class="tocitem" href="../data_processing/">Data Processing</a></li><li><span class="tocitem">Natural Language Processing</span><ul><li><a class="tocitem" href="../nlp/nlp/">Introduction</a></li><li><a class="tocitem" href="../nlp/text_summarization/">Text Summarization</a></li><li><a class="tocitem" href="../nlp/topic_modeling/">Topic Modeling</a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Indexing</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Indexing</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/alstat/QuranTree.jl/blob/master/docs/src/man/indexing.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Indexing-the-Corpus"><a class="docs-heading-anchor" href="#Indexing-the-Corpus">Indexing the Corpus</a><a id="Indexing-the-Corpus-1"></a><a class="docs-heading-anchor-permalink" href="#Indexing-the-Corpus" title="Permalink"></a></h1><p>QuranTree.jl offers a intuitive indexing for both <a href="https://corpus.quran.com/">Quranic Arabic Corpus</a> and the <a href="http://tanzil.net/download">Tanzil Data</a>, specifically it follows the following usage:</p><pre><code class="language-julia hljs"># for Quranic Arabic Corpus
+crpsdata[&lt;chapters&gt;][&lt;verses&gt;][&lt;words&gt;][&lt;parts&gt;]
+
+# for Tanzil Data
+tnzldata[&lt;chapters&gt;][&lt;verses&gt;]</code></pre><p>The following are the options supported for each index:</p><ul><li>Chapters:<ul><li>Int64 - <code>crpsdata[1]</code> (extracts Chapter 1)</li><li>UnitRange - <code>crpsdata[15:24]</code> (extracts Chapter 15 to 24)</li><li>Array{Int64,1} - <code>crpsdata[[3,9,10]]</code> (extracts Chapter 3, 9 and 10)</li><li>end (special) - <code>crpsdata[end-3:end]</code> (extracts Chapter 111 to 114).</li></ul></li><li>Verses:<ul><li>Int64 - <code>crpsdata[1][1]</code> (extracts Verse 1 of Chapter 1)</li><li>UnitRange - <code>crpsdata[2][15:24]</code> (extracts verses 15 to 24 of Chapter 2)</li><li>Array{Int64,1} - <code>crpsdata[10][[3,9,10]]</code> (extracts verses 3, 9 and 10 of Chapter 10)</li></ul></li><li>Words: (not applicable for <code>TanzilData</code>, only <code>CorpusData</code>)<ul><li>Int64 - <code>crpsdata[1][1][1]</code> (extracts Word 1 of Verse 1 of Chapter 1)</li><li>UnitRange - <code>crpsdata[2][8][1:3]</code> (extracts words 1 to 3 of Verse 8 of Chapter 2)</li><li>Array{Int64,1} - <code>crpsdata[2][8][[1,3]]</code> (extracts words 1 and 3 of Verse 8 of Chapter 2)</li></ul></li><li>Parts: (not applicable for <code>TanzilData</code>, only <code>CorpusData</code>)<ul><li>Int64 - <code>crpsdata[1][1][1][1]</code> (extracts Part 1 of Word 1 of Verse 1 of Chapter 1)</li><li>UnitRange - <code>crpsdata[2][9][1][1:2]</code> (extracts Part 1 to Part 2 of Word 1 of Verse 9 of Chapter 2)</li><li>Array{Int64,1} - <code>crpsdata[2][9][1][[1,2]]</code> (extracts Part 1 and Part 2 of Word 1 of Verse 9 of Chapter 2)</li></ul></li></ul><p>As an example, the following will extract Verse 9 of Chapter 2 in both <code>TanzilData</code> and <code>CorpusData</code>:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; using QuranTree</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; data = QuranData();</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; crps, tnzl = load(data);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; crpsdata = table(crps);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; tnzldata = table(tnzl);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; crpsdata[2][9]</code><code class="nohighlight hljs ansi" style="display:block;">Chapter 2 ٱلْبَقَرَة (The Cow)
+Verse 9
+
+18×5 DataFrame
+ Row │ word   part   form       tag     features
+     │ Int64  Int64  String     String  String
+─────┼────────────────────────────────────────────────────────────────────
+   1 │     1      1  yuxa`diEu  V       STEM|POS:V|IMPF|(III)|LEM:yuxa`d…
+   2 │     1      2  wna        PRON    SUFFIX|PRON:3MP
+   3 │     2      1  {ll~aha    PN      STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|…
+   4 │     3      1  wa         CONJ    PREFIX|w:CONJ+
+   5 │     3      2  {l~a*iyna  REL     STEM|POS:REL|LEM:{l~a*iY|MP
+   6 │     4      1  &#39;aAmanu    V       STEM|POS:V|PERF|(IV)|LEM:&#39;aAmana…
+   7 │     4      2  wA@        PRON    SUFFIX|PRON:3MP
+   8 │     5      1  wa         REM     PREFIX|w:REM+
+  ⋮  │   ⋮      ⋮        ⋮        ⋮                     ⋮
+  12 │     7      1  &lt;il~aA^    RES     STEM|POS:RES|LEM:&lt;il~aA
+  13 │     8      1  &gt;anfusa    N       STEM|POS:N|LEM:nafos|ROOT:nfs|FP…
+  14 │     8      2  humo       PRON    SUFFIX|PRON:3MP
+  15 │     9      1  wa         CIRC    PREFIX|w:CIRC+
+  16 │     9      2  maA        NEG     STEM|POS:NEG|LEM:maA
+  17 │    10      1  ya$oEuru   V       STEM|POS:V|IMPF|LEM:ya$oEuru|ROO…
+  18 │    10      2  wna        PRON    SUFFIX|PRON:3MP
+                                                            3 rows omitted</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; tnzldata[2][9]</code><code class="nohighlight hljs ansi" style="display:block;">Chapter 2 ٱلْبَقَرَة (The Cow)
+Verse 9
+
+1×1 DataFrame
+ Row │ form
+     │ String
+─────┼───────────────────────────────────
+   1 │ يُخَٰدِعُونَ ٱللَّهَ وَٱلَّذِينَ ءَامَنُوا۟ وَمَا يَخْ…</code></pre><p>As shown above, the output of the indexing contains label for the chapter name, both in Arabic and in English. </p><h2 id="Combinations-of-Indices"><a class="docs-heading-anchor" href="#Combinations-of-Indices">Combinations of Indices</a><a id="Combinations-of-Indices-1"></a><a class="docs-heading-anchor-permalink" href="#Combinations-of-Indices" title="Permalink"></a></h2><p>Combinations of these indices are also supported. For example, the following will extract Chapter 111 to 114, each with verses 1 and 3:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; crpsdata[111:114][[1,3]]</code><code class="nohighlight hljs ansi" style="display:block;">Chapters 111-114: ٱلْمَسَد-ٱلنَّاس (Palm Fibre-People)
+Verses 1, 3
+
+41×7 DataFrame
+ Row │ chapter  verse  word   part   form      tag     features                ⋯
+     │ Int64    Int64  Int64  Int64  String    String  String                  ⋯
+─────┼──────────────────────────────────────────────────────────────────────────
+   1 │     111      1      1      1  tab~ato   V       STEM|POS:V|PERF|LEM:tab ⋯
+   2 │     111      1      2      1  yadaA^    N       STEM|POS:N|LEM:yad|ROOT
+   3 │     111      1      3      1  &gt;abiY     N       STEM|POS:N|LEM:&gt;abN|ROO
+   4 │     111      1      4      1  lahabK    N       STEM|POS:N|LEM:lahab|RO
+   5 │     111      1      5      1  wa        CONJ    PREFIX|w:CONJ+          ⋯
+   6 │     111      1      5      2  tab~a     V       STEM|POS:V|PERF|LEM:tab
+   7 │     111      3      1      1  sa        FUT     PREFIX|sa+
+   8 │     111      3      1      2  yaSolaY`  V       STEM|POS:V|IMPF|LEM:yaS
+  ⋮  │    ⋮       ⋮      ⋮      ⋮       ⋮        ⋮                     ⋮       ⋱
+  35 │     114      1      3      1  bi        P       PREFIX|bi+              ⋯
+  36 │     114      1      3      2  rab~i     N       STEM|POS:N|LEM:rab~|ROO
+  37 │     114      1      4      1  {l        DET     PREFIX|Al+
+  38 │     114      1      4      2  n~aAsi    N       STEM|POS:N|LEM:n~aAs|RO
+  39 │     114      3      1      1  &lt;ila`hi   N       STEM|POS:N|LEM:&lt;ila`h|R ⋯
+  40 │     114      3      2      1  {l        DET     PREFIX|Al+
+  41 │     114      3      2      2  n~aAsi    N       STEM|POS:N|LEM:n~aAs|RO
+                                                    1 column and 26 rows omitted</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; tnzldata[111:114][[1,3]]</code><code class="nohighlight hljs ansi" style="display:block;">Chapters 111-114: ٱلْمَسَد-ٱلنَّاس (Palm Fibre-People)
+Verses 1, 3
+
+8×3 DataFrame
+ Row │ chapter  verse  form
+     │ Int64    Int64  String
+─────┼───────────────────────────────────────────────────
+   1 │     111      1  بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ تَبَّتْ يَدَآ أَ…
+   2 │     111      3  سَيَصْلَىٰ نَارًا ذَاتَ لَهَبٍ
+   3 │     112      1  بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ هُوَ ٱللَّ…
+   4 │     112      3  لَمْ يَلِدْ وَلَمْ يُولَدْ
+   5 │     113      1  بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِ…
+   6 │     113      3  وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ
+   7 │     114      1  بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِ…
+   8 │     114      3  إِلَٰهِ ٱلنَّاسِ</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>Special indexing <code>end</code> is also applicable, for example <code>crpsdata[111:114][[1,3]]</code> is the same as <code>crpsdata[end-3:end][[1,3]]</code>, and <code>tnzldata[111:114][[1,3]]</code> is equivalent to <code>tnzldata[end-3:end][[1,3]]</code>.</p></div></div><p>Another example, the following will extract Part 1 of Words 1 to 3 of the above <code>CorpusData</code> output:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; crpsdata[111:114][[1,3]][1:3][1]</code><code class="nohighlight hljs ansi" style="display:block;">Chapters 111-114: ٱلْمَسَد-ٱلنَّاس (Palm Fibre-People)
+Verses 1, 3
+
+23×7 DataFrame
+ Row │ chapter  verse  word   part   form     tag     features                 ⋯
+     │ Int64    Int64  Int64  Int64  String   String  String                   ⋯
+─────┼──────────────────────────────────────────────────────────────────────────
+   1 │     111      1      1      1  tab~ato  V       STEM|POS:V|PERF|LEM:tab~ ⋯
+   2 │     111      1      2      1  yadaA^   N       STEM|POS:N|LEM:yad|ROOT:
+   3 │     111      1      3      1  &gt;abiY    N       STEM|POS:N|LEM:&gt;abN|ROOT
+   4 │     111      3      1      1  sa       FUT     PREFIX|sa+
+   5 │     111      3      2      1  naArFA   N       STEM|POS:N|LEM:naAr|ROOT ⋯
+   6 │     111      3      3      1  *aAta    N       STEM|POS:N|LEM:*uw|FS|AC
+   7 │     112      1      1      1  qulo     V       STEM|POS:V|IMPV|LEM:qaAl
+   8 │     112      1      2      1  huwa     PRON    STEM|POS:PRON|3MS
+  ⋮  │    ⋮       ⋮      ⋮      ⋮       ⋮       ⋮                     ⋮        ⋱
+  17 │     113      3      2      1  $ar~i    N       STEM|POS:N|LEM:$ar~|ROOT ⋯
+  18 │     113      3      3      1  gaAsiqK  N       STEM|POS:N|ACT|PCPL|LEM:
+  19 │     114      1      1      1  qulo     V       STEM|POS:V|IMPV|LEM:qaAl
+  20 │     114      1      2      1  &gt;aEuw*u  V       STEM|POS:V|IMPF|LEM:Eu*o
+  21 │     114      1      3      1  bi       P       PREFIX|bi+               ⋯
+  22 │     114      3      1      1  &lt;ila`hi  N       STEM|POS:N|LEM:&lt;ila`h|RO
+  23 │     114      3      2      1  {l       DET     PREFIX|Al+
+                                                     1 column and 8 rows omitted</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../getting_started/">« Getting Started</a><a class="docs-footer-nextpage" href="../transliteration/">Transliteration »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.18 on <span class="colophon-date" title="Wednesday 1 June 2022 03:31">Wednesday 1 June 2022</span>. Using Julia version 1.6.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
