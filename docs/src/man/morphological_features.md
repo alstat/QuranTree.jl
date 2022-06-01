@@ -81,9 +81,10 @@ The table below contains the complete list of the Part of Speech with its corres
 ```@repl abc
 # without using parent type
 function allpersons(row)
-    is1st = isfeat(parse(QuranFeatures, row.features), FirstPerson)
-    is2nd = isfeat(parse(QuranFeatures, row.features), SecondPerson)
-    is3rd = isfeat(parse(QuranFeatures, row.features), ThirdPerson)
+    rfeat = parse(QuranFeatures, row.features)
+    is1st = isfeat(rfeat, FirstPerson)
+    is2nd = isfeat(rfeat, SecondPerson)
+    is3rd = isfeat(rfeat, ThirdPerson)
     
     return is1st || is2nd || is3rd
 end
