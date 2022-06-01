@@ -15,6 +15,12 @@ end
     crps, tnzl = load(data)
     # nrow(crps.data)
     # data
+    out = capture_io(crps)[1:3000]
+    @test out === "CorpusRaw([\"# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\", \"#====================================================================\", \"#\", \"#  Quranic Arabic Corpus (morphology, version 0.4)\", \"#  Copyright (C) 2011 Kais Dukes\", \"#  License: GNU General Public License\", \"#\", \"#  The Quranic Arabic Corpus includes syntactic and morphological\", \"#  annotation of the Quran, and builds on the verified Arabic text\", \"#  distributed by the Tanzil project.\", \"#\", \"#  TERMS OF USE:\", \"#\", \"#  - Permission is granted to copy and distribute verbatim copies\", \"#    of this file, but CHANGING IT IS NOT ALLOWED.\", \"#\", \"#  - This annotation can be used in any website or application,\", \"#    provided its source (the Quranic Arabic Corpus) is clearly\", \"#    indicated, and a link is made to http://corpus.quran.com to enable\", \"#    users to keep track of changes.\", \"#\", \"#  - This copyright notice shall be included in all verbatim copies\", \"#    of the text, and shall be reproduced appropriately in all works\", \"#    derived from or containing substantial portion of this file.\", \"#\", \"#  Please check updates at: http://corpus.quran.com/download\", \"\", \"# PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\", \"#====================================================================\", \"#\", \"#  Tanzil Quran Text (Uthmani, version 1.0.2)\", \"#  Copyright (C) 2008-2009 Tanzil.info\", \"#  License: Creative Commons BY-ND 3.0 Unported\", \"#\", \"#  This copy of quran text is carefully produced, highly\", \"#  verified and continuously monitored by a group of specialists\", \"#  at Tanzil project.\", \"#\", \"#  TERMS OF USE:\", \"#\", \"#  - Permission is granted to copy and distribute verbatim copies\", \"#    of this text, but CHANGING IT IS NOT ALLOWED.\", \"#\", \"#  - This quran text can be used in any website or application,\", \"#    provided its source (Tanzil.info) is clearly indicated, and\", \"#    a link is made to http://tanzil.info to enable users to keep\", \"#    track of changes.\", \"#\", \"#  - This copyright notice shall be included in all verbatim copies\", \"#    of the text, and shall be reproduced appropriately in all files\", \"#    derived from or containing substantial portion of this text.\", \"#\", \"#  Please check updates at: http://tanzil.info/updates/\", \"#\", \"#====================================================================\", \"\", \"LOCATION\\tFORM\\tTAG\\tFEATURES\", \"(1:1:1:1)\\tbi\\tP\\tPREFIX|bi+\", \"(1:1:1:2)\\tsomi\\tN\\tSTEM|POS:N|LEM:{som|ROOT:smw|M|GEN\", \"(1:1:2:1)\\t{ll~ahi\\tPN\\tSTEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\", \"(1:1:3:1)\\t{l\\tDET\\tPREFIX|Al+\", \"(1:1:3:2)\\tr~aHoma`ni\\tADJ\\tSTEM|POS:ADJ|LEM:r~aHoma`n|ROOT:rHm|MS|GEN\", \"(1:1:4:1)\\t{l\\tDET\\tPREFIX|Al+\", \"(1:1:4:2)\\tr~aHiymi\\tADJ\\tSTEM|POS:ADJ|LEM:r~aHiym|ROOT:rHm|MS|GEN\", \"(1:2:1:1)\\t{lo\\tDET\\tPREFIX|Al+\", \"(1:2:1:2)\\tHamodu\\tN\\tSTEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM\", \"(1:2:2:1)\\tli\\tP\\tPREFIX|l:P+\", \"(1:2:2:2)\\tl~ahi\\tPN\\tSTEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN\", \"(1:2:3:1)\\trab~i\\tN\\tSTEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN\", \"(1:2:4"
+
+    out = capture_io(tnzl)[1:1000]
+    @test out === "TanzilRaw([\"1|1|بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\", \"1|2|ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ\", \"1|3|ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\", \"1|4|مَٰلِكِ يَوْمِ ٱلدِّينِ\", \"1|5|إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\", \"1|6|ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ\", \"1|7|صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ\", \"2|1|بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ\", \"2|2|ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًى لِّلْمُتَّقِينَ\", \"2|3|ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُو"
+
     @test crps[end] === "(114:6:3:3)\tn~aAsi\tN\tSTEM|POS:N|LEM:n~aAs|ROOT:nws|MP|GEN"
     @test tnzl[begin] === "1|1|بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
     @test typeof(crps) === CorpusRaw
@@ -24,6 +30,12 @@ end
     crpsdata = table(crps)
     tnzldata = table(tnzl)
     
+    out = capture_io(crpsdata)[1:1000]
+    @test out === "Quranic Arabic Corpus (morphology)\n(C) 2011 Kais Dukes\n\n128219×7 DataFrame\n    Row │ chapter  verse  word   part   form              tag     features\n        │ Int64    Int64  Int64  Int64  String            String  String\n────────┼───────────────────────────────────────────────────────────────────────────────────────────\n      1 │       1      1      1      1  bi                P       PREFIX|bi+\n      2 │       1      1      1      2  somi              N       STEM|POS:N|LEM:{som|ROOT:smw|M|G…\n      3 │       1      1      2      1  {ll~ahi           PN      STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|…\n      4 │       1      1      3      1  {l                DET     PREFIX|Al+\n      5 │       1      1      3      2  r~aHoma`ni        ADJ     STEM|POS:ADJ|LEM:r~aHoma`n|ROOT:…\n "
+    
+    out = capture_io(tnzldata)[1:1000]
+    @test out === "Tanzil Quran Text (Uthmani)\n(C) 2008-2010 Tanzil.net\n\n6236×3 DataFrame\n  Row │ chapter  verse  form\n      │ Int64    Int64  String\n──────┼───────────────────────────────────────────────────\n    1 │       1      1  بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\n    2 │       1      2  ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ\n    3 │       1      3  ٱلرَّحْمَٰنِ ٱلرَّحِيمِ\n    4 │       1      4  مَٰلِكِ يَوْمِ ٱلدِّينِ\n    5 │       1      5  إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\n    6 │       1      6  ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ\n    7 │       1      7  صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُو…\n    8 │   "
+
     @test crpsdata[begin].data[1, :form] === "bi"
     @test crpsdata[114][2][1][1].data[1, :features] === "STEM|POS:N|LEM:malik|ROOT:mlk|MS|GEN"
     @test crpsdata[114][2][1:2][1].data[2, :features] === "PREFIX|Al+"
@@ -397,7 +409,9 @@ end
      ├ desc: Genetive case
      └ ar_label: مجرور\n"""
     
-    out = @desc(1)
+    out = @capture_out begin
+        @desc(1) 
+    end
     @test out === missing;
 
 end

@@ -92,10 +92,10 @@ function Base.show(io::IO, t::AbstractPartOfSpeech)
     print(io, t.data)
 end
 
-function Base.show(io::IO, t::SimpleEncoder)
-    println(io, typeof(t), ":")
-    println(io, " └ encoder: ", t.encode)
-end
+# function Base.show(io::IO, t::SimpleEncoder)
+#     println(io, typeof(t), ":")
+#     println(io, " └ encoder: ", t.encode)
+# end
 
 function Base.show(io::IO, m::MetaData)
     println(io, m.title, " v", m.version)
