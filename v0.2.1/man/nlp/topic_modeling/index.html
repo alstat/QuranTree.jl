@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Topic Modeling · QuranTree.jl</title><script data-outdated-warner src="../../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.044/juliamono.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../../assets/documenter.js"></script><script src="../../../siteinfo.js"></script><script src="../../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../../assets/themeswap.js"></script><link href="../../../assets/logo.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../../"><img class="docs-light-only" src="../../../assets/logo.png" alt="QuranTree.jl logo"/><img class="docs-dark-only" src="../../../assets/logo-dark.png" alt="QuranTree.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../../">QuranTree.jl</a></span></div><form class="docs-search" action="../../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../../">Home</a></li><li><a class="tocitem" href="../../getting_started/">Getting Started</a></li><li><a class="tocitem" href="../../indexing/">Indexing</a></li><li><a class="tocitem" href="../../transliteration/">Transliteration</a></li><li><a class="tocitem" href="../../morphological_features/">Morphological Features</a></li><li><a class="tocitem" href="../../data_processing/">Data Processing</a></li><li><span class="tocitem">Natural Language Processing</span><ul><li><a class="tocitem" href="../nlp/">Introduction</a></li><li><a class="tocitem" href="../text_summarization/">Text Summarization</a></li><li class="is-active"><a class="tocitem" href>Topic Modeling</a><ul class="internal"><li><a class="tocitem" href="#Data-Preprocessing"><span>Data Preprocessing</span></a></li><li><a class="tocitem" href="#Lemmatization"><span>Lemmatization</span></a></li><li><a class="tocitem" href="#Tokenization"><span>Tokenization</span></a></li><li><a class="tocitem" href="#Creating-a-TextAnalysis-Corpus"><span>Creating a TextAnalysis Corpus</span></a></li><li><a class="tocitem" href="#Latent-Dirichlet-Allocation"><span>Latent Dirichlet Allocation</span></a></li></ul></li></ul></li><li><a class="tocitem" href="../../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Natural Language Processing</a></li><li class="is-active"><a href>Topic Modeling</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Topic Modeling</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/alstat/QuranTree.jl/blob/master/docs/src/man/nlp/topic_modeling.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Topic-Modeling"><a class="docs-heading-anchor" href="#Topic-Modeling">Topic Modeling</a><a id="Topic-Modeling-1"></a><a class="docs-heading-anchor-permalink" href="#Topic-Modeling" title="Permalink"></a></h1><p>Another application of Natural Language Processing is the Topic Modeling, which aims to extract the topics from a given document. In this section, we are going to apply this to Chapter 18 (the Cave) of the Qur&#39;an. To do this, we are going to use the <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a> library. The model for this task will be the Latent Dirichlet Allocation (LDA). To start with, load the data as follows:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; using QuranTree</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; using TextAnalysis</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; using Yunir</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; crps, tnzl = QuranData() |&gt; load;</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; crpsdata = table(crps)</code><code class="nohighlight hljs ansi" style="display:block;">Quranic Arabic Corpus (morphology)
+(C) 2011 Kais Dukes
+
+128219×7 DataFrame
+    Row │ chapter  verse  word   part   form        tag     features           ⋯
+        │ Int64    Int64  Int64  Int64  String      String  String             ⋯
+────────┼───────────────────────────────────────────────────────────────────────
+      1 │       1      1      1      1  bi          P       PREFIX|bi+         ⋯
+      2 │       1      1      1      2  somi        N       STEM|POS:N|LEM:{so
+      3 │       1      1      2      1  {ll~ahi     PN      STEM|POS:PN|LEM:{l
+      4 │       1      1      3      1  {l          DET     PREFIX|Al+
+      5 │       1      1      3      2  r~aHoma`ni  ADJ     STEM|POS:ADJ|LEM:r ⋯
+      6 │       1      1      4      1  {l          DET     PREFIX|Al+
+      7 │       1      1      4      2  r~aHiymi    ADJ     STEM|POS:ADJ|LEM:r
+      8 │       1      2      1      1  {lo         DET     PREFIX|Al+
+   ⋮    │    ⋮       ⋮      ⋮      ⋮        ⋮         ⋮                     ⋮  ⋱
+ 128213 │     114      5      5      2  n~aAsi      N       STEM|POS:N|LEM:n~a ⋯
+ 128214 │     114      6      1      1  mina        P       STEM|POS:P|LEM:min
+ 128215 │     114      6      2      1  {lo         DET     PREFIX|Al+
+ 128216 │     114      6      2      2  jin~api     N       STEM|POS:N|LEM:jin
+ 128217 │     114      6      3      1  wa          CONJ    PREFIX|w:CONJ+     ⋯
+ 128218 │     114      6      3      2  {l          DET     PREFIX|Al+
+ 128219 │     114      6      3      3  n~aAsi      N       STEM|POS:N|LEM:n~a
+                                                1 column and 128204 rows omitted</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>You need to install <a href="https://github.com/alstat/Yunir.jl">Yunir.jl</a> to successfully run the code. </p><pre><code class="language-julia hljs">using Pkg
+Pkg.add(&quot;Yunir&quot;)
+Pkg.add(&quot;TextAnalysis&quot;)</code></pre></div></div><h2 id="Data-Preprocessing"><a class="docs-heading-anchor" href="#Data-Preprocessing">Data Preprocessing</a><a id="Data-Preprocessing-1"></a><a class="docs-heading-anchor-permalink" href="#Data-Preprocessing" title="Permalink"></a></h2><p>The first data processing will be the removal of all Disconnected Letters (like الٓمٓ ,الٓمٓصٓ, among others), Prepositions, Particles, Conjunctions, Pronouns, and Adverbs. This is done as follows:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; function preprocess(s::String)
+           feat = parse(QuranFeatures, s)
+           disletters = isfeat(feat, AbstractDisLetters)
+           prepositions = isfeat(feat, AbstractPreposition)
+           particles = isfeat(feat, AbstractParticle)
+           conjunctions = isfeat(feat, AbstractConjunction)
+           pronouns = isfeat(feat, AbstractPronoun)
+           adverbs = isfeat(feat, AbstractAdverb)
+       
+           return !disletters &amp;&amp; !prepositions &amp;&amp; !particles &amp;&amp; !conjunctions &amp;&amp; !pronouns &amp;&amp; !adverbs
+       end</code><code class="nohighlight hljs ansi" style="display:block;">preprocess (generic function with 1 method)</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; crpstbl = filter(t -&gt; preprocess(t.features), crpsdata[18].data)</code><code class="nohighlight hljs ansi" style="display:block;">827×7 DataFrame
+ Row │ chapter  verse  word   part   form       tag     features               ⋯
+     │ Int64    Int64  Int64  Int64  String     String  String                 ⋯
+─────┼──────────────────────────────────────────────────────────────────────────
+   1 │      18      1      1      2  Hamodu     N       STEM|POS:N|LEM:Hamod|R ⋯
+   2 │      18      1      2      2  l~ahi      PN      STEM|POS:PN|LEM:{ll~ah
+   3 │      18      1      4      1  &gt;anzala    V       STEM|POS:V|PERF|(IV)|L
+   4 │      18      1      6      1  Eabodi     N       STEM|POS:N|LEM:Eabod|R
+   5 │      18      1      9      1  yajoEal    V       STEM|POS:V|IMPF|LEM:ja ⋯
+   6 │      18      1     11      1  EiwajaA    N       STEM|POS:N|LEM:Eiwaj|R
+   7 │      18      2      2      1  l~i        PRP     PREFIX|l:PRP+
+   8 │      18      2      2      2  yun*ira    V       STEM|POS:V|IMPF|(IV)|L
+  ⋮  │    ⋮       ⋮      ⋮      ⋮        ⋮        ⋮                     ⋮      ⋱
+ 821 │      18    110     14      1  yarojuwA@  V       STEM|POS:V|IMPF|LEM:ya ⋯
+ 822 │      18    110     16      1  rab~i      N       STEM|POS:N|LEM:rab~|RO
+ 823 │      18    110     17      2  lo         IMPV    PREFIX|l:IMPV+
+ 824 │      18    110     17      3  yaEomalo   V       STEM|POS:V|IMPF|LEM:Ea
+ 825 │      18    110     21      1  yu$oriko   V       STEM|POS:V|IMPF|(IV)|L ⋯
+ 826 │      18    110     22      2  EibaAdapi  N       STEM|POS:N|LEM:EibaAda
+ 827 │      18    110     23      1  rab~i      N       STEM|POS:N|LEM:rab~|RO
+                                                   1 column and 812 rows omitted</code></pre><p>Next, we create a copy of the above data so we have the original state, and use the copy to do further data processing.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; crpsnew = deepcopy(crpstbl)</code><code class="nohighlight hljs ansi" style="display:block;">827×7 DataFrame
+ Row │ chapter  verse  word   part   form       tag     features               ⋯
+     │ Int64    Int64  Int64  Int64  String     String  String                 ⋯
+─────┼──────────────────────────────────────────────────────────────────────────
+   1 │      18      1      1      2  Hamodu     N       STEM|POS:N|LEM:Hamod|R ⋯
+   2 │      18      1      2      2  l~ahi      PN      STEM|POS:PN|LEM:{ll~ah
+   3 │      18      1      4      1  &gt;anzala    V       STEM|POS:V|PERF|(IV)|L
+   4 │      18      1      6      1  Eabodi     N       STEM|POS:N|LEM:Eabod|R
+   5 │      18      1      9      1  yajoEal    V       STEM|POS:V|IMPF|LEM:ja ⋯
+   6 │      18      1     11      1  EiwajaA    N       STEM|POS:N|LEM:Eiwaj|R
+   7 │      18      2      2      1  l~i        PRP     PREFIX|l:PRP+
+   8 │      18      2      2      2  yun*ira    V       STEM|POS:V|IMPF|(IV)|L
+  ⋮  │    ⋮       ⋮      ⋮      ⋮        ⋮        ⋮                     ⋮      ⋱
+ 821 │      18    110     14      1  yarojuwA@  V       STEM|POS:V|IMPF|LEM:ya ⋯
+ 822 │      18    110     16      1  rab~i      N       STEM|POS:N|LEM:rab~|RO
+ 823 │      18    110     17      2  lo         IMPV    PREFIX|l:IMPV+
+ 824 │      18    110     17      3  yaEomalo   V       STEM|POS:V|IMPF|LEM:Ea
+ 825 │      18    110     21      1  yu$oriko   V       STEM|POS:V|IMPF|(IV)|L ⋯
+ 826 │      18    110     22      2  EibaAdapi  N       STEM|POS:N|LEM:EibaAda
+ 827 │      18    110     23      1  rab~i      N       STEM|POS:N|LEM:rab~|RO
+                                                   1 column and 812 rows omitted</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; feats = crpsnew[!, :features]</code><code class="nohighlight hljs ansi" style="display:block;">827-element Vector{String}:
+ &quot;STEM|POS:N|LEM:Hamod|ROOT:Hmd|M|NOM&quot;
+ &quot;STEM|POS:PN|LEM:{ll~ah|ROOT:Alh|GEN&quot;
+ &quot;STEM|POS:V|PERF|(IV)|LEM:&gt;anzala|ROOT:nzl|3MS&quot;
+ &quot;STEM|POS:N|LEM:Eabod|ROOT:Ebd|M|GEN&quot;
+ &quot;STEM|POS:V|IMPF|LEM:jaEala|ROOT:jEl|3MS|MOOD:JUS&quot;
+ &quot;STEM|POS:N|LEM:Eiwaj|ROOT:Ewj|M|NOM&quot;
+ &quot;PREFIX|l:PRP+&quot;
+ &quot;STEM|POS:V|IMPF|(IV)|LEM:&gt;an*ara|ROOT:n*r|3MS|MOOD:SUBJ&quot;
+ &quot;STEM|POS:N|LEM:l~adun|ROOT:ldn|GEN&quot;
+ &quot;STEM|POS:V|IMPF|(II)|LEM:bu\$~ira|ROOT:b\$r|3MS|MOOD:SUBJ&quot;
+ ⋮
+ &quot;STEM|POS:ADJ|LEM:wa`Hid|ROOT:wHd|MS|INDEF|NOM&quot;
+ &quot;STEM|POS:V|PERF|LEM:kaAna|ROOT:kwn|SP:kaAn|3MS&quot;
+ &quot;STEM|POS:V|IMPF|LEM:yarojuwA@|ROOT:rjw|3MS&quot;
+ &quot;STEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN&quot;
+ &quot;PREFIX|l:IMPV+&quot;
+ &quot;STEM|POS:V|IMPF|LEM:Eamila|ROOT:Eml|3MS|MOOD:JUS&quot;
+ &quot;STEM|POS:V|IMPF|(IV)|LEM:&gt;a\$oraka|ROOT:\$rk|3MS|MOOD:JUS&quot;
+ &quot;STEM|POS:N|LEM:EibaAdat|ROOT:Ebd|F|GEN&quot;
+ &quot;STEM|POS:N|LEM:rab~|ROOT:rbb|M|GEN&quot;</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; feats = parse.(QuranFeatures, feats)</code><code class="nohighlight hljs ansi" style="display:block;">827-element Vector{AbstractQuranFeature}:
+ Stem(:N, N, AbstractQuranFeature[Lemma(&quot;Hamod&quot;), Root(&quot;Hmd&quot;), M, NOM])
+ Stem(:PN, PN, AbstractQuranFeature[Lemma(&quot;{ll~ah&quot;), Root(&quot;Alh&quot;), GEN])
+ Stem(:V, V, AbstractQuranFeature[Lemma(&quot;&gt;anzala&quot;), Root(&quot;nzl&quot;), PERF, IV, 3, M, S, IND, ACT])
+ Stem(:N, N, AbstractQuranFeature[Lemma(&quot;Eabod&quot;), Root(&quot;Ebd&quot;), M, GEN])
+ Stem(:V, V, AbstractQuranFeature[Lemma(&quot;jaEala&quot;), Root(&quot;jEl&quot;), JUS, IMPF, 3, M, S, ACT, I])
+ Stem(:N, N, AbstractQuranFeature[Lemma(&quot;Eiwaj&quot;), Root(&quot;Ewj&quot;), M, NOM])
+ Prefix(Symbol(&quot;l:PRP+&quot;), PRP)
+ Stem(:V, V, AbstractQuranFeature[Lemma(&quot;&gt;an*ara&quot;), Root(&quot;n*r&quot;), SUBJ, IMPF, IV, 3, M, S, ACT])
+ Stem(:N, N, AbstractQuranFeature[Lemma(&quot;l~adun&quot;), Root(&quot;ldn&quot;), GEN])
+ Stem(:V, V, AbstractQuranFeature[Lemma(&quot;bu\$~ira&quot;), Root(&quot;b\$r&quot;), SUBJ, IMPF, II, 3, M, S, ACT])
+ ⋮
+ Stem(:ADJ, ADJ, AbstractQuranFeature[Lemma(&quot;wa`Hid&quot;), Root(&quot;wHd&quot;), M, S, INDEF, NOM])
+ Stem(:V, V, AbstractQuranFeature[Lemma(&quot;kaAna&quot;), Root(&quot;kwn&quot;), Special(&quot;kaAn&quot;), PERF, 3, M, S, IND, ACT, I])
+ Stem(:V, V, AbstractQuranFeature[Lemma(&quot;yarojuwA@&quot;), Root(&quot;rjw&quot;), IMPF, 3, M, S, IND, ACT, I])
+ Stem(:N, N, AbstractQuranFeature[Lemma(&quot;rab~&quot;), Root(&quot;rbb&quot;), M, GEN])
+ Prefix(Symbol(&quot;l:IMPV+&quot;), IMPV)
+ Stem(:V, V, AbstractQuranFeature[Lemma(&quot;Eamila&quot;), Root(&quot;Eml&quot;), JUS, IMPF, 3, M, S, ACT, I])
+ Stem(:V, V, AbstractQuranFeature[Lemma(&quot;&gt;a\$oraka&quot;), Root(&quot;\$rk&quot;), JUS, IMPF, IV, 3, M, S, ACT])
+ Stem(:N, N, AbstractQuranFeature[Lemma(&quot;EibaAdat&quot;), Root(&quot;Ebd&quot;), F, GEN])
+ Stem(:N, N, AbstractQuranFeature[Lemma(&quot;rab~&quot;), Root(&quot;rbb&quot;), M, GEN])</code></pre><h2 id="Lemmatization"><a class="docs-heading-anchor" href="#Lemmatization">Lemmatization</a><a id="Lemmatization-1"></a><a class="docs-heading-anchor-permalink" href="#Lemmatization" title="Permalink"></a></h2><p>Using the above parsed features, we then convert the <code>form</code> of the tokens into its lemma. This is useful for addressing inflections.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; lemmas = lemma.(feats)</code><code class="nohighlight hljs ansi" style="display:block;">827-element Vector{Union{Missing, String}}:
+ &quot;Hamod&quot;
+ &quot;{ll~ah&quot;
+ &quot;&gt;anzala&quot;
+ &quot;Eabod&quot;
+ &quot;jaEala&quot;
+ &quot;Eiwaj&quot;
+ missing
+ &quot;&gt;an*ara&quot;
+ &quot;l~adun&quot;
+ &quot;bu\$~ira&quot;
+ ⋮
+ &quot;wa`Hid&quot;
+ &quot;kaAna&quot;
+ &quot;yarojuwA@&quot;
+ &quot;rab~&quot;
+ missing
+ &quot;Eamila&quot;
+ &quot;&gt;a\$oraka&quot;
+ &quot;EibaAdat&quot;
+ &quot;rab~&quot;</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; forms1 = crpsnew[!, :form]</code><code class="nohighlight hljs ansi" style="display:block;">827-element Vector{String}:
+ &quot;Hamodu&quot;
+ &quot;l~ahi&quot;
+ &quot;&gt;anzala&quot;
+ &quot;Eabodi&quot;
+ &quot;yajoEal&quot;
+ &quot;EiwajaA&quot;
+ &quot;l~i&quot;
+ &quot;yun*ira&quot;
+ &quot;l~aduno&quot;
+ &quot;yuba\$~ira&quot;
+ ⋮
+ &quot;wa`HidN&quot;
+ &quot;kaAna&quot;
+ &quot;yarojuwA@&quot;
+ &quot;rab~i&quot;
+ &quot;lo&quot;
+ &quot;yaEomalo&quot;
+ &quot;yu\$oriko&quot;
+ &quot;EibaAdapi&quot;
+ &quot;rab~i&quot;</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; forms1[.!ismissing.(lemmas)] = lemmas[.!ismissing.(lemmas)]</code><code class="nohighlight hljs ansi" style="display:block;">795-element Vector{Union{Missing, String}}:
+ &quot;Hamod&quot;
+ &quot;{ll~ah&quot;
+ &quot;&gt;anzala&quot;
+ &quot;Eabod&quot;
+ &quot;jaEala&quot;
+ &quot;Eiwaj&quot;
+ &quot;&gt;an*ara&quot;
+ &quot;l~adun&quot;
+ &quot;bu\$~ira&quot;
+ &quot;Eamila&quot;
+ ⋮
+ &quot;&lt;ila`h&quot;
+ &quot;wa`Hid&quot;
+ &quot;kaAna&quot;
+ &quot;yarojuwA@&quot;
+ &quot;rab~&quot;
+ &quot;Eamila&quot;
+ &quot;&gt;a\$oraka&quot;
+ &quot;EibaAdat&quot;
+ &quot;rab~&quot;</code></pre><div class="admonition is-success"><header class="admonition-header">Tips</header><div class="admonition-body"><p>We can also use the <code>Root</code> features instead, which is done by simply replacing <code>lemma.(feats)</code> with <code>root.(feats)</code>. </p></div></div><p>We now put back the new form to the corpus:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; crpsnew[!, :form] = forms1</code><code class="nohighlight hljs ansi" style="display:block;">827-element Vector{String}:
+ &quot;Hamod&quot;
+ &quot;{ll~ah&quot;
+ &quot;&gt;anzala&quot;
+ &quot;Eabod&quot;
+ &quot;jaEala&quot;
+ &quot;Eiwaj&quot;
+ &quot;l~i&quot;
+ &quot;&gt;an*ara&quot;
+ &quot;l~adun&quot;
+ &quot;bu\$~ira&quot;
+ ⋮
+ &quot;wa`Hid&quot;
+ &quot;kaAna&quot;
+ &quot;yarojuwA@&quot;
+ &quot;rab~&quot;
+ &quot;lo&quot;
+ &quot;Eamila&quot;
+ &quot;&gt;a\$oraka&quot;
+ &quot;EibaAdat&quot;
+ &quot;rab~&quot;</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; crpsnew = CorpusData(crpsnew)</code><code class="nohighlight hljs ansi" style="display:block;">Quranic Arabic Corpus (morphology)
+(C) 2011 Kais Dukes
+
+827×7 DataFrame
+ Row │ chapter  verse  word   part   form       tag     features               ⋯
+     │ Int64    Int64  Int64  Int64  String     String  String                 ⋯
+─────┼──────────────────────────────────────────────────────────────────────────
+   1 │      18      1      1      2  Hamod      N       STEM|POS:N|LEM:Hamod|R ⋯
+   2 │      18      1      2      2  {ll~ah     PN      STEM|POS:PN|LEM:{ll~ah
+   3 │      18      1      4      1  &gt;anzala    V       STEM|POS:V|PERF|(IV)|L
+   4 │      18      1      6      1  Eabod      N       STEM|POS:N|LEM:Eabod|R
+   5 │      18      1      9      1  jaEala     V       STEM|POS:V|IMPF|LEM:ja ⋯
+   6 │      18      1     11      1  Eiwaj      N       STEM|POS:N|LEM:Eiwaj|R
+   7 │      18      2      2      1  l~i        PRP     PREFIX|l:PRP+
+   8 │      18      2      2      2  &gt;an*ara    V       STEM|POS:V|IMPF|(IV)|L
+  ⋮  │    ⋮       ⋮      ⋮      ⋮        ⋮        ⋮                     ⋮      ⋱
+ 821 │      18    110     14      1  yarojuwA@  V       STEM|POS:V|IMPF|LEM:ya ⋯
+ 822 │      18    110     16      1  rab~       N       STEM|POS:N|LEM:rab~|RO
+ 823 │      18    110     17      2  lo         IMPV    PREFIX|l:IMPV+
+ 824 │      18    110     17      3  Eamila     V       STEM|POS:V|IMPF|LEM:Ea
+ 825 │      18    110     21      1  &gt;a$oraka   V       STEM|POS:V|IMPF|(IV)|L ⋯
+ 826 │      18    110     22      2  EibaAdat   N       STEM|POS:N|LEM:EibaAda
+ 827 │      18    110     23      1  rab~       N       STEM|POS:N|LEM:rab~|RO
+                                                   1 column and 812 rows omitted</code></pre><h2 id="Tokenization"><a class="docs-heading-anchor" href="#Tokenization">Tokenization</a><a id="Tokenization-1"></a><a class="docs-heading-anchor-permalink" href="#Tokenization" title="Permalink"></a></h2><p>We want to summarize the Qur&#39;an at the verse level. Thus, the token would be the verses of the corpus. From these verses, we further clean it by dediacritization and normalization of the characters:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; lem_vrs = verses(crpsnew)</code><code class="nohighlight hljs ansi" style="display:block;">109-element Vector{String}:
+ &quot;Hamod {ll~ah &gt;anzala Eabod jaEala Eiwaj&quot;
+ &quot;l~i&gt;an*ara l~adun bu\$~ira Eamila&quot;
+ &quot;&gt;an*ara qaAla {t~axa*a {ll~ah&quot;
+ &quot;Eilom A^baA&#39; kabura xaraja &gt;afowa`h qaAla&quot;
+ &quot;ba`xiE &gt;avar &#39;aAmana Hadiyv&quot;
+ &quot;jaEala &gt;aroD libalawo &gt;aHosan&quot;
+ &quot;lajaAEil&quot;
+ &quot;Hasiba kahof r~aqiym kaAna &#39;aAyap&quot;
+ &quot;&gt;awaY fitoyap kahof qaAla A^taY l~adun yuhay~i}o &gt;amor&quot;
+ &quot;Daraba &gt;u*unN kahof&quot;
+ ⋮
+ &quot;Hasiba kafara {t~axa*a Eabod duwn &gt;aEotadato jahan~am ka`firuwn&quot;
+ &quot;qaAla nab~a&gt;a &gt;axosariyn&quot;
+ &quot;Dal~a saEoy Hayaw`p d~unoyaA Hasiba &gt;aHosana&quot;
+ &quot;kafara &#39;aAyap rab~ liqaA^&#39; HabiTa Eamal &gt;aqaAma qiya`map&quot;
+ &quot;jazaA^&#39; jahan~am kafara {t~axa*a &#39;aAyap rasuwl&quot;
+ &quot;&#39;aAmana Eamila S~a`liHa`t kaAna jan~ap firodawos&quot;
+ &quot;bagaY`&quot;
+ &quot;qaAla kaAna baHor kalima`t rab~ lanafida baHor nafida kalima`t rab~ jaA^&#39;a mivol&quot;
+ &quot;qaAla ba\$ar mivol &gt;awoHaY`^ &lt;ila`h &lt;ila`h wa`Hid kaAna yarojuwA@ rab~ loEamila &gt;a\$oraka EibaAdat rab~&quot;</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; vrs = normalize.(dediac.(lem_vrs))</code><code class="nohighlight hljs ansi" style="display:block;">109-element Vector{String}:
+ &quot;Hmd Allh Anzl Ebd jEl Ewj&quot;
+ &quot;lAn*r ldn b\$r Eml&quot;
+ &quot;An*r qAl Atx* Allh&quot;
+ &quot;Elm AbA&#39; kbr xrj Afwh qAl&quot;
+ &quot;bxE Avr &#39;Amn Hdyv&quot;
+ &quot;jEl ArD lblw AHsn&quot;
+ &quot;ljAEl&quot;
+ &quot;Hsb khf rqym kAn &#39;Ayh&quot;
+ &quot;Awy ftyh khf qAl Aty ldn yhyy Amr&quot;
+ &quot;Drb A*n khf&quot;
+ ⋮
+ &quot;Hsb kfr Atx* Ebd dwn AEtdt jhnm kfrwn&quot;
+ &quot;qAl nbA Axsryn&quot;
+ &quot;Dl sEy Hywh dnyA Hsb AHsn&quot;
+ &quot;kfr &#39;Ayh rb lqA&#39; HbT Eml AqAm qymh&quot;
+ &quot;jzA&#39; jhnm kfr Atx* &#39;Ayh rswl&quot;
+ &quot;&#39;Amn Eml SlHt kAn jnh frdws&quot;
+ &quot;bgy&quot;
+ &quot;qAl kAn bHr klmt rb lnfd bHr nfd klmt rb jA&#39; mvl&quot;
+ &quot;qAl b\$r mvl AwHy Alh Alh wHd kAn yrjwA@ rb lEml A\$rk EbAdt rb&quot;</code></pre><h2 id="Creating-a-TextAnalysis-Corpus"><a class="docs-heading-anchor" href="#Creating-a-TextAnalysis-Corpus">Creating a TextAnalysis Corpus</a><a id="Creating-a-TextAnalysis-Corpus-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-a-TextAnalysis-Corpus" title="Permalink"></a></h2><p>To make use of the <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/APIReference/">TextAnalysis.jl&#39;s APIs</a>, we need to encode the processed Quranic Corpus to <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>&#39;s Corpus. In this case, we will create a <code>StringDocument</code> of the verses.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; crps1 = Corpus(StringDocument.(vrs))</code><code class="nohighlight hljs ansi" style="display:block;">A Corpus with 109 documents:
+ * 109 StringDocument&#39;s
+ * 0 FileDocument&#39;s
+ * 0 TokenDocument&#39;s
+ * 0 NGramDocument&#39;s
+
+Corpus&#39;s lexicon contains 0 tokens
+Corpus&#39;s index contains 0 tokens</code></pre><p>We then update the lexicon and inverse index for efficient indexing of the corpus.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; update_lexicon!(crps1)</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; update_inverse_index!(crps1)</code><code class="nohighlight hljs ansi" style="display:block;"></code></pre><p>Next, we create a Document Term Matrix, which will have rows of verses and columns of words describing the verses.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; m1 = DocumentTermMatrix(crps1)</code><code class="nohighlight hljs ansi" style="display:block;">A 109 X 360 DocumentTermMatrix</code></pre><h2 id="Latent-Dirichlet-Allocation"><a class="docs-heading-anchor" href="#Latent-Dirichlet-Allocation">Latent Dirichlet Allocation</a><a id="Latent-Dirichlet-Allocation-1"></a><a class="docs-heading-anchor-permalink" href="#Latent-Dirichlet-Allocation" title="Permalink"></a></h2><p>Finally, run LDA as follows:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; k = 3          # number of topics</code><code class="nohighlight hljs ansi" style="display:block;">3</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; iter = 1000    # number of gibbs sampling iterations</code><code class="nohighlight hljs ansi" style="display:block;">1000</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; alpha = 0.1    # hyperparameter</code><code class="nohighlight hljs ansi" style="display:block;">0.1</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; beta = 0.1     # hyperparameter</code><code class="nohighlight hljs ansi" style="display:block;">0.1</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; ϕ, θ = lda(m1, k, iter, alpha, beta)</code><code class="nohighlight hljs ansi" style="display:block;">(
+⠛⠛⠓⠛⠛⠛⠛⠛⠛⠛⠛⠛⠚⠒⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠓⠛⠛⠒⠛⠛⠛⠛⠛⠓⠛⠛⠓⠛⠛⠓, [0.5 1.0 … 0.0 0.06666666666666667; 0.5 0.0 … 0.0 0.9333333333333333; 0.0 0.0 … 1.0 0.0])</code></pre><p>Extract the topic for first cluster:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; ntopics = 10</code><code class="nohighlight hljs ansi" style="display:block;">10</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; cluster_topics = Matrix(undef, ntopics, k);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; for i = 1:k
+           topics_idcs = sortperm(ϕ[i, :], rev=true)
+           cluster_topics[:, i] = arabic.(m1.terms[topics_idcs][1:ntopics])
+       end</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; cluster_topics</code><code class="nohighlight hljs ansi" style="display:block;">10×3 Matrix{Any}:
+ &quot;ذ&quot;     &quot;ء&quot;       &quot;قال&quot;
+ &quot;ء&quot;     &quot;قال&quot;     &quot;رب&quot;
+ &quot;قال&quot;   &quot;كان&quot;     &quot;ء&quot;
+ &quot;وجد&quot;   &quot;رب&quot;      &quot;جعل&quot;
+ &quot;اتخ&quot;   &quot;الله&quot;    &quot;اتي&quot;
+ &quot;ر&quot;     &quot;استطاع&quot;  &quot;جا&quot;
+ &quot;ا&quot;     &quot;شي&quot;      &quot;ل&quot;
+ &quot;رب&quot;    &quot;ارض&quot;     &quot;امن&quot;
+ &quot;الله&quot;  &quot;امر&quot;     &quot;علم&quot;
+ &quot;بلغ&quot;   &quot;اتبع&quot;    &quot;جنه&quot;</code></pre><p>Tabulating this properly would give us the following</p><pre><code class="language-julia hljs">Pkg.add(&quot;DataFrames&quot;)
+Pkg.add(&quot;Latexify&quot;)
+using DataFrames: DataFrame
+using Latexify
+
+mdtable(DataFrame(
+    topic1 = cluster_topics[:, 1],
+    topic2 = cluster_topics[:, 2],
+    topic3 = cluster_topics[:, 3]
+    ), latex=false)</code></pre><div class="markdown"><table><tr><th align="right">topic1</th><th align="right">topic2</th><th align="right">topic3</th></tr><tr><td align="right">ذ</td><td align="right">ء</td><td align="right">قال</td></tr><tr><td align="right">ء</td><td align="right">قال</td><td align="right">رب</td></tr><tr><td align="right">قال</td><td align="right">كان</td><td align="right">ء</td></tr><tr><td align="right">وجد</td><td align="right">رب</td><td align="right">جعل</td></tr><tr><td align="right">اتخ</td><td align="right">الله</td><td align="right">اتي</td></tr><tr><td align="right">ر</td><td align="right">استطاع</td><td align="right">جا</td></tr><tr><td align="right">ا</td><td align="right">شي</td><td align="right">ل</td></tr><tr><td align="right">رب</td><td align="right">ارض</td><td align="right">امن</td></tr><tr><td align="right">الله</td><td align="right">امر</td><td align="right">علم</td></tr><tr><td align="right">بلغ</td><td align="right">اتبع</td><td align="right">جنه</td></tr></table>
+</div><p>As you may have noticed, the result is not good and this is mainly due to data processing. Readers are encourage to improve this for their use case. This section simply demonstrated how <a href="https://juliahub.com/docs/TextAnalysis/5Mwet/0.7.2/">TextAnalysis.jl</a>&#39;s LDA can be used for Topic Modeling of the QuranTree.jl&#39;s corpus.</p><p>Finally, the following will extract the topic for each verse:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; vrs_topics = []</code><code class="nohighlight hljs ansi" style="display:block;">Any[]</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; for i = 1:dtm(m1).m
+           push!(vrs_topics, sortperm(θ[:, i], rev=true)[1])
+       end</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; vrs_topics</code><code class="nohighlight hljs ansi" style="display:block;">109-element Vector{Any}:
+ 1
+ 1
+ 1
+ 3
+ 3
+ 2
+ 2
+ 1
+ 1
+ 1
+ ⋮
+ 1
+ 3
+ 2
+ 1
+ 1
+ 3
+ 3
+ 3
+ 2</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../text_summarization/">« Text Summarization</a><a class="docs-footer-nextpage" href="../../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.19 on <span class="colophon-date" title="Wednesday 8 June 2022 06:31">Wednesday 8 June 2022</span>. Using Julia version 1.6.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
