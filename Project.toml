@@ -5,10 +5,8 @@ version = "0.2.1"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-Latexify = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
 ReadOnlyArrays = "988b38a3-91fc-5605-94a2-ee2116b3bd83"
 Suppressor = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
-TextAnalysis = "a2db99b7-8b79-58f8-94bf-bbc811eef33d"
 Yunir = "6ba116df-6904-454d-b214-90038a8281a6"
 
 [compat]
