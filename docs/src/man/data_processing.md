@@ -12,6 +12,7 @@ Pkg.add("Yunir")
 ```@repl abc
 using QuranTree
 using Yunir
+@transliterator :default
 
 crps, tnzl = load(QuranData());
 crpsdata = table(crps);

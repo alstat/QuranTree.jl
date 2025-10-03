@@ -33,6 +33,8 @@ The following are the features of the package:
     * For both Arabic and Buckwalter (or custom transliteration)
  * Orthographical Analysis
  
+Please refer to [Yunir.jl](https://github.com/alstat/Yunir.jl) for examples.
+
 ## Installation
 To install the package, run the following:
 ```julia
