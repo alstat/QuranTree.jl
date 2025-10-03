@@ -1,0 +1,77 @@
+/* Custom font styles for Yunir.jl documentation */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Define Kawkab Mono font from local files */
+@font-face {
+    font-family: 'Kawkab Mono';
+    src: url('kawkab-mono-0.500%202/KawkabMono-Regular.otf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Kawkab Mono';
+    src: url('kawkab-mono-0.500%202/KawkabMono-Bold.otf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Kawkab Mono';
+    src: url('kawkab-mono-0.500%202/KawkabMono-Light.otf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* Set body font to PT Sans Arabic */
+body {
+    font-family: 'Overpass', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Apply PT Sans Arabic to content */
+article p,
+article li,
+article td {
+    font-family: 'Overpass', 'Inter', sans-serif;
+}
+
+/* Specific styling for Arabic text */
+[lang="ar"],
+.arabic-text {
+    font-family: 'Overpass', 'Traditional Arabic', 'Arabic Typesetting', sans-serif;
+    font-size: 1.1em;
+    line-height: 1.8;
+    direction: rtl;
+}
+
+/* Use Kawkab Mono for code blocks - with !important to override Documenter defaults */
+code,
+pre,
+pre code,
+.language-julia,
+.language-julia-repl,
+article pre,
+article code,
+div.highlight pre,
+.hljs,
+.content code,
+.nohighlight,
+.ansi {
+    font-family: 'Kawkab Mono', 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    line-height: 1.8 !important;
+    font-size: 12px !important;
+}
+
+/* Optional: Increase font size for better readability */
+article {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Overpass', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+}
