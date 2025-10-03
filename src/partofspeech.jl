@@ -129,4 +129,4 @@ end
 @partofspeech Definite AbstractState Symbol("DEF") "Definite state" "معرفة"
 @partofspeech Indefinite AbstractState Symbol("INDEF") "Indefinite state" "نكرة"
 @partofspeech Nominative AbstractCase Symbol("NOM") "Nominative case" "مرفوع"
-@partofspeech Genetive AbstractCase Symbol("GEN") "Genetive case" "مجرور"
+@partofspeech Genitive AbstractCase Symbol("GEN") "Genitive case" "مجرور"

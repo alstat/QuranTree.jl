@@ -38,5 +38,5 @@ export Noun, ProperNoun, Adjective, ImperativeVerbalNoun,
        VerbFormV, VerbFormVI, VerbFormVII, VerbFormVIII,
        VerbFormIX, VerbFormX, VerbFormXI, VerbFormXII,
        ActiveParticle, PassiveParticle, VerbalNoun, Definite,
-       Indefinite, Nominative, Genetive
+       Indefinite, Nominative, Genitive
 end

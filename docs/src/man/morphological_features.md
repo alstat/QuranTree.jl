@@ -38,7 +38,7 @@ mfeat.feats
 isfeat(mfeat, Masculine)
 isfeat(mfeat, Feminine)
 isfeat(mfeat, Singular)
-isfeat(mfeat, Adjective) && isfeat(mfeat, Genetive)
+isfeat(mfeat, Adjective) && isfeat(mfeat, Genitive)
 ```
 Another example on checking whether the token has `Root` and `Lemma` features.
 ```@repl abc
@@ -194,6 +194,6 @@ sum(tbl1[!, :features] .!== tbl2[!, :features])
 <tr><td><code> Definite</code></td><td><code>AbstractState</code></td><td><code>Symbol("DEF")</code></td><td>Definite state</td><td style="text-align:right !important">معرفة</td></tr>
 <tr><td><code> Indefinite</code></td><td><code>AbstractState</code></td><td><code>Symbol("INDEF")</code></td><td>Indefinite state</td><td style="text-align:right !important">نكرة</td></tr>
 <tr><td><code> Nominative</code></td><td><code>AbstractCase</code></td><td><code>Symbol("NOM")</code></td><td>Nominative case</td><td style="text-align:right !important">مرفوع</td></tr>
-<tr><td><code> Genetive</code></td><td><code>AbstractCase</code></td><td><code>Symbol("GEN")</code></td><td>Genetive case</td><td style="text-align:right !important">مجرور</td></tr>
+<tr><td><code> Genitive</code></td><td><code>AbstractCase</code></td><td><code>Symbol("GEN")</code></td><td>Genitive case</td><td style="text-align:right !important">مجرور</td></tr>
 </table>
 ```

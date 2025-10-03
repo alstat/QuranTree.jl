@@ -34,7 +34,7 @@ const VERB_FORMS = Dict(
 const NOMINAL_CASES = Dict(
     Symbol("NOM") => Nominative(),
     Symbol("ACCC") => Accusative(Symbol("ACC"), "Accusative case", "منصوب"),
-    Symbol("GEN") => Genetive()
+    Symbol("GEN") => Genitive()
 )
 const NOMINAL_STATES = Dict(
     Symbol("DEF") => Definite(),
